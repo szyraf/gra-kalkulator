@@ -1,7 +1,8 @@
 export class Building {
     name;
     description;
-    energy;
+    cost;
+    energyPerHour;
     type;
     art;
     gridX;
@@ -11,7 +12,8 @@ export class Building {
     constructor(jsonObject, gridX, gridY) {
         this.name = jsonObject["Name"];
         this.Description = jsonObject["Description"];
-        this.Energy = jsonObject["Energy"];
+        this.cost = jsonObject["Cost"];
+        this.energyPerHour = jsonObject["EnergyPerHour"];
         this.Type = jsonObject["Type"];
         this.art = jsonObject["Art"];
         this.gridX = gridX;
