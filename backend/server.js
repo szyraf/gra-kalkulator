@@ -5,8 +5,6 @@ const cors = require('cors');
 
 const scoreboardRoutes = require('./routes/scoreboardRoutes');
 
-dotenv.config();
-
 const app = express();
 
 app.use(cors());

@@ -7,7 +7,7 @@
       "Type": "consumer",
       "EnergyPerHour": 100,
       "ToBuild": false,
-      "ImagePath": "assets/images/house.png"
+      "ImagePath": "assets/img/house_one/house.png"
     },
     {
       "Name": "Apartament",
@@ -16,7 +16,7 @@
       "Type": "consumer",
       "EnergyPerHour": 1000,
       "ToBuild": false,
-      "ImagePath": "assets/images/apartment.png"
+      "ImagePath": "assets/img/house_two/apartment.png"
     },
     {
       "Name": "Tower",
@@ -25,7 +25,7 @@
       "Type": "consumer",
       "EnergyPerHour": 2000,
       "ToBuild": false,
-      "ImagePath": "assets/images/tower.png"
+      "ImagePath": "assets/img/house_three/tower.png"
     },
     {
       "Name": "Solar",
@@ -34,7 +34,7 @@
       "Type": "producent",
       "EnergyPerHour": 100,
       "ToBuild": true,
-      "ImagePath": "assets/images/solar.png"
+      "ImagePath": "assets/img/solar/solar.png"
     }
   ]
 } 
