@@ -193,9 +193,9 @@ class Game {
     }
 
     updateEnergyStats() {
-        this.energy.production = this.buildings.filter((b) => b.energy > 0).reduce((sum, b) => sum + b.energy, 0);
+        this.energy.production = this.buildings.filter((b) => b.energyPerHour > 0).reduce((sum, b) => sum + b.energyPerHour, 0);
 
-        this.energy.consumption = Math.abs(this.buildings.filter((b) => b.energy < 0).reduce((sum, b) => sum + b.energy, 0));
+        this.energy.consumption = Math.abs(this.buildings.filter((b) => b.energyPerHour < 0).reduce((sum, b) => sum + b.energyPerHour, 0));
 
         this.energy.available = this.energy.production - this.energy.consumption;
 
