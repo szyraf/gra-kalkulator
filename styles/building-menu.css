@@ -19,6 +19,9 @@
 
 .arrow{
     width: 10vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #building-menu-building-images{
