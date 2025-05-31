@@ -1,0 +1,9 @@
+.info-panel {
+    position: fixed;
+    left: 50vw;
+    top: calc(100vh - 14vw);
+    width: 50vw;
+    height: 14vw;
+    font-size: 1.2vw;
+    padding: 1vw;
+}
