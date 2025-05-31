@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Solvilla: Buduj Przyszłość</title>
     <link rel="stylesheet" href="./styles/main.css" />
+    <link rel="stylesheet" href="./styles/building-menu.css" />
     <link
       rel="icon"
       href="./assets/Gemini_Generated_Image_hll5mhhll5mhhll5.jpg"
@@ -13,6 +14,15 @@
   </head>
 
   <body class="bg-gray-100 min-h-screen">
+    <div id="landing-page">
+      <div class="container">
+        <h1>Solvilla</h1>
+        <p>Wprowadź nazwę użytkownika, aby rozpocząć</p>
+        <input type="text" placeholder="Nazwa użytkownika" id="username">
+        <button class="btn-start" onclick="startGame()">Start</button>
+        <button class="btn-tutorial" onclick="showTutorial()">Samouczek</button>
+      </div>
+    </div>
     <div class="relative w-full h-screen overflow-hidden">
       <div class="absolute top-0 left-0 bg-white/90 shadow-md p-2 z-10 w-48">
         <div class="space-y-1 text-sm">
@@ -47,5 +57,7 @@
     <div id="start"></div>
     <script type="module" src="imageManager.js"></script>
     <script type="module" src="game.js"></script>
+    <script src="landing.js" defer></script>
+    <script src="date-weather.js" defer></script>
   </body>
 </html>
