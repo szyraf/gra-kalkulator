@@ -404,17 +404,12 @@ class Game {
 // Wait for both DOM and images to be loaded before starting the game
 window.addEventListener("load", async () => {
   try {
-    const [buildingsResponse, _] = await Promise.all([
-      fetch("./buildings.json"),
-      imageManager.initialize(),
-    ]);
+    const response = await fetch("./buildings.json");
+    const buildingsData = await response.json();
+    await imageManager.initialize();
 
-    if (!buildingsResponse.ok) {
-      throw new Error("Failed to load buildings data");
-    }
-
-    const buildingsData = await buildingsResponse.json();
     const game = new Game(buildingsData.buildings);
+    imageManager.setGame(game);
 
     // Add initial buildings
     game.addBuilding(buildingsData.buildings[0], 2, 2);
