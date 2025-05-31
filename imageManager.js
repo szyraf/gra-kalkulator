@@ -2,7 +2,6 @@ class ImageManager {
   constructor() {
     this.images = new Map();
     this.buildingMenuImages = [];
-    this.currentIndex = 0;
     this.imagesPerPage = 4;
     this.isInitialized = false;
     this.game = null;
@@ -56,7 +55,6 @@ class ImageManager {
       this.imageData = data.buildings;
       await this.loadImages();
       this.setupBuildingMenu();
-      this.setupNavigation();
       this.isInitialized = true;
       console.log("ImageManager initialized successfully");
     } catch (error) {
@@ -156,33 +154,6 @@ class ImageManager {
     };
 
     updateBuildingMenu();
-  }
-
-  setupNavigation() {
-    const leftArrow = document.getElementById("building-menu-left-arrow");
-    const rightArrow = document.getElementById("building-menu-right-arrow");
-
-    if (!leftArrow || !rightArrow) {
-      console.error("Navigation arrows not found");
-      return;
-    }
-
-    leftArrow.onclick = () => {
-      if (this.currentIndex > 0) {
-        this.currentIndex = Math.max(0, this.currentIndex - this.imagesPerPage);
-        this.setupBuildingMenu();
-      }
-    };
-
-    rightArrow.onclick = () => {
-      if (this.currentIndex + this.imagesPerPage < this.imageData.length) {
-        this.currentIndex = Math.min(
-          this.imageData.length - this.imagesPerPage,
-          this.currentIndex + this.imagesPerPage
-        );
-        this.setupBuildingMenu();
-      }
-    };
   }
 
   handleImageClick(buildingId) {
