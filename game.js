@@ -24,6 +24,7 @@ class Game {
     this.dailyBudget = 1000;
     this.mouseMovementCount = 0;
     this.hoverPosition = null;
+    this.buildingAtPosition = null;
   }
 
   createInitialWeather() {
@@ -70,6 +71,12 @@ class Game {
     this.canvas.addEventListener("mouseup", () => this.handleMouseUp());
     this.canvas.addEventListener("mouseleave", () => this.handleMouseUp());
     this.canvas.addEventListener("mousemove", (e) => this.handleHover(e));
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        this.hideBuildingInfo();
+        this.selectedBlueprint = null;
+      }
+    });
   }
 
   handleZoom(e) {
@@ -316,7 +323,6 @@ class Game {
     this.drawGrid();
     this.drawBuildings();
     this.drawHoverPreview();
-    this.drawHoverHighlight();
   }
 
   restoreCanvasState() {
@@ -357,7 +363,11 @@ class Game {
 
   drawBuilding(building) {
     const position = this.calculateBuildingPosition(building);
-    this.drawBuildingImage(building, position);
+    if (this.buildingAtPosition === building) {
+      this.drawBuildingImage(building, position, 0.8);
+    } else {
+      this.drawBuildingImage(building, position);
+    }
     if (this.selectedBuilding === building) {
       this.drawSelectedBuildingOverlay(building, position);
     }
@@ -370,9 +380,10 @@ class Game {
     };
   }
 
-  drawBuildingImage(building, position) {
+  drawBuildingImage(building, position, alpha = 1.0) {
     const img = imageManager.getImage(building.name);
     if (img) {
+      this.ctx.globalAlpha = alpha;
       this.ctx.drawImage(
         img,
         position.x + 2,
@@ -380,6 +391,7 @@ class Game {
         this.gridSize - 4,
         this.gridSize - 4
       );
+      this.ctx.globalAlpha = 1.0;
     }
   }
 
@@ -418,27 +430,6 @@ class Game {
     }
   }
 
-  drawHoverHighlight() {
-    if (!this.hoverPosition) return;
-
-    const position = {
-      x: this.hoverPosition.x * this.gridSize,
-      y: this.hoverPosition.y * this.gridSize,
-    };
-
-    // change png to '_picked' version
-    const img = imageManager.getImage(this.selectedBlueprint.Name + "_picked");
-    if (img) {
-      this.ctx.drawImage(
-        img,
-        position.x,
-        position.y,
-        this.gridSize,
-        this.gridSize
-      );
-    }
-  }
-
   handleHover(e) {
     if (this.isDragging) return;
 
@@ -452,10 +443,14 @@ class Game {
       gridPosition.y
     );
 
+    // this.hoverPosition = gridPosition;
+
     if (!buildingAtPosition) {
-      this.hoverPosition = null;
-    } else {
+      this.buildingAtPosition = null;
       this.hoverPosition = gridPosition;
+    } else {
+      this.buildingAtPosition = buildingAtPosition;
+      this.hoverPosition = null;
     }
   }
 

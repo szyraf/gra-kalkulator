@@ -53,52 +53,54 @@ class ImageManager {
   }
 
   setupBuildingMenu() {
-    const container = document.getElementById("building-menu-building-images");
-    if (!container) {
-      console.error("Building menu container not found");
-      return;
-    }
-    this.updateBuildingMenu();
-  }
-
-  updateBuildingMenu() {
-    const container = document.getElementById("building-menu-building-images");
-    if (!container) {
-      console.error("Building menu container not found");
-      return;
-    }
-
-    container.innerHTML = "";
-
-    const startIndex = this.currentIndex;
-    const endIndex = Math.min(
-      startIndex + this.imagesPerPage,
-      this.imageData.length
+    const buildingImagesContainer = document.getElementById(
+      "building-menu-building-images"
     );
-
-    for (let i = startIndex; i < endIndex; i++) {
-      const data = this.imageData[i];
-      const img = this.images.get(data.id);
-
-      if (!img) {
-        console.error(`Image not found for id: ${data.id}`);
-        continue;
-      }
-
-      const wrapper = document.createElement("div");
-      wrapper.className = "w-24 h-24 relative";
-
-      const imgElement = img.cloneNode();
-      imgElement.className =
-        "w-full h-full object-cover rounded cursor-pointer hover:scale-105 transition-transform";
-      if (data.id === this.selectedImageId) {
-        imgElement.classList.add("border-4", "border-yellow-400", "shadow-lg");
-      }
-      imgElement.onclick = () => this.handleImageClick(data.id);
-
-      wrapper.appendChild(imgElement);
-      container.appendChild(wrapper);
+    if (!buildingImagesContainer) {
+      console.error("Building images container not found");
+      return;
     }
+
+    const updateBuildingMenu = () => {
+      buildingImagesContainer.innerHTML = "";
+      const startIndex = Math.max(
+        0,
+        Math.min(this.currentIndex, this.imageData.length - this.imagesPerPage)
+      );
+
+      for (
+        let i = startIndex;
+        i < startIndex + this.imagesPerPage && i < this.imageData.length;
+        i++
+      ) {
+        const data = this.imageData[i];
+        const img = this.images.get(data.id);
+
+        if (!img) {
+          console.error(`Image not found for id: ${data.id}`);
+          continue;
+        }
+
+        const imgElement = img.cloneNode();
+        imgElement.className =
+          "w-full h-full object-cover rounded cursor-pointer hover:scale-105 transition-transform";
+        if (data.id === this.selectedImageId) {
+          imgElement.classList.add(
+            "border-4",
+            "border-yellow-400",
+            "shadow-lg"
+          );
+        }
+        imgElement.onclick = () => this.handleImageClick(data.id);
+
+        const wrapper = document.createElement("div");
+        wrapper.className = "w-24 h-24 relative";
+        wrapper.appendChild(imgElement);
+        buildingImagesContainer.appendChild(wrapper);
+      }
+    };
+
+    updateBuildingMenu();
   }
 
   setupNavigation() {
@@ -113,7 +115,7 @@ class ImageManager {
     leftArrow.onclick = () => {
       if (this.currentIndex > 0) {
         this.currentIndex = Math.max(0, this.currentIndex - this.imagesPerPage);
-        this.updateBuildingMenu();
+        this.setupBuildingMenu();
       }
     };
 
@@ -123,7 +125,7 @@ class ImageManager {
           this.imageData.length - this.imagesPerPage,
           this.currentIndex + this.imagesPerPage
         );
-        this.updateBuildingMenu();
+        this.setupBuildingMenu();
       }
     };
   }
@@ -134,7 +136,7 @@ class ImageManager {
     if (this.selectedImageId === buildingId) {
       this.selectedImageId = null;
       this.game.selectedBlueprint = null;
-      this.updateBuildingMenu();
+      this.setupBuildingMenu();
       return;
     }
 
@@ -144,7 +146,7 @@ class ImageManager {
     if (buildingData) {
       this.game.selectedBlueprint = buildingData;
       this.selectedImageId = buildingId;
-      this.updateBuildingMenu();
+      this.setupBuildingMenu();
     }
   }
 }

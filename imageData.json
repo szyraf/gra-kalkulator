@@ -9,6 +9,16 @@
       "src": "./assets/img/solar/solar.png",
       "id": "Solar",
       "alt": "Solar"
+    },
+    {
+      "src": "./assets/img/house_two/building.png",
+      "id": "Apartament",
+      "alt": "Apartament"
+    },
+    {
+      "src": "./assets/img/house_three/building.png",
+      "id": "Tower",
+      "alt": "Tower"
     }
   ]
 }
