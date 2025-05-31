@@ -5,36 +5,28 @@
       "Description": "Dom jednorodzinny",
       "Cost": 100,
       "Type": "consumer",
-      "EnergyPerHour": 100,
-      "ToBuild": false,
-      "ImagePath": "assets/img/house_one/house.png"
+      "EnergyPerHour": 100
     },
     {
       "Name": "Apartament",
       "Description": "Blok mieszkalny",
       "Cost": 200,
       "Type": "consumer",
-      "EnergyPerHour": 1000,
-      "ToBuild": false,
-      "ImagePath": "assets/img/house_two/building.png"
+      "EnergyPerHour": 1000
     },
     {
       "Name": "Tower",
       "Description": "Wieżowiec",
       "Cost": 300,
       "Type": "consumer",
-      "EnergyPerHour": 2000,
-      "ToBuild": false,
-      "ImagePath": "assets/img/house_three/building.png"
+      "EnergyPerHour": 2000
     },
     {
       "Name": "Solar",
       "Description": "Elektrownia Słoneczna",
       "Cost": 400,
       "Type": "producent",
-      "EnergyPerHour": 100,
-      "ToBuild": true,
-      "ImagePath": "assets/img/solar/solar.png"
+      "EnergyPerHour": 100
     }
   ]
 } 
