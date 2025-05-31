@@ -1,24 +1,20 @@
 {
   "buildings": [
     {
-      "src": "./assets/img/house_one/house.png",
       "id": "House",
-      "alt": "House"
+      "src": "./assets/img/house/house.png"
     },
     {
-      "src": "./assets/img/solar/solar.png",
       "id": "Solar",
-      "alt": "Solar"
+      "src": "./assets/img/solar/solar.png"
     },
     {
-      "src": "./assets/img/house_two/building.png",
       "id": "Apartament",
-      "alt": "Apartament"
+      "src": "./assets/img/apartment/apartment.png"
     },
     {
-      "src": "./assets/img/house_three/building.png",
       "id": "Tower",
-      "alt": "Tower"
+      "src": "./assets/img/tower/tower.png"
     }
   ]
 }

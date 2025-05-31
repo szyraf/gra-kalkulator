@@ -1,5 +1,6 @@
 import { Building, BuildingType } from "./Building.js";
 import { imageManager } from "./imageManager.js";
+import { Grid } from "./grid.js";
 
 class Game {
   constructor(buildingsData) {
@@ -14,6 +15,7 @@ class Game {
     this.canvas = document.getElementById("gameCanvas");
     this.ctx = this.canvas.getContext("2d");
     this.gridSize = 25;
+    this.grid = new Grid(this.gridSize);
     this.buildings = [];
     this.selectedBuilding = null;
     this.selectedBlueprint = null;
@@ -50,7 +52,7 @@ class Game {
       y: 0,
       zoom: 1,
       minZoom: 0.1,
-      maxZoom: 10,
+      maxZoom: 100,
     };
   }
 
@@ -82,14 +84,24 @@ class Game {
 
   handleZoom(e) {
     e.preventDefault();
-    const zoomIntensity = 0.1;
+    const zoomFactor = 1.1;
     const mousePosition = this.getMousePosition(e);
     const worldPositionBeforeZoom = this.screenToWorldCoordinates(
       mousePosition.x,
       mousePosition.y
     );
 
-    this.updateZoomLevel(e.deltaY, zoomIntensity);
+    if (e.deltaY < 0) {
+      this.camera.zoom = Math.min(
+        this.camera.zoom * zoomFactor,
+        this.camera.maxZoom
+      );
+    } else {
+      this.camera.zoom = Math.max(
+        this.camera.zoom / zoomFactor,
+        this.camera.minZoom
+      );
+    }
 
     const worldPositionAfterZoom = this.screenToWorldCoordinates(
       mousePosition.x,
@@ -110,20 +122,6 @@ class Game {
       x: (screenX - this.camera.x) / this.camera.zoom,
       y: (screenY - this.camera.y) / this.camera.zoom,
     };
-  }
-
-  updateZoomLevel(deltaY, zoomIntensity) {
-    if (deltaY < 0) {
-      this.camera.zoom = Math.min(
-        this.camera.zoom + zoomIntensity,
-        this.camera.maxZoom
-      );
-    } else {
-      this.camera.zoom = Math.max(
-        this.camera.zoom - zoomIntensity,
-        this.camera.minZoom
-      );
-    }
   }
 
   adjustCameraPosition(worldBefore, worldAfter) {
@@ -165,7 +163,8 @@ class Game {
     if (this.mouseMovementCount >= 10) return;
 
     const clickPosition = this.getClickPosition(e);
-    const gridPosition = this.worldToGridCoordinates(
+    clickPosition.x = clickPosition.x - this.gridSize / 2;
+    const gridPosition = this.grid.worldToGridCoordinates(
       clickPosition.x,
       clickPosition.y
     );
@@ -195,13 +194,6 @@ class Game {
     return this.screenToWorldCoordinates(screenX, screenY);
   }
 
-  worldToGridCoordinates(worldX, worldY) {
-    return {
-      x: Math.floor(worldX / this.gridSize),
-      y: Math.floor(worldY / this.gridSize),
-    };
-  }
-
   findBuildingAtPosition(gridX, gridY) {
     return this.buildings.find((b) => b.gridX === gridX && b.gridY === gridY);
   }
@@ -218,8 +210,6 @@ class Game {
     );
 
     infoPanel.style.display = "block";
-
-    console.log(screenPosition);
   }
 
   worldToScreenCoordinates(worldX, worldY) {
@@ -262,15 +252,15 @@ class Game {
       imageManager.updateCosts();
     }
     this.buildings.push(building);
-    this.updateEnergyStats();
+    //this.updateEnergyStats();
   }
 
-  updateEnergyStats() {
-    this.calculateEnergyProduction();
-    this.calculateEnergyConsumption();
-    this.calculateAvailableEnergy();
-    this.updateEnergyUI();
-  }
+  // updateEnergyStats() {
+  //     this.calculateEnergyProduction();
+  //     this.calculateEnergyConsumption();
+  //     this.calculateAvailableEnergy();
+  //     this.updateEnergyUI();
+  // }
 
   calculateEnergyProduction() {
     this.energy.production = this.buildings
@@ -290,6 +280,51 @@ class Game {
     this.energy.available = this.energy.production - this.energy.consumption;
   }
 
+  updateEnergy(weather) {
+    let produced = 0;
+    let consumed = 0;
+    for (let building of this.buildings) {
+      if (building.type == BuildingType.consumer) {
+        consumed += building.energyPerHour;
+      } else {
+        produced += building.getProducedEnergy(weather);
+      }
+    }
+
+    let outcome = produced - consumed;
+    if (outcome < 0) {
+      for (let building of this.buildings) {
+        if (building.type == BuildingType.bank) {
+          let energy = building.currentEnergy;
+          if (outcome + energy >= 0) {
+            building.currentEnergy += outcome;
+            outcome += energy;
+            break;
+          } else {
+            building.currentEnergy = 0;
+            outcome += energy;
+          }
+        }
+      }
+    } else if (outcome > 0) {
+      for (let building of this.buildings) {
+        if (building.type == BuildingType.bank) {
+          let space = building.energyPerHour - building.currentEnergy;
+          if (space > outcome) {
+            building.currentEnergy += outcome;
+            outcome = 0;
+            break;
+          } else if (space > 0 && space < outcome) {
+            building.currentEnergy = building.energyPerHour;
+            outcome -= space;
+          }
+        }
+      }
+    }
+
+    this.updateEnergyUI(produced, consumed, capacity);
+  }
+
   updateEnergyUI() {
     document.getElementById(
       "available-energy"
@@ -305,6 +340,7 @@ class Game {
   draw() {
     this.clearCanvas();
     this.applyCameraTransform();
+    this.drawBackground();
     this.drawGameElements();
     this.restoreCanvasState();
     this.updateHtml();
@@ -320,8 +356,18 @@ class Game {
     this.ctx.scale(this.camera.zoom, this.camera.zoom);
   }
 
+  drawBackground() {
+    const viewportWidth = this.canvas.width / this.camera.zoom;
+    const viewportHeight = this.canvas.height / this.camera.zoom;
+    const startX = -this.camera.x / this.camera.zoom;
+    const startY = -this.camera.y / this.camera.zoom;
+
+    this.ctx.fillStyle = "#00ff00";
+    this.ctx.fillRect(startX, startY, viewportWidth, viewportHeight);
+  }
+
   drawGameElements() {
-    this.drawGrid();
+    this.grid.drawGrid(this.ctx, 1000, 1000);
     this.drawBuildings();
     this.drawHoverPreview();
   }
@@ -335,34 +381,6 @@ class Game {
     document.getElementById(
       "money"
     ).textContent = `Pieniądze: ${this.money} PLN`;
-  }
-
-  drawGrid() {
-    const gridWidth = 1000;
-    const gridHeight = 1000;
-    this.setupGridStyle();
-    this.drawGridLines(gridWidth, gridHeight);
-  }
-
-  setupGridStyle() {
-    this.ctx.strokeStyle = "#ccc";
-    this.ctx.lineWidth = 0.5;
-  }
-
-  drawGridLines(gridWidth, gridHeight) {
-    for (let x = 0; x < gridWidth; x += this.gridSize) {
-      this.drawGridLine(x, 0, x, gridHeight);
-    }
-    for (let y = 0; y < gridHeight; y += this.gridSize) {
-      this.drawGridLine(0, y, gridWidth, y);
-    }
-  }
-
-  drawGridLine(startX, startY, endX, endY) {
-    this.ctx.beginPath();
-    this.ctx.moveTo(startX, startY);
-    this.ctx.lineTo(endX, endY);
-    this.ctx.stroke();
   }
 
   drawBuildings() {
@@ -381,15 +399,8 @@ class Game {
     }
   }
 
-  updateDay(){
-    this.day = parseInt(localStorage.getItem("dayOffset")) + 1
-  }
-
   calculateBuildingPosition(building) {
-    return {
-      x: building.gridX * this.gridSize,
-      y: building.gridY * this.gridSize,
-    };
+    return this.grid.gridToWorldCoordinates(building.gridX, building.gridY);
   }
 
   drawBuildingImage(building, position, alpha = 1.0) {
@@ -423,10 +434,10 @@ class Game {
   drawHoverPreview() {
     if (!this.hoverPosition || !this.selectedBlueprint) return;
 
-    const position = {
-      x: this.hoverPosition.x * this.gridSize,
-      y: this.hoverPosition.y * this.gridSize,
-    };
+    const position = this.grid.gridToWorldCoordinates(
+      this.hoverPosition.x,
+      this.hoverPosition.y
+    );
 
     const img = imageManager.getImage(this.selectedBlueprint.Name);
     if (img) {
@@ -457,7 +468,8 @@ class Game {
     if (this.isDragging) return;
 
     const clickPosition = this.getClickPosition(e);
-    const gridPosition = this.worldToGridCoordinates(
+    clickPosition.x = clickPosition.x - this.gridSize / 2;
+    const gridPosition = this.grid.worldToGridCoordinates(
       clickPosition.x,
       clickPosition.y
     );
@@ -471,7 +483,6 @@ class Game {
       this.hoverPosition = gridPosition;
     } else {
       this.buildingAtPosition = buildingAtPosition;
-      // this.hoverPosition = null;1
       this.hoverPosition = gridPosition;
     }
   }
