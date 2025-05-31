@@ -1,34 +1,34 @@
-import { Building } from "./Building.js";
+import { Building, BuildingType } from "./Building.js";
 const buildings = [
     {
         Name: "House",
         Description: "Dom jednorodzinny",
         Cost: 0,
-        Type: 1,
-        EnergyPerHour: -100,
+        Type: BuildingType.consumer,
+        EnergyPerHour: 100,
         Art: "#8bc34a",
     },
     {
         Name: "Apartament",
         Description: "Blok mieszkalny",
         Cost: 0,
-        Type: 1,
-        EnergyPerHour: -1000,
+        Type: BuildingType.consumer,
+        EnergyPerHour: 1000,
         Art: "#ff9800",
     },
     {
         Name: "Tower",
         Description: "Wieżowiec",
         Cost: 0,
-        Type: 1,
-        EnergyPerHour: -2000,
+        Type: BuildingType.consumer,
+        EnergyPerHour: 2000,
         Art: "#ffeb3b",
     },
     {
         Name: "Elektrownia Słoneczna",
         Description: "Elektrownia Słoneczna",
         Cost: 0,
-        Type: 2,
+        Type: BuildingType.producent,
         EnergyPerHour: 100,
         Art: "#9c27b0",
     },
@@ -168,7 +168,11 @@ class Game {
         this.selectedBuilding = building;
         const infoPanel = document.getElementById("buildingInfo");
         document.getElementById("building-name").textContent = building.name;
-        document.getElementById("building-energy").textContent = `Energia: ${building.energy} kWh`;
+        let energyInfoText = "";
+        if (building.type == BuildingType.bank) energyInfoText = "Zgromadzona energia: ";
+        else if (building.type == BuildingType.consumer) energyInfoText = "Zużywana energia: ";
+        else energyInfoText = "Produkowana energia: ";
+        document.getElementById("building-energy").textContent = energyInfoText + building.energyPerHour;
         document.getElementById("building-upgrades").textContent = `Ulepszenia: ${building.upgrades.join(", ") || "Brak"}`;
         infoPanel.style.display = "block";
     }
@@ -193,9 +197,9 @@ class Game {
     }
 
     updateEnergyStats() {
-        this.energy.production = this.buildings.filter((b) => b.energyPerHour > 0).reduce((sum, b) => sum + b.energyPerHour, 0);
+        this.energy.production = this.buildings.filter((b) => b.type == BuildingType.producent).reduce((sum, b) => sum + b.energyPerHour, 0);
 
-        this.energy.consumption = Math.abs(this.buildings.filter((b) => b.energyPerHour < 0).reduce((sum, b) => sum + b.energyPerHour, 0));
+        this.energy.consumption = Math.abs(this.buildings.filter((b) => b.type == BuildingType.consumer).reduce((sum, b) => sum - b.energyPerHour, 0));
 
         this.energy.available = this.energy.production - this.energy.consumption;
 
