@@ -99,7 +99,7 @@ class ImageManager {
       this.buildingElements.clear();
       const startIndex = Math.max(
         0,
-        Math.min(this.currentIndex, this.imageData.length - this.imagesPerPage)
+        Math.min(0, this.imageData.length - this.imagesPerPage)
       );
 
       for (
