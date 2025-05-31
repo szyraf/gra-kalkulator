@@ -3,7 +3,7 @@
     {
       "Name": "House",
       "Description": "Dom jednorodzinny",
-      "Cost": 0,
+      "Cost": 100,
       "Type": "consumer",
       "EnergyPerHour": 100,
       "ToBuild": false,
@@ -12,7 +12,7 @@
     {
       "Name": "Apartament",
       "Description": "Blok mieszkalny",
-      "Cost": 0,
+      "Cost": 200,
       "Type": "consumer",
       "EnergyPerHour": 1000,
       "ToBuild": false,
@@ -21,7 +21,7 @@
     {
       "Name": "Tower",
       "Description": "Wieżowiec",
-      "Cost": 0,
+      "Cost": 300,
       "Type": "consumer",
       "EnergyPerHour": 2000,
       "ToBuild": false,
@@ -30,7 +30,7 @@
     {
       "Name": "Solar",
       "Description": "Elektrownia Słoneczna",
-      "Cost": 0,
+      "Cost": 400,
       "Type": "producent",
       "EnergyPerHour": 100,
       "ToBuild": true,

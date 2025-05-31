@@ -8,10 +8,45 @@ class ImageManager {
     this.game = null;
     this.imageData = [];
     this.selectedImageId = null;
+    this.buildingElements = new Map();
   }
 
   setGame(game) {
     this.game = game;
+    this.updateCosts();
+  }
+
+  updateCosts() {
+    if (!this.game || !this.game.buildingsData) return;
+
+    this.buildingElements.forEach((element, id) => {
+      const costElement = element.querySelector(".cost-text");
+      if (costElement) {
+        const buildingData = this.game.buildingsData.find((b) => b.Name === id);
+        if (buildingData) {
+          const canAfford = this.game.money >= buildingData.Cost;
+          costElement.textContent = `${buildingData.Cost} zł`;
+          costElement.className = `cost-text text-center mt-1 text-sm font-medium ${
+            canAfford ? "text-green-600" : "text-red-600"
+          }`;
+        }
+      }
+    });
+  }
+
+  updateSelection(buildingId) {
+    this.buildingElements.forEach((element, id) => {
+      const imgElement = element.querySelector("img");
+      if (id === buildingId) {
+        imgElement.classList.add("border-4", "border-yellow-400", "shadow-lg");
+      } else {
+        imgElement.classList.remove(
+          "border-4",
+          "border-yellow-400",
+          "shadow-lg"
+        );
+      }
+    });
   }
 
   async initialize() {
@@ -63,6 +98,7 @@ class ImageManager {
 
     const updateBuildingMenu = () => {
       buildingImagesContainer.innerHTML = "";
+      this.buildingElements.clear();
       const startIndex = Math.max(
         0,
         Math.min(this.currentIndex, this.imageData.length - this.imagesPerPage)
@@ -96,7 +132,26 @@ class ImageManager {
         const wrapper = document.createElement("div");
         wrapper.className = "w-24 h-24 relative";
         wrapper.appendChild(imgElement);
+
+        const costElement = document.createElement("div");
+        costElement.className =
+          "cost-text text-center mt-1 text-sm font-medium";
+
+        if (this.game && this.game.buildingsData) {
+          const buildingData = this.game.buildingsData.find(
+            (b) => b.Name === data.id
+          );
+          if (buildingData) {
+            const canAfford = this.game.money >= buildingData.Cost;
+            costElement.textContent = `${buildingData.Cost} zł`;
+            costElement.className = `cost-text text-center mt-1 text-sm font-medium ${
+              canAfford ? "text-green-600" : "text-red-600"
+            }`;
+          }
+        }
+        wrapper.appendChild(costElement);
         buildingImagesContainer.appendChild(wrapper);
+        this.buildingElements.set(data.id, wrapper);
       }
     };
 
@@ -136,7 +191,7 @@ class ImageManager {
     if (this.selectedImageId === buildingId) {
       this.selectedImageId = null;
       this.game.selectedBlueprint = null;
-      this.setupBuildingMenu();
+      this.updateSelection(null);
       return;
     }
 
@@ -146,7 +201,7 @@ class ImageManager {
     if (buildingData) {
       this.game.selectedBlueprint = buildingData;
       this.selectedImageId = buildingId;
-      this.setupBuildingMenu();
+      this.updateSelection(buildingId);
     }
   }
 }
