@@ -1,0 +1,290 @@
+class Game {
+    constructor() {
+        this.canvas = document.getElementById('gameCanvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.gridSize = 25;
+        this.buildings = [];
+        this.selectedBuilding = null;
+        this.day = 1;
+        this.weather = {
+            type: 'sunny',
+            sunlight: 100,
+            wind: 5
+        };
+        this.energy = {
+            available: 0,
+            production: 0,
+            consumption: 0
+        };
+
+        // Camera/View settings
+        this.camera = {
+            x: 0,
+            y: 0,
+            zoom: 1,
+            minZoom: 0.1,
+            maxZoom: 10
+        };
+
+        this.setupCanvas();
+        this.setupEventListeners();
+        this.gameLoop();
+    }
+
+    setupCanvas() {
+        // Set canvas to window size
+        this.resizeCanvas();
+        window.addEventListener('resize', () => this.resizeCanvas());
+    }
+
+    resizeCanvas() {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+    }
+
+    setupEventListeners() {
+        this.canvas.addEventListener('click', (e) => this.handleClick(e));
+        this.canvas.addEventListener('wheel', (e) => this.handleZoom(e));
+        this.canvas.addEventListener('mousedown', (e) => this.handleMouseDown(e));
+        this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+        this.canvas.addEventListener('mouseup', () => this.handleMouseUp());
+        this.canvas.addEventListener('mouseleave', () => this.handleMouseUp());
+    }
+
+    handleZoom(e) {
+        e.preventDefault();
+        const zoomIntensity = 0.1;
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
+
+        // Calculate world position before zoom
+        const worldX = (mouseX - this.camera.x) / this.camera.zoom;
+        const worldY = (mouseY - this.camera.y) / this.camera.zoom;
+
+        // Update zoom level
+        if (e.deltaY < 0) {
+            this.camera.zoom = Math.min(this.camera.zoom + zoomIntensity, this.camera.maxZoom);
+        } else {
+            this.camera.zoom = Math.max(this.camera.zoom - zoomIntensity, this.camera.minZoom);
+        }
+
+        // Calculate new world position after zoom
+        const newWorldX = (mouseX - this.camera.x) / this.camera.zoom;
+        const newWorldY = (mouseY - this.camera.y) / this.camera.zoom;
+
+        // Adjust camera position to keep mouse position stable
+        this.camera.x += (newWorldX - worldX) * this.camera.zoom;
+        this.camera.y += (newWorldY - worldY) * this.camera.zoom;
+    }
+
+    handleMouseDown(e) {
+        if (e.button === 1 || e.button === 0) { // Middle or left mouse button
+            this.isDragging = true;
+            this.lastMouseX = e.clientX;
+            this.lastMouseY = e.clientY;
+        }
+    }
+
+    handleMouseMove(e) {
+        if (this.isDragging) {
+            const deltaX = e.clientX - this.lastMouseX;
+            const deltaY = e.clientY - this.lastMouseY;
+            
+            this.camera.x += deltaX;
+            this.camera.y += deltaY;
+            
+            this.lastMouseX = e.clientX;
+            this.lastMouseY = e.clientY;
+        }
+    }
+
+    handleMouseUp() {
+        this.isDragging = false;
+    }
+
+    handleClick(e) {
+        if (this.isDragging) return; // Ignore click if we were dragging
+
+        const rect = this.canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        // Convert screen coordinates to world coordinates
+        const worldX = (x - this.camera.x) / this.camera.zoom;
+        const worldY = (y - this.camera.y) / this.camera.zoom;
+        
+        // Convert to grid coordinates
+        const gridX = Math.floor(worldX / this.gridSize);
+        const gridY = Math.floor(worldY / this.gridSize);
+
+        // Check if clicked on existing building
+        const clickedBuilding = this.buildings.find(b => 
+            b.gridX === gridX && b.gridY === gridY
+        );
+
+        if (clickedBuilding) {
+            this.showBuildingInfo(clickedBuilding);
+        } else {
+            this.hideBuildingInfo();
+        }
+    }
+
+    showBuildingInfo(building) {
+        this.selectedBuilding = building;
+        const infoPanel = document.getElementById('buildingInfo');
+        document.getElementById('building-name').textContent = building.name;
+        document.getElementById('building-energy').textContent = 
+            `Energia: ${building.energy} kWh`;
+        document.getElementById('building-upgrades').textContent = 
+            `Ulepszenia: ${building.upgrades.join(', ') || 'Brak'}`;
+        infoPanel.style.display = 'block';
+    }
+
+    hideBuildingInfo() {
+        this.selectedBuilding = null;
+        document.getElementById('buildingInfo').style.display = 'none';
+    }
+
+    addBuilding(type, gridX, gridY) {
+        const building = {
+            type,
+            gridX,
+            gridY,
+            name: this.getBuildingName(type),
+            energy: this.getBuildingEnergy(type),
+            upgrades: []
+        };
+        this.buildings.push(building);
+        this.updateEnergyStats();
+    }
+
+    getBuildingName(type) {
+        const names = {
+            'house': 'Dom jednorodzinny',
+            'apartment': 'Blok mieszkalny',
+            'factory': 'Fabryka',
+            'solar': 'Elektrownia słoneczna',
+            'wind': 'Elektrownia wiatrowa',
+            'storage': 'Magazyn energii'
+        };
+        return names[type] || 'Nieznany budynek';
+    }
+
+    getBuildingEnergy(type) {
+        const energy = {
+            'house': -2,
+            'apartment': -5,
+            'factory': -10,
+            'solar': 15,
+            'wind': 10,
+            'storage': 0
+        };
+        return energy[type] || 0;
+    }
+
+    updateEnergyStats() {
+        this.energy.production = this.buildings
+            .filter(b => b.energy > 0)
+            .reduce((sum, b) => sum + b.energy, 0);
+        
+        this.energy.consumption = Math.abs(this.buildings
+            .filter(b => b.energy < 0)
+            .reduce((sum, b) => sum + b.energy, 0));
+        
+        this.energy.available = this.energy.production - this.energy.consumption;
+        
+        // Update UI
+        document.getElementById('available-energy').textContent = 
+            `Dostępna energia: ${this.energy.available} kWh`;
+        document.getElementById('total-production').textContent = 
+            `Produkcja: ${this.energy.production} kWh`;
+        document.getElementById('total-consumption').textContent = 
+            `Zużycie: ${this.energy.consumption} kWh`;
+    }
+
+    draw() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        // Save the current context state
+        this.ctx.save();
+        
+        // Apply camera transform
+        this.ctx.translate(this.camera.x, this.camera.y);
+        this.ctx.scale(this.camera.zoom, this.camera.zoom);
+        
+        // Draw grid
+        this.drawGrid();
+        
+        // Draw buildings
+        this.buildings.forEach(building => {
+            this.drawBuilding(building);
+        });
+        
+        // Restore the context state
+        this.ctx.restore();
+    }
+
+    drawGrid() {
+        const gridWidth = 1000;
+        const gridHeight = 1000;
+        
+        this.ctx.strokeStyle = '#ccc';
+        this.ctx.lineWidth = 0.5;
+
+        for (let x = 0; x < gridWidth; x += this.gridSize) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(x, 0);
+            this.ctx.lineTo(x, gridHeight);
+            this.ctx.stroke();
+        }
+
+        for (let y = 0; y < gridHeight; y += this.gridSize) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(0, y);
+            this.ctx.lineTo(gridWidth, y);
+            this.ctx.stroke();
+        }
+    }
+
+    drawBuilding(building) {
+        const x = building.gridX * this.gridSize;
+        const y = building.gridY * this.gridSize;
+        
+        this.ctx.fillStyle = this.getBuildingColor(building.type);
+        this.ctx.fillRect(x + 2, y + 2, this.gridSize - 4, this.gridSize - 4);
+        
+        if (this.selectedBuilding === building) {
+            this.ctx.strokeStyle = '#00f';
+            this.ctx.lineWidth = 2;
+            this.ctx.strokeRect(x + 1, y + 1, this.gridSize - 2, this.gridSize - 2);
+        }
+    }
+
+    getBuildingColor(type) {
+        const colors = {
+            'house': '#8bc34a',
+            'apartment': '#4caf50',
+            'factory': '#ff9800',
+            'solar': '#ffeb3b',
+            'wind': '#2196f3',
+            'storage': '#9c27b0'
+        };
+        return colors[type] || '#999';
+    }
+
+    gameLoop() {
+        this.draw();
+        requestAnimationFrame(() => this.gameLoop());
+    }
+}
+
+// Initialize game when the page loads
+window.addEventListener('load', () => {
+    const game = new Game();
+    
+    // Add some initial buildings for testing
+    game.addBuilding('house', 2, 2);
+    game.addBuilding('solar', 4, 2);
+    game.addBuilding('apartment', 2, 4);
+    game.addBuilding('wind', 4, 4);
+}); 
