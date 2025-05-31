@@ -1,12 +1,9 @@
 const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
-const bodyParser = require("body-parser");
 
 const router = express.Router();
 
 module.exports = router;
-
-app.use(bodyParser.json());
 
 //database connection
 const db = new sqlite3.Database("../scores.db", (err) => {
@@ -36,7 +33,7 @@ router.post("/score", (req, res) => {
 });
 
 // Endpoint: pobierz wszystkich użytkowników
-app.get("/score/all", (req, res) => {
+router.get("/score/all", (req, res) => {
     const query = `SELECT * FROM users`;
 
     db.all(query, [], (err, rows) => {
@@ -47,7 +44,7 @@ app.get("/score/all", (req, res) => {
     });
 });
 
-app.get("/score/:count", (req, res) => {
+router.get("/score/:count", (req, res) => {
     const query = `SELECT * FROM users LIMIT (?)`;
 
     db.all(query, [req.params.count], (err, rows) => {
