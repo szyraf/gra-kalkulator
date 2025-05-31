@@ -1,105 +1,81 @@
-#bottom-menu{
-    position: absolute;
+#landing-page{
     width: 100vw;
-    height: 130px;
-    left: 0;
-    top:calc(100vh - 130px);
-    background-color: white;
-    display: flex;
-}
-
-#building-menu{
-    width: 70vw;
-    background-color: aqua;
-    height: 100%;
-    display: flex;
-    align-items: center;
-}
-
-.arrow{
-    width: 10vw;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#building-menu-building-images{
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    width: 50vw;
-}
-
-#building-menu-building-images img{
-    height: 110px;
-}
-
-.info-panel {
-    height: 8vw;
-    width: 30vw;
-    font-size: 1.2vw;
-    padding: 1vw;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    min-height: fit-content;
-}
-
-.weather-info, .energy-info {
-    margin-bottom: 10px;
-}
-
-.weather-info div, .energy-info div {
-    margin: 5px 0;
-    font-size: 14px;
-}
-
-.building-info {
-    height: 8vw;
-    width: 30vw;
-    font-size: 1.2vw;
-    padding: 1vw;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    min-height: fit-content;
-}
-
-.building-info h3 {
-    margin-bottom: 10px;
-    color: #333;
-}
-
-.building-info div {
-    margin: 5px 0;
-    font-size: 14px;
-}
-
-.building-menu {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 1rem;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-}
-
-.building-menu-content {
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 1rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    background-color: #1b433277;
+}
+.container {
+  background-color: #d8f3dc; /* mięta/zieleń zgaszona */
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(34, 139, 34, 0.2);
+  text-align: center;
+  width: 320px;
+  border: 2px solid #95d5b2;
 }
 
-.building-image {
-    width: 64px;
-    height: 64px;
-    cursor: pointer;
-    transition: transform 0.2s;
+h1 {
+  font-size: 40px;
+  color: #2d6a4f; /* ciemniejsza zieleń – tytuł */
+  margin-bottom: 10px;
 }
 
-.building-image:hover {
-    transform: scale(1.1);
-} 
+p {
+  color: #40916c;
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #b7e4c7;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  background-color: #ffffff;
+  color: #1b4332;
+  font-size: 16px;
+}
+
+input[type="text"]::placeholder {
+  color: #74c69d;
+}
+
+.btn-start {
+  width: 100%;
+  padding: 12px;
+  background-color: #52b788; /* intensywna zieleń – ekologiczna energia */
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: background-color 0.3s;
+}
+
+.btn-start:hover {
+  background-color: #40916c;
+}
+
+.btn-tutorial {
+  background: none;
+  border: none;
+  color: #6c757d;
+  font-size: 14px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.3s, color 0.3s;
+}
+
+.btn-tutorial:hover {
+  opacity: 1;
+  color: #2d6a4f;
+}
