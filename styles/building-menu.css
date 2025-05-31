@@ -1,19 +1,40 @@
 #bottom-menu{
     position: absolute;
     width: 100vw;
-    height: 320px;
+    height: 130px;
     left: 0;
     top:calc(100vh - 130px);
     background-color: white;
+    display: flex;
 }
 
 #building-menu{
     width: 70vw;
     background-color: aqua;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+
+.arrow{
+    width: 10vw;
+}
+
+#building-menu-building-images{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 50vw;
+}
+
+#building-menu-building-images img{
+    width: 20%;
 }
 
 .info-panel {
     height: 8vw;
+    width: 30vw;
     font-size: 1.2vw;
     padding: 1vw;
     display: flex;
@@ -21,3 +42,34 @@
     align-items: center;
     min-height: fit-content;
 }
+
+
+.weather-info, .energy-info {
+    margin-bottom: 10px;
+}
+
+.weather-info div, .energy-info div {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.building-info {
+    height: 8vw;
+    width: 30vw;
+    font-size: 1.2vw;
+    padding: 1vw;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    min-height: fit-content;
+}
+
+.building-info h3 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.building-info div {
+    margin: 5px 0;
+    font-size: 14px;
+} 

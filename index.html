@@ -8,33 +8,32 @@
         <link rel="stylesheet" href="./styles/building-menu.css" />
         <link rel="icon" href="./assets/Gemini_Generated_Image_hll5mhhll5mhhll5.jpg" type="image/x-icon">
     </head>
+
     <body>
         <div class="game-container">
             <div id="bottom-menu">
-            <div id="building-menu">
-                
-            </div>
-                <div class="info-panel">
-                    <div class="weather-info">
-                        <div id="day-info">Dzień: 1</div>
-                        <div id="weather-info">Pogoda: Słonecznie</div>
-                        <div id="sunlight-info">Nasłonecznienie: 100%</div>
-                        <div id="wind-info">Wiatr: 5 km/h</div>
+                <div id="building-menu">
+                    <div class="arrow" id="building-menu-left-arrow">
+                        ⬅️
                     </div>
-                    <div class="energy-info">
-                        <div id="available-energy">Dostępna energia: 0 kWh</div>
-                        <div id="total-production">Produkcja: 0 kWh</div>
-                        <div id="total-consumption">Zużycie: 0 kWh</div>
+                    <div id="building-menu-building-images">
+                        <img src="./assets/Gemini_Generated_Image_hll5mhhll5mhhll5.jpg" alt="domek">
+                        <img src="./assets/Gemini_Generated_Image_hll5mhhll5mhhll5.jpg" alt="domek">
+                        <img src="./assets/Gemini_Generated_Image_hll5mhhll5mhhll5.jpg" alt="domek">
+                        <img src="./assets/Gemini_Generated_Image_hll5mhhll5mhhll5.jpg" alt="domek">
+                    </div>
+                    <div class="arrow" id="building-menu-right-arrow">
+                        ➡️
                     </div>
                 </div>
-            </div>
-            <canvas id="gameCanvas"></canvas>
-            <div class="building-info" id="buildingInfo" style="display: none">
-                <h3>Informacje o budynku</h3>
-                <div id="building-name"></div>
-                <div id="building-energy"></div>
-                <div id="building-upgrades"></div>
-            </div>
+                <div class="building-info" id="buildingInfo" style="display: none">
+                    <h3>Informacje o budynku</h3>
+                    <div id="building-name"></div>
+                    <div id="building-energy"></div>
+                    <div id="building-upgrades"></div>
+                </div>
+                </div>
+                <canvas id="gameCanvas"></canvas>
         </div>
         <div id="start"></div>
         <script type="module" src="game.js"></script>
