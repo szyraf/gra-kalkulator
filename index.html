@@ -6,25 +6,21 @@
         <title>Solvilla: Buduj Przyszłość</title>
         <link rel="stylesheet" href="./styles/main.css" />
         <link rel="stylesheet" href="./styles/building-menu.css" />
-        <link rel="icon" href="./assets/Gemini_Generated_Image_hll5mhhll5mhhll5.jpg" type="image/x-icon">
+        <link rel="icon" href="./assets/Gemini_Generated_Image_hll5mhhll5mhhll5.jpg" type="image/x-icon" />
     </head>
 
     <body>
         <div class="game-container">
             <div id="bottom-menu">
                 <div id="building-menu">
-                    <div class="arrow" id="building-menu-left-arrow">
-                        ⬅️
-                    </div>
+                    <div class="arrow" id="building-menu-left-arrow">⬅️</div>
                     <div id="building-menu-building-images">
-                        <img src="./assets/Gemini_Generated_Image_hll5mhhll5mhhll5.jpg" alt="domek">
-                        <img src="./assets/Gemini_Generated_Image_hll5mhhll5mhhll5.jpg" alt="domek">
-                        <img src="./assets/Gemini_Generated_Image_hll5mhhll5mhhll5.jpg" alt="domek">
-                        <img src="./assets/Gemini_Generated_Image_hll5mhhll5mhhll5.jpg" alt="domek">
+                        <img src="./assets/Gemini_Generated_Image_hll5mhhll5mhhll5.jpg" alt="domek" />
+                        <img src="./assets/Gemini_Generated_Image_hll5mhhll5mhhll5.jpg" alt="domek" />
+                        <img src="./assets/Gemini_Generated_Image_hll5mhhll5mhhll5.jpg" alt="domek" />
+                        <img src="./assets/Gemini_Generated_Image_hll5mhhll5mhhll5.jpg" alt="domek" />
                     </div>
-                    <div class="arrow" id="building-menu-right-arrow">
-                        ➡️
-                    </div>
+                    <div class="arrow" id="building-menu-right-arrow">➡️</div>
                 </div>
                 <div class="building-info" id="buildingInfo" style="display: none">
                     <h3>Informacje o budynku</h3>
@@ -32,9 +28,21 @@
                     <div id="building-energy"></div>
                     <div id="building-upgrades"></div>
                 </div>
-                </div>
-                <canvas id="gameCanvas"></canvas>
+            </div>
+            <canvas id="gameCanvas"></canvas>
         </div>
+        <img src="./assets/img/house_one/building.png" id="House" style="width: 0; height: 0" />
+        <img src="./assets/img/house_one/building_picked.png" id="HouseSelected" style="width: 0; height: 0" />
+
+        <img src="./assets/img/house_one/building_solar.png" id="Solar" style="width: 0; height: 0" />
+        <img src="./assets/img/house_one/building_solar_picked.png" id="SolarSelected" style="width: 0; height: 0" />
+
+        <img src="./assets/img/house_one/building.png" id="Apartament" style="width: 0; height: 0" />
+        <img src="./assets/img/house_one/building_picked.png" id="ApartamentSelected" style="width: 0; height: 0" />
+
+        <img src="./assets/img/house_one/building.png" id="Tower" style="width: 0; height: 0" />
+        <img src="./assets/img/house_one/building_picked.png" id="TowerSelected" style="width: 0; height: 0" />
+
         <div id="start"></div>
         <script type="module" src="game.js"></script>
         <script src="panel.js" defer></script>

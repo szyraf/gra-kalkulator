@@ -15,7 +15,6 @@ export class Building {
         this.cost = jsonObject["Cost"];
         this.energyPerHour = jsonObject["EnergyPerHour"];
         this.type = jsonObject["Type"];
-        this.art = jsonObject["Art"];
         this.gridX = gridX;
         this.gridY = gridY;
     }

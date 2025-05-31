@@ -6,7 +6,7 @@ const buildings = [
         Cost: 0,
         Type: BuildingType.consumer,
         EnergyPerHour: 100,
-        Art: "#8bc34a",
+        ToBuild: false,
     },
     {
         Name: "Apartament",
@@ -14,7 +14,7 @@ const buildings = [
         Cost: 0,
         Type: BuildingType.consumer,
         EnergyPerHour: 1000,
-        Art: "#ff9800",
+        ToBuild: false,
     },
     {
         Name: "Tower",
@@ -22,18 +22,17 @@ const buildings = [
         Cost: 0,
         Type: BuildingType.consumer,
         EnergyPerHour: 2000,
-        Art: "#ffeb3b",
+        ToBuild: false,
     },
     {
-        Name: "Elektrownia Słoneczna",
+        Name: "Solar",
         Description: "Elektrownia Słoneczna",
         Cost: 0,
         Type: BuildingType.producent,
         EnergyPerHour: 100,
-        Art: "#9c27b0",
+        ToBuild: true,
     },
 ];
-
 class Game {
     constructor() {
         this.canvas = document.getElementById("gameCanvas");
@@ -41,6 +40,7 @@ class Game {
         this.gridSize = 25;
         this.buildings = [];
         this.selectedBuilding = null;
+        this.selectedBlueprint = null;
         this.day = 1;
         this.weather = {
             type: "sunny",
@@ -61,6 +61,8 @@ class Game {
             minZoom: 0.1,
             maxZoom: 10,
         };
+
+        this.dailyBudget = 1000;
 
         this.setupCanvas();
         this.setupEventListeners();
@@ -161,6 +163,9 @@ class Game {
             this.showBuildingInfo(clickedBuilding);
         } else {
             this.hideBuildingInfo();
+            if (this.selectedBlueprint != null) {
+                this.addBuilding(this.selectedBlueprint, gridX, gridY);
+            }
         }
     }
 
@@ -257,13 +262,13 @@ class Game {
         const x = building.gridX * this.gridSize;
         const y = building.gridY * this.gridSize;
 
-        this.ctx.fillStyle = building.art;
-        this.ctx.fillRect(x + 2, y + 2, this.gridSize - 4, this.gridSize - 4);
+        const img = document.getElementById(building.name);
+        this.ctx.drawImage(img, x + 2, y + 2, this.gridSize - 4, this.gridSize - 4);
+        //this.ctx.fillRect(x + 2, y + 2, this.gridSize - 4, this.gridSize - 4);
 
         if (this.selectedBuilding === building) {
-            this.ctx.strokeStyle = "#00f";
-            this.ctx.lineWidth = 2;
-            this.ctx.strokeRect(x + 1, y + 1, this.gridSize - 2, this.gridSize - 2);
+            const selectedImg = document.getElementById(building.name + "Selected");
+            this.ctx.drawImage(img, x + 2, y + 2, this.gridSize - 4, this.gridSize - 4);
         }
     }
 
