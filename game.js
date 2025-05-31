@@ -84,14 +84,24 @@ class Game {
 
   handleZoom(e) {
     e.preventDefault();
-    const zoomIntensity = 0.1;
+    const zoomFactor = 1.1;
     const mousePosition = this.getMousePosition(e);
     const worldPositionBeforeZoom = this.screenToWorldCoordinates(
       mousePosition.x,
       mousePosition.y
     );
 
-    this.updateZoomLevel(e.deltaY, zoomIntensity);
+    if (e.deltaY < 0) {
+      this.camera.zoom = Math.min(
+        this.camera.zoom * zoomFactor,
+        this.camera.maxZoom
+      );
+    } else {
+      this.camera.zoom = Math.max(
+        this.camera.zoom / zoomFactor,
+        this.camera.minZoom
+      );
+    }
 
     const worldPositionAfterZoom = this.screenToWorldCoordinates(
       mousePosition.x,
@@ -112,20 +122,6 @@ class Game {
       x: (screenX - this.camera.x) / this.camera.zoom,
       y: (screenY - this.camera.y) / this.camera.zoom,
     };
-  }
-
-  updateZoomLevel(deltaY, zoomIntensity) {
-    if (deltaY < 0) {
-      this.camera.zoom = Math.min(
-        this.camera.zoom + zoomIntensity,
-        this.camera.maxZoom
-      );
-    } else {
-      this.camera.zoom = Math.max(
-        this.camera.zoom - zoomIntensity,
-        this.camera.minZoom
-      );
-    }
   }
 
   adjustCameraPosition(worldBefore, worldAfter) {
@@ -316,13 +312,13 @@ class Game {
   }
 
   drawBackground() {
+    const viewportWidth = this.canvas.width / this.camera.zoom;
+    const viewportHeight = this.canvas.height / this.camera.zoom;
+    const startX = -this.camera.x / this.camera.zoom;
+    const startY = -this.camera.y / this.camera.zoom;
+
     this.ctx.fillStyle = "#00ff00";
-    this.ctx.fillRect(
-      -this.camera.x,
-      -this.camera.y,
-      this.canvas.width,
-      this.canvas.height
-    );
+    this.ctx.fillRect(startX, startY, viewportWidth, viewportHeight);
   }
 
   drawGameElements() {
