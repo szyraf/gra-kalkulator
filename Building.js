@@ -3,6 +3,7 @@ export class Building {
     description;
     cost;
     energyPerHour;
+    currentEnergy;
     type;
     art;
     gridX;
@@ -17,6 +18,8 @@ export class Building {
         this.type = jsonObject["Type"];
         this.gridX = gridX;
         this.gridY = gridY;
+
+        this.currentEnergy = 0;
     }
 }
 
