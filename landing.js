@@ -1,7 +1,6 @@
 if (localStorage.getItem("username")) {
     document.getElementById("landing-page").style.display = "none";
 }
-startingDate();
 
 function startGame() {
     const el = document.getElementById("landing-page");

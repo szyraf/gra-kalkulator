@@ -1,63 +1,58 @@
 <!DOCTYPE html>
 <html lang="pl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Solvilla: Buduj Przyszłość</title>
-    <link rel="stylesheet" href="./styles/main.css" />
-    <link rel="stylesheet" href="./styles/building-menu.css" />
-    <link
-      rel="icon"
-      href="./assets/Gemini_Generated_Image_hll5mhhll5mhhll5.jpg"
-      type="image/x-icon"
-    />
-  </head>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Solvilla: Buduj Przyszłość</title>
+        <link rel="stylesheet" href="./styles/main.css" />
+        <link rel="stylesheet" href="./styles/building-menu.css" />
+        <link rel="icon" href="./assets/Gemini_Generated_Image_hll5mhhll5mhhll5.jpg" type="image/x-icon" />
+    </head>
 
-  <body class="bg-gray-100 min-h-screen">
-    <div id="landing-page">
-      <div class="container">
-        <h1>Solvilla</h1>
-        <p>Wprowadź nazwę użytkownika, aby rozpocząć</p>
-        <input type="text" placeholder="Nazwa użytkownika" id="username">
-        <button class="btn-start" onclick="startGame()">Start</button>
-        <button class="btn-tutorial" onclick="showTutorial()">Samouczek</button>
-      </div>
-    </div>
-    <div class="relative w-full h-screen overflow-hidden">
-      <div class="absolute top-0 left-0 bg-green-400/90 shadow-md p-2 z-10 w-48">
-        <div class="space-y-1 text-sm">
-          <div id="day-info" class="text-gray-800 font-medium">Dzień: 1</div>
-          <div id="weather-info" class="text-gray-800 font-medium">Pogoda: Słonecznie</div>
-          <div id="sunlight-info" class="text-gray-800 font-medium">Nasłonecznienie: 100%</div>
-          <div id="wind-info" class="text-gray-800 font-medium">Wiatr: 5 km/h</div>
-          <div id="available-energy" class="text-gray-800 font-medium">Dostępna energia: 0 kWh</div>
-          <div id="total-production" class="text-gray-800 font-medium">Produkcja: 0 kWh</div>
-          <div id="total-consumption" class="text-gray-800 font-medium">Zużycie: 0 kWh</div>
-          <div id="money" class="text-gray-800 font-medium">Pieniądze: 0 PLN</div>
+    <body class="bg-gray-100 min-h-screen">
+        <div id="landing-page">
+            <div class="container">
+                <h1>Solvilla</h1>
+                <p>Wprowadź nazwę użytkownika, aby rozpocząć</p>
+                <input type="text" placeholder="Nazwa użytkownika" id="username" />
+                <button class="btn-start" onclick="startGame()">Start</button>
+                <button class="btn-tutorial" onclick="showTutorial()">Samouczek</button>
+            </div>
         </div>
-      </div>
+        <div class="relative w-full h-screen overflow-hidden">
+            <div class="absolute top-0 left-0 bg-green-400/90 shadow-md p-2 z-10 w-48">
+                <div class="space-y-1 text-sm">
+                    <div id="day-info" class="text-gray-800 font-medium">Dzień: 1</div>
+                    <div id="weather-info" class="text-gray-800 font-medium">Pogoda: Słonecznie</div>
+                    <div id="sunlight-info" class="text-gray-800 font-medium">Nasłonecznienie: 100%</div>
+                    <div id="wind-info" class="text-gray-800 font-medium">Wiatr: 5 km/h</div>
+                    <div id="available-energy" class="text-gray-800 font-medium">Dostępna energia: 0 kWh</div>
+                    <div id="total-production" class="text-gray-800 font-medium">Produkcja: 0 kWh</div>
+                    <div id="total-consumption" class="text-gray-800 font-medium">Zużycie: 0 kWh</div>
+                    <div id="money" class="text-gray-800 font-medium">Pieniądze: 0 PLN</div>
+                </div>
+            </div>
 
-      <div class="absolute bottom-0 left-0 right-0 bg-green-400/90 shadow-md p-4 z-10">
-        <div class="flex items-center mb-4">
-          <div class="flex space-x-4 py-2" id="building-menu-building-images">
-          </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-green-400/90 shadow-md p-4 z-10">
+                <div class="flex items-center mb-4">
+                    <div class="flex space-x-4 py-2" id="building-menu-building-images"></div>
+                </div>
+
+                <div class="fixed bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 z-20" id="buildingInfo" style="display: none">
+                    <h3 class="text-xl font-bold mb-4">Informacje o budynku</h3>
+                    <div id="building-name" class="text-gray-800"></div>
+                    <div id="building-energy" class="text-gray-800"></div>
+                    <div id="building-upgrades" class="text-gray-800"></div>
+                </div>
+            </div>
+
+            <canvas id="gameCanvas" class="absolute inset-0 w-full h-full"></canvas>
         </div>
 
-        <div class="fixed bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 z-20" id="buildingInfo" style="display: none">
-          <h3 class="text-xl font-bold mb-4">Informacje o budynku</h3>
-          <div id="building-name" class="text-gray-800"></div>
-          <div id="building-energy" class="text-gray-800"></div>
-          <div id="building-upgrades" class="text-gray-800"></div>
-        </div>
-      </div>
-
-      <canvas id="gameCanvas" class="absolute inset-0 w-full h-full"></canvas>
-    </div>
-
-    <div id="start"></div>
-    <script type="module" src="imageManager.js"></script>
-    <script type="module" src="game.js"></script>
-    <script src="date-weather.js" defer></script>
-    <script src="landing.js" defer></script>
-  </body>
+        <div id="start"></div>
+        <script type="module" src="imageManager.js"></script>
+        <script type="module" src="game.js"></script>
+        <script type="module" src="date-weather.js" defer></script>
+        <script src="landing.js" defer></script>
+    </body>
 </html>
