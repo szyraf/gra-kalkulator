@@ -22,7 +22,9 @@ class Game {
     this.energy = this.createInitialEnergyState();
     this.camera = this.createInitialCameraState();
     this.dailyBudget = 1000;
-    this.wasMouseMoving = false;
+    this.mouseMovementCount = 0;
+    this.hoverPosition = null;
+    this.buildingAtPosition = null;
   }
 
   createInitialWeather() {
@@ -68,6 +70,13 @@ class Game {
     this.canvas.addEventListener("mousemove", (e) => this.handleMouseMove(e));
     this.canvas.addEventListener("mouseup", () => this.handleMouseUp());
     this.canvas.addEventListener("mouseleave", () => this.handleMouseUp());
+    this.canvas.addEventListener("mousemove", (e) => this.handleHover(e));
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        this.hideBuildingInfo();
+        this.selectedBlueprint = null;
+      }
+    });
   }
 
   handleZoom(e) {
@@ -123,7 +132,7 @@ class Game {
 
   handleMouseDown(e) {
     if (e.button === 1 || e.button === 0) {
-      this.wasMouseMoving = false;
+      this.mouseMovementCount = 0;
       this.isDragging = true;
       this.lastMouseX = e.clientX;
       this.lastMouseY = e.clientY;
@@ -132,7 +141,7 @@ class Game {
 
   handleMouseMove(e) {
     if (this.isDragging) {
-      this.wasMouseMoving = true;
+      this.mouseMovementCount += 1;
       const deltaX = e.clientX - this.lastMouseX;
       const deltaY = e.clientY - this.lastMouseY;
       this.updateCameraPosition(deltaX, deltaY);
@@ -152,7 +161,7 @@ class Game {
 
   handleClick(e) {
     if (this.isDragging) return;
-    if (this.wasMouseMoving) return;
+    if (this.mouseMovementCount >= 10) return;
 
     const clickPosition = this.getClickPosition(e);
     const gridPosition = this.worldToGridCoordinates(
@@ -313,6 +322,7 @@ class Game {
   drawGameElements() {
     this.drawGrid();
     this.drawBuildings();
+    this.drawHoverPreview();
   }
 
   restoreCanvasState() {
@@ -353,7 +363,11 @@ class Game {
 
   drawBuilding(building) {
     const position = this.calculateBuildingPosition(building);
-    this.drawBuildingImage(building, position);
+    if (this.buildingAtPosition === building) {
+      this.drawBuildingImage(building, position, 0.8);
+    } else {
+      this.drawBuildingImage(building, position);
+    }
     if (this.selectedBuilding === building) {
       this.drawSelectedBuildingOverlay(building, position);
     }
@@ -366,9 +380,10 @@ class Game {
     };
   }
 
-  drawBuildingImage(building, position) {
+  drawBuildingImage(building, position, alpha = 1.0) {
     const img = imageManager.getImage(building.name);
     if (img) {
+      this.ctx.globalAlpha = alpha;
       this.ctx.drawImage(
         img,
         position.x + 2,
@@ -376,6 +391,7 @@ class Game {
         this.gridSize - 4,
         this.gridSize - 4
       );
+      this.ctx.globalAlpha = 1.0;
     }
   }
 
@@ -389,6 +405,52 @@ class Game {
         this.gridSize - 4,
         this.gridSize - 4
       );
+    }
+  }
+
+  drawHoverPreview() {
+    if (!this.hoverPosition || !this.selectedBlueprint) return;
+
+    const position = {
+      x: this.hoverPosition.x * this.gridSize,
+      y: this.hoverPosition.y * this.gridSize,
+    };
+
+    const img = imageManager.getImage(this.selectedBlueprint.Name);
+    if (img) {
+      this.ctx.globalAlpha = 0.5;
+      this.ctx.drawImage(
+        img,
+        position.x + 2,
+        position.y + 2,
+        this.gridSize - 4,
+        this.gridSize - 4
+      );
+      this.ctx.globalAlpha = 1.0;
+    }
+  }
+
+  handleHover(e) {
+    if (this.isDragging) return;
+
+    const clickPosition = this.getClickPosition(e);
+    const gridPosition = this.worldToGridCoordinates(
+      clickPosition.x,
+      clickPosition.y
+    );
+    const buildingAtPosition = this.findBuildingAtPosition(
+      gridPosition.x,
+      gridPosition.y
+    );
+
+    // this.hoverPosition = gridPosition;
+
+    if (!buildingAtPosition) {
+      this.buildingAtPosition = null;
+      this.hoverPosition = gridPosition;
+    } else {
+      this.buildingAtPosition = buildingAtPosition;
+      this.hoverPosition = null;
     }
   }
 

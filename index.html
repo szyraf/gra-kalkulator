@@ -14,28 +14,22 @@
 
   <body class="bg-gray-100 min-h-screen">
     <div class="relative w-full h-screen overflow-hidden">
-      <div class="absolute top-0 left-0 right-0 bg-white/90 shadow-md p-4 z-10">
-        <div class="grid grid-cols-2 gap-4">
-          <div class="space-y-2">
-            <div id="day-info" class="text-gray-800 font-medium">Dzień: 1</div>
-            <div id="weather-info" class="text-gray-800 font-medium">Pogoda: Słonecznie</div>
-            <div id="sunlight-info" class="text-gray-800 font-medium">Nasłonecznienie: 100%</div>
-            <div id="wind-info" class="text-gray-800 font-medium">Wiatr: 5 km/h</div>
-          </div>
-          <div class="space-y-2">
-            <div id="available-energy" class="text-gray-800 font-medium">Dostępna energia: 0 kWh</div>
-            <div id="total-production" class="text-gray-800 font-medium">Produkcja: 0 kWh</div>
-            <div id="total-consumption" class="text-gray-800 font-medium">Zużycie: 0 kWh</div>
-          </div>
+      <div class="absolute top-0 left-0 bg-white/90 shadow-md p-2 z-10 w-48">
+        <div class="space-y-1 text-sm">
+          <div id="day-info" class="text-gray-800 font-medium">Dzień: 1</div>
+          <div id="weather-info" class="text-gray-800 font-medium">Pogoda: Słonecznie</div>
+          <div id="sunlight-info" class="text-gray-800 font-medium">Nasłonecznienie: 100%</div>
+          <div id="wind-info" class="text-gray-800 font-medium">Wiatr: 5 km/h</div>
+          <div id="available-energy" class="text-gray-800 font-medium">Dostępna energia: 0 kWh</div>
+          <div id="total-production" class="text-gray-800 font-medium">Produkcja: 0 kWh</div>
+          <div id="total-consumption" class="text-gray-800 font-medium">Zużycie: 0 kWh</div>
         </div>
       </div>
 
       <div class="absolute bottom-0 left-0 right-0 bg-white/90 shadow-md p-4 z-10">
         <div class="flex items-center mb-4">
-          <div class="arrow cursor-pointer hover:bg-gray-200 p-2 rounded flex items-center" id="building-menu-left-arrow">⬅️</div>
-          <div class="flex space-x-4 py-2 ml-4" id="building-menu-building-images">
+          <div class="flex space-x-4 py-2" id="building-menu-building-images">
           </div>
-          <div class="arrow cursor-pointer hover:bg-gray-200 p-2 rounded flex items-center ml-4" id="building-menu-right-arrow">➡️</div>
         </div>
 
         <div class="fixed bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 z-20" id="buildingInfo" style="display: none">
