@@ -6,7 +6,7 @@ const router = express.Router();
 module.exports = router;
 
 //database connection
-const db = new sqlite3.Database("../scores.db", (err) => {
+const db = new sqlite3.Database("scores.db", (err) => {
     if (err) return console.error(err.message);
     console.log("Połączono z bazą SQLite.");
 });
@@ -22,7 +22,7 @@ db.run(`
 
 router.post("/", (req, res) => {
     const { username, score } = req.body;
-    const query = `INSERT INTO users (username, number) VALUES (?, ?)`;
+    const query = `INSERT INTO users (username, score) VALUES (?, ?)`;
 
     db.run(query, [username, score], function (err) {
         if (err) {
@@ -34,7 +34,7 @@ router.post("/", (req, res) => {
 
 // Endpoint: pobierz wszystkich użytkowników
 router.get("/all", (req, res) => {
-    const query = `SELECT * FROM users`;
+    const query = `SELECT * FROM users ORDER BY score DESC`;
 
     db.all(query, [], (err, rows) => {
         if (err) {
@@ -45,7 +45,7 @@ router.get("/all", (req, res) => {
 });
 
 router.get("/:count", (req, res) => {
-    const query = `SELECT * FROM users LIMIT (?)`;
+    const query = `SELECT * FROM users LIMIT (?) ORDER BY score DESC`;
 
     db.all(query, [req.params.count], (err, rows) => {
         if (err) {
