@@ -1,32 +1,32 @@
 {
   "buildings": [
     {
-      "Name": "House",
-      "Description": "Dom jednorodzinny",
-      "Cost": 100,
-      "Type": "consumer",
-      "EnergyPerHour": 100
+      "name": "House",
+      "description": "Dom jednorodzinny",
+      "cost": 100,
+      "type": "consumer",
+      "energyPerHour": 100
     },
     {
-      "Name": "Apartament",
-      "Description": "Blok mieszkalny",
-      "Cost": 200,
-      "Type": "consumer",
-      "EnergyPerHour": 1000
+      "name": "Apartament",
+      "description": "Blok mieszkalny",
+      "cost": 200,
+      "type": "consumer",
+      "energyPerHour": 1000
     },
     {
-      "Name": "Tower",
-      "Description": "Wieżowiec",
-      "Cost": 300,
-      "Type": "consumer",
-      "EnergyPerHour": 2000
+      "name": "Tower",
+      "description": "Wieżowiec",
+      "cost": 300,
+      "type": "consumer",
+      "energyPerHour": 2000
     },
     {
-      "Name": "Solar",
-      "Description": "Elektrownia Słoneczna",
-      "Cost": 400,
-      "Type": "producent",
-      "EnergyPerHour": 100
+      "name": "Solar",
+      "description": "Elektrownia Słoneczna",
+      "cost": 400,
+      "type": "producent",
+      "energyPerHour": 100
     }
   ]
 } 

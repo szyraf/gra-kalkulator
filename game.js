@@ -245,7 +245,7 @@ class Game {
   }
 
   addBuilding(jsonObject, gridX, gridY, free = false) {
-    if (!free && this.money < jsonObject.Cost) return;
+    if (!free && this.money < jsonObject.cost) return;
     const building = new Building(jsonObject, gridX, gridY);
     if (!free) {
       this.money -= building.cost;
@@ -439,12 +439,12 @@ class Game {
       this.hoverPosition.y
     );
 
-    const img = imageManager.getImage(this.selectedBlueprint.Name);
+    const img = imageManager.getImage(this.selectedBlueprint.name);
     if (img) {
       this.ctx.globalAlpha = 0.5;
 
       if (
-        this.money < this.selectedBlueprint.Cost ||
+        this.money < this.selectedBlueprint.cost ||
         this.findBuildingAtPosition(this.hoverPosition.x, this.hoverPosition.y)
       ) {
         this.ctx.filter = "sepia(1) saturate(5) hue-rotate(-50deg)";

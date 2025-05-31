@@ -21,10 +21,10 @@ class ImageManager {
     this.buildingElements.forEach((element, id) => {
       const costElement = element.querySelector(".cost-text");
       if (costElement) {
-        const buildingData = this.game.buildingsData.find((b) => b.Name === id);
+        const buildingData = this.game.buildingsData.find((b) => b.name === id);
         if (buildingData) {
-          const canAfford = this.game.money >= buildingData.Cost;
-          costElement.textContent = `${buildingData.Cost} zł`;
+          const canAfford = this.game.money >= buildingData.cost;
+          costElement.textContent = `${buildingData.cost} zł`;
           costElement.className = `cost-text text-center mt-1 text-sm font-medium ${
             canAfford ? "text-green-600" : "text-red-600"
           }`;
@@ -137,11 +137,11 @@ class ImageManager {
 
         if (this.game && this.game.buildingsData) {
           const buildingData = this.game.buildingsData.find(
-            (b) => b.Name === data.id
+            (b) => b.name === data.id
           );
           if (buildingData) {
-            const canAfford = this.game.money >= buildingData.Cost;
-            costElement.textContent = `${buildingData.Cost} zł`;
+            const canAfford = this.game.money >= buildingData.cost;
+            costElement.textContent = `${buildingData.cost} zł`;
             costElement.className = `cost-text text-center mt-1 text-sm font-medium ${
               canAfford ? "text-green-600" : "text-red-600"
             }`;
@@ -167,7 +167,7 @@ class ImageManager {
     }
 
     const buildingData = this.game.buildingsData.find(
-      (b) => b.Name === buildingId
+      (b) => b.name === buildingId
     );
     if (buildingData) {
       this.game.selectedBlueprint = buildingData;
