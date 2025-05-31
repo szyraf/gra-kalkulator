@@ -20,7 +20,7 @@ db.run(`
   )
 `);
 
-router.post("/score", (req, res) => {
+router.post("/", (req, res) => {
     const { username, score } = req.body;
     const query = `INSERT INTO users (username, number) VALUES (?, ?)`;
 
@@ -33,7 +33,7 @@ router.post("/score", (req, res) => {
 });
 
 // Endpoint: pobierz wszystkich użytkowników
-router.get("/score/all", (req, res) => {
+router.get("/all", (req, res) => {
     const query = `SELECT * FROM users`;
 
     db.all(query, [], (err, rows) => {
@@ -44,7 +44,7 @@ router.get("/score/all", (req, res) => {
     });
 });
 
-router.get("/score/:count", (req, res) => {
+router.get("/:count", (req, res) => {
     const query = `SELECT * FROM users LIMIT (?)`;
 
     db.all(query, [req.params.count], (err, rows) => {
