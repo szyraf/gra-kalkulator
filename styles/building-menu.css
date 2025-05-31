@@ -1,9 +1,23 @@
+#bottom-menu{
+    position: absolute;
+    width: 100vw;
+    height: 320px;
+    left: 0;
+    top:calc(100vh - 130px);
+    background-color: white;
+}
+
+#building-menu{
+    width: 70vw;
+    background-color: aqua;
+}
+
 .info-panel {
-    position: fixed;
-    left: 50vw;
-    top: calc(100vh - 14vw);
-    width: 50vw;
-    height: 14vw;
+    height: 8vw;
     font-size: 1.2vw;
     padding: 1vw;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    min-height: fit-content;
 }
