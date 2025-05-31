@@ -1,12 +1,14 @@
-[
-  {
-    "src": "./assets/img/house_one/house.png",
-    "id": "House",
-    "alt": "House"
-  },
-  {
-    "src": "./assets/img/solar/solar.png",
-    "id": "Solar",
-    "alt": "Solar"
-  }
-]
+{
+  "buildings": [
+    {
+      "src": "./assets/img/house_one/house.png",
+      "id": "House",
+      "alt": "House"
+    },
+    {
+      "src": "./assets/img/solar/solar.png",
+      "id": "Solar",
+      "alt": "Solar"
+    }
+  ]
+}

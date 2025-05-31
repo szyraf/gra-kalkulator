@@ -1,5 +1,3 @@
-import imageData from "./imageData.json";
-
 class ImageManager {
   constructor() {
     this.images = new Map();
@@ -8,6 +6,7 @@ class ImageManager {
     this.imagesPerPage = 4;
     this.isInitialized = false;
     this.game = null;
+    this.imageData = [];
   }
 
   setGame(game) {
@@ -16,6 +15,9 @@ class ImageManager {
 
   async initialize() {
     try {
+      const response = await fetch("./imageData.json");
+      const data = await response.json();
+      this.imageData = data.buildings;
       await this.loadImages();
       this.setupBuildingMenu();
       this.setupNavigation();
@@ -28,36 +30,25 @@ class ImageManager {
   }
 
   async loadImages() {
-    console.log("Starting to load images...");
-    const loadPromises = imageData.map((data) => {
-      return new Promise((resolve, reject) => {
+    const loadPromises = this.imageData.map(async (data) => {
+      try {
         const img = new Image();
-
-        img.onload = () => {
-          console.log(`Successfully loaded image: ${data.id}`);
-          this.images.set(data.id, img);
-          resolve();
-        };
-
-        img.onerror = (error) => {
-          console.error(`Failed to load image: ${data.src}`, error);
-          reject(new Error(`Failed to load image: ${data.src}`));
-        };
-
         img.src = data.src;
-        img.id = data.id;
-        img.alt = data.alt;
-        img.className = "hidden";
-      });
+        await new Promise((resolve, reject) => {
+          img.onload = resolve;
+          img.onerror = reject;
+        });
+        this.images.set(data.id, img);
+      } catch (error) {
+        console.error(`Failed to load image ${data.src}:`, error);
+      }
     });
 
-    try {
-      await Promise.all(loadPromises);
-      console.log("All images loaded successfully");
-    } catch (error) {
-      console.error("Error loading images:", error);
-      throw error;
-    }
+    await Promise.all(loadPromises);
+  }
+
+  getImage(id) {
+    return this.images.get(id);
   }
 
   setupBuildingMenu() {
@@ -81,11 +72,11 @@ class ImageManager {
     const startIndex = this.currentIndex;
     const endIndex = Math.min(
       startIndex + this.imagesPerPage,
-      imageData.length
+      this.imageData.length
     );
 
     for (let i = startIndex; i < endIndex; i++) {
-      const data = imageData[i];
+      const data = this.imageData[i];
       const img = this.images.get(data.id);
 
       if (!img) {
@@ -123,9 +114,9 @@ class ImageManager {
     };
 
     rightArrow.onclick = () => {
-      if (this.currentIndex + this.imagesPerPage < imageData.length) {
+      if (this.currentIndex + this.imagesPerPage < this.imageData.length) {
         this.currentIndex = Math.min(
-          imageData.length - this.imagesPerPage,
+          this.imageData.length - this.imagesPerPage,
           this.currentIndex + this.imagesPerPage
         );
         this.updateBuildingMenu();
@@ -143,17 +134,9 @@ class ImageManager {
       this.game.selectedBlueprint = buildingData;
     }
   }
-
-  getImage(id) {
-    if (!this.isInitialized) {
-      console.warn("ImageManager not initialized yet");
-      return null;
-    }
-    return this.images.get(id);
-  }
 }
 
-const imageManager = new ImageManager();
+export const imageManager = new ImageManager();
 
 // Initialize the image manager when the DOM is loaded
 document.addEventListener("DOMContentLoaded", () => {
@@ -161,5 +144,3 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("Failed to initialize image manager:", error);
   });
 });
-
-export { imageManager };
