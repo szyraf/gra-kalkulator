@@ -25,6 +25,7 @@ class Game {
     this.mouseMovementCount = 0;
     this.hoverPosition = null;
     this.buildingAtPosition = null;
+    this.money = 600;
   }
 
   createInitialWeather() {
@@ -173,10 +174,6 @@ class Game {
       gridPosition.y
     );
 
-    console.log("clickPosition", clickPosition);
-    console.log("gridPosition", gridPosition);
-    console.log("clickedBuilding", clickedBuilding);
-
     if (clickedBuilding) {
       this.showBuildingInfo(clickedBuilding);
     } else {
@@ -220,8 +217,6 @@ class Game {
       buildingPosition.y
     );
 
-    // infoPanel.style.left = `${screenPosition.x + this.gridSize}px`;
-    // infoPanel.style.top = `${screenPosition.y}px`;
     infoPanel.style.display = "block";
 
     console.log(screenPosition);
@@ -259,8 +254,13 @@ class Game {
     document.getElementById("buildingInfo").style.display = "none";
   }
 
-  addBuilding(jsonObject, gridX, gridY) {
+  addBuilding(jsonObject, gridX, gridY, free = false) {
+    if (!free && this.money < jsonObject.Cost) return;
     const building = new Building(jsonObject, gridX, gridY);
+    if (!free) {
+      this.money -= building.cost;
+      imageManager.updateCosts();
+    }
     this.buildings.push(building);
     this.updateEnergyStats();
   }
@@ -307,6 +307,7 @@ class Game {
     this.applyCameraTransform();
     this.drawGameElements();
     this.restoreCanvasState();
+    this.updateHtml();
   }
 
   clearCanvas() {
@@ -327,6 +328,13 @@ class Game {
 
   restoreCanvasState() {
     this.ctx.restore();
+  }
+
+  updateHtml() {
+    document.getElementById("day-info").textContent = `Dzień: ${this.day}`;
+    document.getElementById(
+      "money"
+    ).textContent = `Pieniądze: ${this.money} PLN`;
   }
 
   drawGrid() {
@@ -419,6 +427,14 @@ class Game {
     const img = imageManager.getImage(this.selectedBlueprint.Name);
     if (img) {
       this.ctx.globalAlpha = 0.5;
+
+      if (
+        this.money < this.selectedBlueprint.Cost ||
+        this.findBuildingAtPosition(this.hoverPosition.x, this.hoverPosition.y)
+      ) {
+        this.ctx.filter = "sepia(1) saturate(5) hue-rotate(-50deg)";
+      }
+
       this.ctx.drawImage(
         img,
         position.x + 2,
@@ -426,7 +442,10 @@ class Game {
         this.gridSize - 4,
         this.gridSize - 4
       );
+
+      this.ctx.globalCompositeOperation = "source-over";
       this.ctx.globalAlpha = 1.0;
+      this.ctx.restore();
     }
   }
 
@@ -443,14 +462,13 @@ class Game {
       gridPosition.y
     );
 
-    // this.hoverPosition = gridPosition;
-
     if (!buildingAtPosition) {
       this.buildingAtPosition = null;
       this.hoverPosition = gridPosition;
     } else {
       this.buildingAtPosition = buildingAtPosition;
-      this.hoverPosition = null;
+      // this.hoverPosition = null;1
+      this.hoverPosition = gridPosition;
     }
   }
 
@@ -474,10 +492,10 @@ window.addEventListener("load", async () => {
     imageManager.setGame(game);
 
     // Add initial buildings
-    game.addBuilding(buildingsData.buildings[0], 2, 2);
-    game.addBuilding(buildingsData.buildings[1], 4, 2);
-    game.addBuilding(buildingsData.buildings[3], 2, 4);
-    game.addBuilding(buildingsData.buildings[2], 4, 4);
+    game.addBuilding(buildingsData.buildings[0], 2, 2, true);
+    game.addBuilding(buildingsData.buildings[1], 4, 2, true);
+    game.addBuilding(buildingsData.buildings[3], 2, 4, true);
+    game.addBuilding(buildingsData.buildings[2], 4, 4, true);
   } catch (error) {
     console.error("Failed to start game:", error);
   }
