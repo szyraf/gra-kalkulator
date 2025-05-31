@@ -1,37 +1,101 @@
 <!DOCTYPE html>
 <html lang="pl">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Solvilla: Buduj Przyszłość</title>
-        <link rel="stylesheet" href="./styles/main.css" />
-        <link rel="stylesheet" href="./styles/building-menu.css" />
-        <link rel="icon" href="./assets/Gemini_Generated_Image_hll5mhhll5mhhll5.jpg" type="image/x-icon" />
-    </head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Solvilla: Buduj Przyszłość</title>
+    <link rel="stylesheet" href="./styles/main.css" />
+    <link rel="stylesheet" href="./styles/building-menu.css" />
+    <link
+      rel="icon"
+      href="./assets/Gemini_Generated_Image_hll5mhhll5mhhll5.jpg"
+      type="image/x-icon"
+    />
+    <style>
+      .fade-text {
+        opacity: 1;
+        transition: opacity 0.3s ease;
+      }
+      .fade-text.hidden {
+        opacity: 0;
+        visibility: hidden;
+      }
 
-    <body class="bg-gray-100 min-h-screen">
-        <div id="landing-page">
-            <div class="container">
-                <h1>Solvilla</h1>
-                <p>Wprowadź nazwę użytkownika, aby rozpocząć</p>
-                <input type="text" placeholder="Nazwa użytkownika" id="username" />
-                <button class="btn-start" onclick="startGame()">Start</button>
-                <button class="btn-tutorial" onclick="showTutorial()">Samouczek</button>
-            </div>
+      @keyframes slideIn {
+        from { transform: translateX(-100%); opacity: 0; }
+        to   { transform: translateX(0); opacity: 1; }
+      }
+      @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to   { transform: translateX(-100%); opacity: 0; }
+      }
+
+      .animate-slide-in {
+        animation: slideIn 0.4s ease-out forwards;
+      }
+      .animate-slide-out {
+        animation: slideOut 0.4s ease-in forwards;
+      }
+</style>
+  </head>
+
+  <body class="bg-gray-100 min-h-screen">
+   
+    <div id="landing-page">
+      <div class="container">
+        <h1>Solvilla</h1>
+        <p>Wprowadź nazwę użytkownika, aby rozpocząć</p>
+        <input type="text" placeholder="Nazwa użytkownika" id="username">
+        <button class="btn-start" onclick="startGame()">Start</button>
+        <button class="btn-tutorial" onclick="showTutorial()">Samouczek</button>
+      </div>
+    </div>
+    <div class="relative w-full h-screen overflow-hidden">
+      <div class="absolute top-0 left-0 bg-green-400/90 shadow-md p-2 z-10 w-48">
+        <div class="space-y-1 text-sm">
+          <div id="day-info" class="text-gray-800 font-medium">Dzień: 1</div>
+          <div id="weather-info" class="text-gray-800 font-medium">Pogoda: Słonecznie</div>
+          <div id="sunlight-info" class="text-gray-800 font-medium">Nasłonecznienie: 100%</div>
+          <div id="wind-info" class="text-gray-800 font-medium">Wiatr: 5 km/h</div>
+          <div id="available-energy" class="text-gray-800 font-medium">Dostępna energia: 0 kWh</div>
+          <div id="total-production" class="text-gray-800 font-medium">Produkcja: 0 kWh</div>
+          <div id="total-consumption" class="text-gray-800 font-medium">Zużycie: 0 kWh</div>
+          <div id="money" class="text-gray-800 font-medium">Pieniądze: 0 PLN</div>
         </div>
-        <div class="relative w-full h-screen overflow-hidden">
-            <div class="absolute top-0 left-0 bg-green-400/90 shadow-md p-2 z-10 w-48">
-                <div class="space-y-1 text-sm">
-                    <div id="day-info" class="text-gray-800 font-medium">Dzień: 1</div>
-                    <div id="weather-info" class="text-gray-800 font-medium">Pogoda: Słonecznie</div>
-                    <div id="sunlight-info" class="text-gray-800 font-medium">Nasłonecznienie: 100%</div>
-                    <div id="wind-info" class="text-gray-800 font-medium">Wiatr: 5 km/h</div>
-                    <div id="available-energy" class="text-gray-800 font-medium">Dostępna energia: 0 kWh</div>
-                    <div id="total-production" class="text-gray-800 font-medium">Produkcja: 0 kWh</div>
-                    <div id="total-consumption" class="text-gray-800 font-medium">Zużycie: 0 kWh</div>
-                    <div id="money" class="text-gray-800 font-medium">Pieniądze: 0 PLN</div>
-                </div>
-            </div>
+      </div>
+    <div id="tadek-dialog"
+     class="absolute left-4 z-20 flex flex-col sm:flex-row items-center sm:items-end space-y-2 sm:space-y-0 sm:space-x-4 pointer-events-none"
+     style="top: 120px; bottom: 160px; display:none;">
+
+      <img id="tadek-face" src="/assets/img/tadek/happy.png" alt="Tadeusz Kościuszko"
+          class="max-h-[calc(100vh-310px)] h-auto w-auto object-contain select-none" />
+
+      <div class="bg-white/90 rounded-lg border border-gray-300 shadow-md p-4 text-sm text-gray-800 min-w-[280px] max-w-sm pointer-events-auto transform -translate-y-2.5 relative">
+        <span class="font-semibold text-base">Tadek:</span>
+        <span id="tadek-text" class="fade-text mt-2"></span>
+       <button id="tadek-next-btn"
+        class="bottom-2 right-2 text-gray-600 hover:text-black text-9xl sm:text-5xl px-4 pb-1 leading-none">
+        <span style="font-size:30px; margin:10px;">&rsaquo;</span>
+      </button>
+      </div>
+    </div>
+
+
+
+      <img id="tadek-face" src="/assets/img/tadek/happy.png" alt="Tadeusz Kościuszko"
+          class="max-h-[calc(100vh-310px)] h-auto w-auto object-contain select-none" />
+
+      <div class="bg-white/90 rounded-lg border border-gray-300 shadow-md p-4 text-sm text-gray-800 min-w-[280px] max-w-sm pointer-events-auto transform -translate-y-2.5 relative">
+        <span class="font-semibold text-base">Tadek:</span>
+        <span id="tadek-text" class="fade-text mt-2"></span>
+       <button id="tadek-next-btn"
+        class="bottom-2 right-2 text-gray-600 hover:text-black text-9xl sm:text-5xl px-4 pb-1 leading-none">
+        <span style="font-size:30px; margin:10px;">&rsaquo;</span>
+      </button>
+      </div>
+    </div>
+
+
 
       <div class="absolute top-0 right-0 bg-green-400/90 shadow-md p-2 z-10 w-48" id="weather-panel">
         <div class="space-y-1 text-sm">
@@ -45,10 +109,22 @@
           </div>
         </div>
 
-        <div id="start"></div>
-        <script type="module" src="imageManager.js"></script>
-        <script type="module" src="game.js"></script>
-        <script type="module" src="date-weather.js" defer></script>
-        <script src="landing.js" defer></script>
-    </body>
+        <div class="fixed bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 z-20" id="buildingInfo" style="display: none">
+          <h3 class="text-xl font-bold mb-4">Informacje o budynku</h3>
+          <div id="building-name" class="text-gray-800"></div>
+          <div id="building-energy" class="text-gray-800"></div>
+          <div id="building-upgrades" class="text-gray-800"></div>
+        </div>
+      </div>
+
+      <canvas id="gameCanvas" class="absolute inset-0 w-full h-full"></canvas>
+    </div>
+
+    <div id="start"></div>
+    <script type="module" src="imageManager.js"></script>
+    <script type="module" src="game.js"></script>
+    <script src="date-weather.js" defer></script>
+    <script src="landing.js" defer></script>
+    <script src="tutorial.js" ></script>
+  </body>
 </html>
