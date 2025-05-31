@@ -7,6 +7,7 @@ class ImageManager {
     this.isInitialized = false;
     this.game = null;
     this.imageData = [];
+    this.selectedImageId = null;
   }
 
   setGame(game) {
@@ -90,6 +91,9 @@ class ImageManager {
       const imgElement = img.cloneNode();
       imgElement.className =
         "w-full h-full object-cover rounded cursor-pointer hover:scale-105 transition-transform";
+      if (data.id === this.selectedImageId) {
+        imgElement.classList.add("border-4", "border-yellow-400", "shadow-lg");
+      }
       imgElement.onclick = () => this.handleImageClick(data.id);
 
       wrapper.appendChild(imgElement);
@@ -127,11 +131,20 @@ class ImageManager {
   handleImageClick(buildingId) {
     if (!this.game) return;
 
+    if (this.selectedImageId === buildingId) {
+      this.selectedImageId = null;
+      this.game.selectedBlueprint = null;
+      this.updateBuildingMenu();
+      return;
+    }
+
     const buildingData = this.game.buildingsData.find(
       (b) => b.Name === buildingId
     );
     if (buildingData) {
       this.game.selectedBlueprint = buildingData;
+      this.selectedImageId = buildingId;
+      this.updateBuildingMenu();
     }
   }
 }

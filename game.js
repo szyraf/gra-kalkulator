@@ -22,7 +22,8 @@ class Game {
     this.energy = this.createInitialEnergyState();
     this.camera = this.createInitialCameraState();
     this.dailyBudget = 1000;
-    this.wasMouseMoving = false;
+    this.mouseMovementCount = 0;
+    this.hoverPosition = null;
   }
 
   createInitialWeather() {
@@ -68,6 +69,7 @@ class Game {
     this.canvas.addEventListener("mousemove", (e) => this.handleMouseMove(e));
     this.canvas.addEventListener("mouseup", () => this.handleMouseUp());
     this.canvas.addEventListener("mouseleave", () => this.handleMouseUp());
+    this.canvas.addEventListener("mousemove", (e) => this.handleHover(e));
   }
 
   handleZoom(e) {
@@ -123,7 +125,7 @@ class Game {
 
   handleMouseDown(e) {
     if (e.button === 1 || e.button === 0) {
-      this.wasMouseMoving = false;
+      this.mouseMovementCount = 0;
       this.isDragging = true;
       this.lastMouseX = e.clientX;
       this.lastMouseY = e.clientY;
@@ -132,7 +134,7 @@ class Game {
 
   handleMouseMove(e) {
     if (this.isDragging) {
-      this.wasMouseMoving = true;
+      this.mouseMovementCount += 1;
       const deltaX = e.clientX - this.lastMouseX;
       const deltaY = e.clientY - this.lastMouseY;
       this.updateCameraPosition(deltaX, deltaY);
@@ -152,7 +154,7 @@ class Game {
 
   handleClick(e) {
     if (this.isDragging) return;
-    if (this.wasMouseMoving) return;
+    if (this.mouseMovementCount >= 10) return;
 
     const clickPosition = this.getClickPosition(e);
     const gridPosition = this.worldToGridCoordinates(
@@ -313,6 +315,8 @@ class Game {
   drawGameElements() {
     this.drawGrid();
     this.drawBuildings();
+    this.drawHoverPreview();
+    this.drawHoverHighlight();
   }
 
   restoreCanvasState() {
@@ -389,6 +393,69 @@ class Game {
         this.gridSize - 4,
         this.gridSize - 4
       );
+    }
+  }
+
+  drawHoverPreview() {
+    if (!this.hoverPosition || !this.selectedBlueprint) return;
+
+    const position = {
+      x: this.hoverPosition.x * this.gridSize,
+      y: this.hoverPosition.y * this.gridSize,
+    };
+
+    const img = imageManager.getImage(this.selectedBlueprint.Name);
+    if (img) {
+      this.ctx.globalAlpha = 0.5;
+      this.ctx.drawImage(
+        img,
+        position.x + 2,
+        position.y + 2,
+        this.gridSize - 4,
+        this.gridSize - 4
+      );
+      this.ctx.globalAlpha = 1.0;
+    }
+  }
+
+  drawHoverHighlight() {
+    if (!this.hoverPosition) return;
+
+    const position = {
+      x: this.hoverPosition.x * this.gridSize,
+      y: this.hoverPosition.y * this.gridSize,
+    };
+
+    // change png to '_picked' version
+    const img = imageManager.getImage(this.selectedBlueprint.Name + "_picked");
+    if (img) {
+      this.ctx.drawImage(
+        img,
+        position.x,
+        position.y,
+        this.gridSize,
+        this.gridSize
+      );
+    }
+  }
+
+  handleHover(e) {
+    if (this.isDragging) return;
+
+    const clickPosition = this.getClickPosition(e);
+    const gridPosition = this.worldToGridCoordinates(
+      clickPosition.x,
+      clickPosition.y
+    );
+    const buildingAtPosition = this.findBuildingAtPosition(
+      gridPosition.x,
+      gridPosition.y
+    );
+
+    if (!buildingAtPosition) {
+      this.hoverPosition = null;
+    } else {
+      this.hoverPosition = gridPosition;
     }
   }
 
