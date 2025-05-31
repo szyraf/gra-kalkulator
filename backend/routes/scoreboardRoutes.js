@@ -33,7 +33,7 @@ router.post("/", (req, res) => {
 });
 
 // Endpoint: pobierz wszystkich użytkowników
-router.get("/all", (req, res) => {
+router.get("/", (req, res) => {
     const query = `SELECT * FROM users ORDER BY score DESC`;
 
     db.all(query, [], (err, rows) => {
@@ -45,7 +45,7 @@ router.get("/all", (req, res) => {
 });
 
 router.get("/:count", (req, res) => {
-    const query = `SELECT * FROM users LIMIT (?) ORDER BY score DESC`;
+    const query = `SELECT * FROM users ORDER BY score DESC LIMIT (?)`;
 
     db.all(query, [req.params.count], (err, rows) => {
         if (err) {
