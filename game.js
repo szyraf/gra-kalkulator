@@ -1,5 +1,6 @@
 import { Building, BuildingType } from "./Building.js";
 import { imageManager } from "./imageManager.js";
+import { Grid } from "./grid.js";
 
 class Game {
   constructor(buildingsData) {
@@ -14,6 +15,7 @@ class Game {
     this.canvas = document.getElementById("gameCanvas");
     this.ctx = this.canvas.getContext("2d");
     this.gridSize = 25;
+    this.grid = new Grid(this.gridSize);
     this.buildings = [];
     this.selectedBuilding = null;
     this.selectedBlueprint = null;
@@ -50,7 +52,7 @@ class Game {
       y: 0,
       zoom: 1,
       minZoom: 0.1,
-      maxZoom: 10,
+      maxZoom: 100,
     };
   }
 
@@ -165,7 +167,8 @@ class Game {
     if (this.mouseMovementCount >= 10) return;
 
     const clickPosition = this.getClickPosition(e);
-    const gridPosition = this.worldToGridCoordinates(
+    clickPosition.x = clickPosition.x - this.gridSize / 2;
+    const gridPosition = this.grid.worldToGridCoordinates(
       clickPosition.x,
       clickPosition.y
     );
@@ -195,13 +198,6 @@ class Game {
     return this.screenToWorldCoordinates(screenX, screenY);
   }
 
-  worldToGridCoordinates(worldX, worldY) {
-    return {
-      x: Math.floor(worldX / this.gridSize),
-      y: Math.floor(worldY / this.gridSize),
-    };
-  }
-
   findBuildingAtPosition(gridX, gridY) {
     return this.buildings.find((b) => b.gridX === gridX && b.gridY === gridY);
   }
@@ -218,8 +214,6 @@ class Game {
     );
 
     infoPanel.style.display = "block";
-
-    console.log(screenPosition);
   }
 
   worldToScreenCoordinates(worldX, worldY) {
@@ -305,6 +299,7 @@ class Game {
   draw() {
     this.clearCanvas();
     this.applyCameraTransform();
+    this.drawBackground();
     this.drawGameElements();
     this.restoreCanvasState();
     this.updateHtml();
@@ -320,8 +315,18 @@ class Game {
     this.ctx.scale(this.camera.zoom, this.camera.zoom);
   }
 
+  drawBackground() {
+    this.ctx.fillStyle = "#00ff00";
+    this.ctx.fillRect(
+      -this.camera.x,
+      -this.camera.y,
+      this.canvas.width,
+      this.canvas.height
+    );
+  }
+
   drawGameElements() {
-    this.drawGrid();
+    this.grid.drawGrid(this.ctx, 1000, 1000);
     this.drawBuildings();
     this.drawHoverPreview();
   }
@@ -335,34 +340,6 @@ class Game {
     document.getElementById(
       "money"
     ).textContent = `Pieniądze: ${this.money} PLN`;
-  }
-
-  drawGrid() {
-    const gridWidth = 1000;
-    const gridHeight = 1000;
-    this.setupGridStyle();
-    this.drawGridLines(gridWidth, gridHeight);
-  }
-
-  setupGridStyle() {
-    this.ctx.strokeStyle = "#ccc";
-    this.ctx.lineWidth = 0.5;
-  }
-
-  drawGridLines(gridWidth, gridHeight) {
-    for (let x = 0; x < gridWidth; x += this.gridSize) {
-      this.drawGridLine(x, 0, x, gridHeight);
-    }
-    for (let y = 0; y < gridHeight; y += this.gridSize) {
-      this.drawGridLine(0, y, gridWidth, y);
-    }
-  }
-
-  drawGridLine(startX, startY, endX, endY) {
-    this.ctx.beginPath();
-    this.ctx.moveTo(startX, startY);
-    this.ctx.lineTo(endX, endY);
-    this.ctx.stroke();
   }
 
   drawBuildings() {
@@ -382,10 +359,7 @@ class Game {
   }
 
   calculateBuildingPosition(building) {
-    return {
-      x: building.gridX * this.gridSize,
-      y: building.gridY * this.gridSize,
-    };
+    return this.grid.gridToWorldCoordinates(building.gridX, building.gridY);
   }
 
   drawBuildingImage(building, position, alpha = 1.0) {
@@ -419,10 +393,10 @@ class Game {
   drawHoverPreview() {
     if (!this.hoverPosition || !this.selectedBlueprint) return;
 
-    const position = {
-      x: this.hoverPosition.x * this.gridSize,
-      y: this.hoverPosition.y * this.gridSize,
-    };
+    const position = this.grid.gridToWorldCoordinates(
+      this.hoverPosition.x,
+      this.hoverPosition.y
+    );
 
     const img = imageManager.getImage(this.selectedBlueprint.Name);
     if (img) {
@@ -453,7 +427,8 @@ class Game {
     if (this.isDragging) return;
 
     const clickPosition = this.getClickPosition(e);
-    const gridPosition = this.worldToGridCoordinates(
+    clickPosition.x = clickPosition.x - this.gridSize / 2;
+    const gridPosition = this.grid.worldToGridCoordinates(
       clickPosition.x,
       clickPosition.y
     );
@@ -467,7 +442,6 @@ class Game {
       this.hoverPosition = gridPosition;
     } else {
       this.buildingAtPosition = buildingAtPosition;
-      // this.hoverPosition = null;1
       this.hoverPosition = gridPosition;
     }
   }
