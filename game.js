@@ -381,6 +381,10 @@ class Game {
     }
   }
 
+  updateDay(){
+    this.day = parseInt(localStorage.getItem("dayOffset")) + 1
+  }
+
   calculateBuildingPosition(building) {
     return {
       x: building.gridX * this.gridSize,

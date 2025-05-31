@@ -80,6 +80,7 @@ function nextDay() {
   let offset = parseInt(localStorage.getItem("dayOffset") || "0");
   offset++;
   localStorage.setItem("dayOffset", offset);
+  
 
   let weather = JSON.parse(localStorage.getItem("weather"));
 
