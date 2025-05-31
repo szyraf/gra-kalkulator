@@ -1,4 +1,4 @@
-
+Projekt jest grą-symulacją zarządzania miastem mającą na celu promowanie ekologicznych źródeł energii. Poprzez stopniowe przekształcanie nieekologicznego miasta użytkownik ma szansę na własne oczy zobaczyć impakt jaki niosą ze sobą odnawialne źródła energii. 
 Ui projekt
 Mapa grid kwadratowy
 
@@ -17,7 +17,17 @@ zastosowane ulepszenia
 
 Mechaniki
 
-Na start dostępny mamy określony budżet i mapę nieekologicznego miasta.  Możemy dobudowywać elektrownie oraz usprawnienia budynków
+Na start mamy mapę miasta zasilanego całkowicie elektrowniami węglowymi. Rankiem każdego dnia dostajemy określony budżet możemy dobudowywać elektrownie oraz usprawnienia budynków. 
+
+Pomiędzy elektrowniami i budynkami możemy tworzyć połączenia. W momencie w którym elektrownia zostanie przeciążona odcina się. Skłania to do ostrożnego planowania miasta i projektowania więcej niż jednej sieci. 
+
+Losowo może dojść do awarii elektrowni (przestaje działać na określony czas)
+
+Symulacja pogody - na podstawie określonych warunków pogodowych, różna ilość produkowanej energii przez odpowiednie źródła  
+
+Zadowolenie mieszkańców - zależy od tego czy ich energetyczne potrzeby są spełnione + poziomu ekologiczności.  Wyższe oznacza większy budżet 
+
+Cel gry - całkowite uniezależnienie miasta od elektrowni węglowych 
 
 możliwość stawiania budynków i elektrowni
 symulowanie pogody i upływu czasu
@@ -88,8 +98,10 @@ Zużycie energii
 Mieszkańcy, fabryki, transport – wszystko zużywa prąd
 Magazyny energii
 Pozwalają przechować prąd na noc lub na blackouty
-Polityki
-Możesz wdrażać programy dotacyjne, zachęty do oszczędzania itp.
+
+
+
+
 Zadowolenie mieszkańców
 Spada, gdy są przerwy w dostawie prądu lub zanieczyszczenie rośnie
 Czas
@@ -103,7 +115,7 @@ Start z miastem zasilanym tylko z węgla
 Stopniowe inwestowanie w PV
 
 
-Wyzwania losowe: pochmurne dni, awarie, wzrost populacji
+Wyzwania losowe: pochmurne dni, awarie
 
 
 Utrzymanie równowagi: produkcja – zużycie – magazyn
@@ -121,7 +133,7 @@ Na hackathon wystarczy mała, działająca wersja gry:
 pasek energii produkowanej / zużywanej / przechowywanej
 
 
-UI z przyciskami: "Zbuduj panel", "Zainwestuj w magazyn", "Zmień taryfę"
+UI z przyciskami: "Zbuduj panel", "Zainwestuj w magazyn"
 
 
 symulacja dnia i nocy (PV działa tylko w dzień)
@@ -145,11 +157,11 @@ i ekran podsumowania: „Twoje miasto oszczędziło X ton CO₂”.
 Część
 Technologia
 Frontend (gra)
-React + Canvas (lub Three.js / Konva.js) lub Godot/WebGL
+JS+ Canvas
 Logika symulacji
-czysty JavaScript / TypeScript (ew. Python Flask dla backendu)
+czysty JavaScript 
 Dane pogodowe
-statyczne (na hackathon), lub dummy API
+statyczne (na hackathon), l
 UI/UX
 Tailwind + komponenty do wykresów (np. Chart.js)
 
@@ -164,19 +176,7 @@ Tryb edukacyjny: pytania/quizy między turami („Czy wiesz, ile CO₂ produkuje
 Ranking miast (lokalny / ogólnopolski)
 
 
-Wersja multiplayer: miasta współpracują lub konkurują (ciężkie na hackathon, ale można zasugerować jako plan rozwoju)
 
 
 
-Chcesz, żebym teraz rozrysował:
-interfejs użytkownika (mockup),
-
-
-model logiki produkcji i zużycia energii,
-
-
-lub podział zadań na zespół?
-
-
-Ile osób masz w zespole i jakie macie skille (frontend, backend, design)?
 

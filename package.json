@@ -1,0 +1,26 @@
+{
+  "name": "hackhathon",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Building.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tailwindcss -i ./styles/tailwind.css -o ./styles/main.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/szyraf/gra-kalkulator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/szyraf/gra-kalkulator/issues"
+  },
+  "homepage": "https://github.com/szyraf/gra-kalkulator#readme",
+  "devDependencies": {
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.1"
+  }
+}

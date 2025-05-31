@@ -1,0 +1,40 @@
+{
+  "buildings": [
+    {
+      "Name": "House",
+      "Description": "Dom jednorodzinny",
+      "Cost": 0,
+      "Type": "consumer",
+      "EnergyPerHour": 100,
+      "ToBuild": false,
+      "ImagePath": "assets/images/house.png"
+    },
+    {
+      "Name": "Apartament",
+      "Description": "Blok mieszkalny",
+      "Cost": 0,
+      "Type": "consumer",
+      "EnergyPerHour": 1000,
+      "ToBuild": false,
+      "ImagePath": "assets/images/apartment.png"
+    },
+    {
+      "Name": "Tower",
+      "Description": "Wieżowiec",
+      "Cost": 0,
+      "Type": "consumer",
+      "EnergyPerHour": 2000,
+      "ToBuild": false,
+      "ImagePath": "assets/images/tower.png"
+    },
+    {
+      "Name": "Solar",
+      "Description": "Elektrownia Słoneczna",
+      "Cost": 0,
+      "Type": "producent",
+      "EnergyPerHour": 100,
+      "ToBuild": true,
+      "ImagePath": "assets/images/solar.png"
+    }
+  ]
+} 
