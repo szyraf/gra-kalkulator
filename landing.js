@@ -2,6 +2,7 @@ window.onload = () =>{
   if(localStorage.getItem("username")){
     document.getElementById("landing-page").style.display = "none";
   }
+  startingDate();
 }
 
 function startGame(){
@@ -18,3 +19,4 @@ function startGame(){
 function showTutorial(){
     startGame();
 }
+
