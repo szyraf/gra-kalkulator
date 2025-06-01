@@ -8,7 +8,7 @@ export function startingDate() {
   //if (!localStorage.getItem("startDate")) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const formattedDate = today.toISOString().split("T")[0];
+  const formattedDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
   localStorage.setItem("dayOffset", 0);
   localStorage.setItem("startDate", formattedDate);
@@ -29,8 +29,8 @@ function getDateFromStart(n) {
   const start = new Date(localStorage.getItem("startDate"));
   start.setDate(start.getDate() + n);
 
-  const day = start.getDate();
-  const month = start.getMonth() + 1;
+  const day = String(start.getDate()).padStart(2, "0");
+  const month = String(start.getMonth() + 1).padStart(2, "0");
   const year = start.getFullYear();
 
   return { day, month, year };
