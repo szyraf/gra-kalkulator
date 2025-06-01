@@ -31,6 +31,71 @@
         "y": -6
       },
       {
+        "name": "House",
+        "x": 7,
+        "y": -4
+      },
+      {
+        "name": "House",
+        "x": 7,
+        "y": -2
+      },
+      {
+        "name": "House",
+        "x": 4,
+        "y": -1
+      },
+      {
+        "name": "House",
+        "x": 4,
+        "y": -4
+      },
+      {
+        "name": "House",
+        "x": 3,
+        "y": -5
+      },
+      {
+        "name": "House",
+        "x": 3,
+        "y": -3
+      },
+      {
+        "name": "House",
+        "x": 2,
+        "y": -1
+      },
+      {
+        "name": "House",
+        "x": 12,
+        "y": -3
+      },
+      {
+        "name": "House",
+        "x": 12,
+        "y": -5
+      },
+      {
+        "name": "House",
+        "x": 12,
+        "y": -6
+      },
+      {
+        "name": "House",
+        "x": 10,
+        "y": -8
+      },
+      {
+        "name": "House",
+        "x": 8,
+        "y": -8
+      },
+      {
+        "name": "House",
+        "x": 6,
+        "y": -8
+      },
+      {
         "name": "Apartament",
         "x": -4,
         "y": 7
@@ -46,6 +111,36 @@
         "y": 7
       },
       {
+        "name": "Apartament",
+        "x": 0,
+        "y": 1
+      },
+      {
+        "name": "Apartament",
+        "x": -1,
+        "y": 1
+      },
+      {
+        "name": "Apartament",
+        "x": -2,
+        "y": 1
+      },
+      {
+        "name": "Apartament",
+        "x": -1,
+        "y": 4
+      },
+      {
+        "name": "Apartament",
+        "x": -2,
+        "y": 4
+      },
+      {
+        "name": "Apartament",
+        "x": -3,
+        "y": 4
+      },
+      {
         "name": "Tower",
         "x": -2,
         "y": -2
@@ -53,6 +148,11 @@
       {
         "name": "Tower",
         "x": 0,
+        "y": -4
+      },
+      {
+        "name": "Tower",
+        "x": -2,
         "y": -4
       }
     ]
