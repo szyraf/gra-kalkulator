@@ -82,27 +82,25 @@
 
 
 
-      <img id="tadek-face" src="/assets/img/tadek/happy.png" alt="Tadeusz Kościuszko"
-          class="max-h-[calc(100vh-310px)] h-auto w-auto object-contain select-none" />
-
-      <div class="bg-white/90 rounded-lg border border-gray-300 shadow-md p-4 text-sm text-gray-800 min-w-[280px] max-w-sm pointer-events-auto transform -translate-y-2.5 relative">
-        <span class="font-semibold text-base">Tadek:</span>
-        <span id="tadek-text" class="fade-text mt-2"></span>
-       <button id="tadek-next-btn"
-        class="bottom-2 right-2 text-gray-600 hover:text-black text-9xl sm:text-5xl px-4 pb-1 leading-none">
-        <span style="font-size:30px; margin:10px;">&rsaquo;</span>
-      </button>
-      </div>
-    </div>
+   
 
 
-
-      <div class="absolute top-0 right-0 bg-green-400/90 shadow-md p-2 z-10 w-48" id="weather-panel">
-        <div class="space-y-1 text-sm">
-          <div class="text-gray-800 font-medium"><button onclick="nextDay()">Start day</button></div>
-          <div class="text-gray-800 font-medium"><button onclick="checkWeather()">Sprawdź prognozę pogody</button></div>
+    <div class="absolute top-0 right-0 bg-green-400/90 shadow-md p-2 z-10 w-48" id="weather-panel">
+      <div class="space-y-2 text-sm">
+        <div class="text-gray-800 font-medium">
+          <button onclick="nextDay()"
+                  class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-3 rounded transition-all duration-200 hover:scale-105">
+            Rozpocznij dzień
+          </button>
+        </div>
+        <div class="text-gray-800 font-medium">
+          <button onclick="checkWeather()"
+                  class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-3 rounded transition-all duration-200 hover:scale-105">
+            Sprawdź prognozę pogody
+          </button>
         </div>
       </div>
+    </div>
 
       <div class="absolute bottom-0 left-0 right-0 bg-green-400/90 shadow-md p-4 z-10">
         <div class="flex items-center mb-4">
@@ -119,6 +117,7 @@
       </div>
 
       <canvas id="gameCanvas" class="absolute inset-0 w-full h-full"></canvas>
+      <img id="texture" src="./assets/grass.jpg" style="display: none;" />
     </div>
 
     <div id="start"></div>
