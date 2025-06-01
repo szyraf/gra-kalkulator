@@ -33,7 +33,8 @@ class Game {
     this.buildings = [];
     this.selectedBuilding = null;
     this.selectedBlueprint = null;
-    this.day = 1;
+    this.day = "1 8:00";
+    this.hour = 8;
     this.weather = this.createInitialWeather();
     this.energy = this.createInitialEnergyState();
     this.camera = this.createInitialCameraState();
@@ -230,29 +231,33 @@ class Game {
     document.getElementById("building-name").textContent = building.name;
     document.getElementById("building-energy").textContent = this.getEnergyInfoText(building);
     document.getElementById("building-upgrades").textContent = `Ulepszenia: ${building.upgrades.join(", ") || "Brak"}`;
-    if(building.type === BuildingType.consumer && building.energyType !== EnergyType.solarSmall){ 
+    if (building.type === BuildingType.consumer && building.energyType !== EnergyType.solarSmall) {
       document.getElementById("building-upgrade").style.display = "block";
 
-       document.getElementById("building-upgrade").onclick = () => {
+      document.getElementById("building-upgrade").onclick = () => {
         if (this.money >= 5) {
           this.money -= 5;
           building.energyType = EnergyType.solarSmall;
           imageManager.updateCosts();
-          building.name = building.name+"S";
+          building.name = building.name + "S";
           this.drawBuilding(building);
           this.updateBuildingInfoPanel(building, infoPanel);
         } else {
           alert("Nie masz wystarczająco pieniędzy na ulepszenie tego budynku.");
-        }}
-
-    }else{
+        }
+      };
+    } else {
       document.getElementById("building-upgrade").style.display = "none";
     }
   }
 
   getEnergyInfoText(building) {
     const energyInfoPrefix = this.getEnergyInfoPrefix(building);
-    return energyInfoPrefix + building.energyPerHour;
+    let energy = 0;
+    if (building.type == BuildingType.bank) energy = building.currentEnergy;
+    else if (building.type == BuildingType.consumer) energy = building.energyPerHour - building.getProducedEnergy(this.hour);
+    else energy = building.getProducedEnergy(this.hour);
+    return energyInfoPrefix + energy;
   }
 
   getEnergyInfoPrefix(building) {
@@ -346,6 +351,7 @@ class Game {
     document.getElementById("available-energy").textContent = `Dostępna energia: ${capacity} kWh`;
     document.getElementById("total-production").textContent = `Produkcja: ${produced} kWh`;
     document.getElementById("total-consumption").textContent = `Zużycie: ${consumed} kWh`;
+    if (this.selectedBuilding != null) this.showBuildingInfo(this.selectedBuilding);
   }
 
   updateWeatherInfo() {
@@ -355,6 +361,7 @@ class Game {
   }
 
   updateTimeInfo(hour) {
+    this.hour = hour;
     this.day = `${parseInt(localStorage.getItem("dayOffset")) + 1} ${hour}:00`;
   }
 
@@ -444,8 +451,8 @@ class Game {
   drawBuildingImage(building, position, alpha = 1.0, highlight = false) {
     let img;
     if (highlight) {
-       img = imageManager.getImage(building.name+"P");
-    }else  img = imageManager.getImage(building.name);
+      img = imageManager.getImage(building.name + "P");
+    } else img = imageManager.getImage(building.name);
     if (img) {
       this.drawBuildingImageAtPosition(img, building, position, alpha);
     }
@@ -525,12 +532,12 @@ window.addEventListener("load", async () => {
     const game = new Game(buildingsData.buildings);
     imageManager.setGame(game);
 
-    let turnManager = new TurnManager(game);
-
     game.addBuilding(buildingsData.buildings[0], 2, 2, true);
     game.addBuilding(buildingsData.buildings[1], 4, 2, true);
     game.addBuilding(buildingsData.buildings[3], 2, 4, true);
     game.addBuilding(buildingsData.buildings[2], 4, 4, true);
+
+    let turnManager = new TurnManager(game);
 
     imageManager.setupBuildingMenu();
   } catch (error) {

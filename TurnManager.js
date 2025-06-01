@@ -1,9 +1,10 @@
 import { nextDay } from "./date-weather.js";
-const hourDuration = 2000;
+const hourDuration = 1000;
 
 export class TurnManager {
   #updateInterval;
   #game;
+  #playButton;
   #playing = false;
   #hour = 8;
 
@@ -12,13 +13,15 @@ export class TurnManager {
     this.#game = game;
     game.updateEnergy(this.#hour);
     game.updateWeatherInfo();
-    document.getElementById("startTurnButton").addEventListener("click", () => {
+    this.#playButton = document.getElementById("startTurnButton");
+    this.#playButton.addEventListener("click", () => {
       this.playTurn(this);
     });
   }
 
   playTurn() {
     if (this.#playing) return;
+
     this.#playing = true;
     this.#hour = 8;
     this.#game.updateTimeInfo(this.#hour);
