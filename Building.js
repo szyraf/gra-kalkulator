@@ -17,7 +17,8 @@ export class Building {
     this.name = jsonObject["name"];
     this.description = jsonObject["description"];
     this.cost = jsonObject["cost"];
-    this.energyPerHour = jsonObject["energyPerHour"];
+    let energyPerHourData = jsonObject["energyPerHour"];
+    this.energyPerHour = energyPerHourData.length > 1 ? this.getRandomInt(energyPerHourData[0], energyPerHourData[1]) : energyPerHourData[0];
     this.type = BuildingType[jsonObject["type"]];
     this.gridX = gridX;
     this.gridY = gridY;
@@ -26,6 +27,10 @@ export class Building {
     this.scale = jsonObject["scale"];
     this.energyType = EnergyType[jsonObject["energyType"]];
     this.currentEnergy = 0;
+  }
+
+  getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   getProducedEnergy(hour) {

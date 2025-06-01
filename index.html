@@ -94,7 +94,7 @@
             <button id="startTurnButton" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-3 rounded transition-all duration-200 hover:scale-105">Rozpocznij dzień</button>
           </div>
           <div class="text-gray-800 font-medium">
-            <button onclick="checkWeather()" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-3 rounded transition-all duration-200 hover:scale-105">
+            <button id="open-weather" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-3 rounded transition-all duration-200 hover:scale-105">
               Sprawdź prognozę pogody
             </button>
           </div>
@@ -120,6 +120,18 @@
     </div>
 
     <div id="start"></div>
+    <div id="weather-forecast" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/30">
+      <div class="bg-white shadow-2xl rounded-xl p-4 w-full max-w-5xl max-h-[90vh] overflow-x-auto flex flex-col space-y-4 text-gray-800">
+        <div class="flex justify-between items-center">
+          <h2 class="text-xl font-bold">Prognoza pogody (7 dni)</h2>
+          <button id="close-weather" class="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md">
+            X
+          </button>
+        </div>
+        <div id="forecast-list" class="flex gap-4 overflow-x-auto pb-2"></div>
+      </div>
+    </div>
+
     <script type="module" src="imageManager.js"></script>
     <script type="module" src="game.js"></script>
     <script type="module" src="date-weather.js" defer></script>
