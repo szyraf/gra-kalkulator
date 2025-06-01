@@ -21,7 +21,7 @@ export class TurnManager {
 
   playTurn() {
     if (this.#playing) return;
-
+    this.#playButton.style.display = "none";
     this.#playing = true;
     this.#hour = 8;
     this.#game.updateTimeInfo(this.#hour);
@@ -46,5 +46,6 @@ export class TurnManager {
 
   #endTurn() {
     this.#playing = false;
+    this.#playButton.style.display = "";
   }
 }
