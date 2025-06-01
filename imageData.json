@@ -15,6 +15,18 @@
     {
       "id": "Tower",
       "src": "./assets/img/tower/tower.png"
+    },
+    {
+      "id": "Turbine",
+      "src": "./assets/img/turbine/turbine.png"
+    },
+    {
+      "id": "Storage_Small_0",
+      "src": "./assets/img/storage_small/0.png"
+    },
+    {
+      "id": "Storage_Big_0",
+      "src": "./assets/img/storage_big/0.png"
     }
   ]
 }
