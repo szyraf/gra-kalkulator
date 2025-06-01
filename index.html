@@ -47,106 +47,100 @@
     </style>
   </head>
 
-  <body class="bg-gray-100 min-h-screen">
-    <div id="landing-page">
-      <div class="container">
-        <h1>Solvilla</h1>
-        <p>Wprowadź nazwę użytkownika, aby rozpocząć</p>
-        <input type="text" placeholder="Nazwa użytkownika" id="username" />
-        <button class="btn-start" onclick="startGame()">Start</button>
-        <button class="btn-tutorial" onclick="showTutorial()">Samouczek</button>
-      </div>
-    </div>
-    <div class="relative w-full h-screen overflow-hidden">
-      <div class="absolute top-0 left-0 bg-green-400/90 shadow-md p-2 z-10 w-52">
-        <div class="space-y-1 text-sm">
-          <div id="day-info" class="text-gray-800 font-medium">Dzień: 1 8:00</div>
-          <div id="weather-info" class="text-gray-800 font-medium">Pogoda: Słonecznie</div>
-          <div id="sunlight-info" class="text-gray-800 font-medium">Nasłonecznienie: 100%</div>
-          <div id="wind-info" class="text-gray-800 font-medium">Wiatr: 5 km/h</div>
-          <div id="available-energy" class="text-gray-800 font-medium">Dostępna energia: 0 kWh</div>
-          <div id="total-production" class="text-gray-800 font-medium">Produkcja: 0 kWh</div>
-          <div id="total-consumption" class="text-gray-800 font-medium">Zużycie: 0 kWh</div>
-          <div id="money" class="text-gray-800 font-medium">Pieniądze: 0 PLN</div>
-        </div>
-      </div>
-      <div
-        id="tadek-dialog"
-        class="absolute left-4 z-20 flex flex-col sm:flex-row items-center sm:items-end space-y-2 sm:space-y-0 sm:space-x-4 pointer-events-none"
-        style="top: 120px; bottom: 160px; display: none"
+<div id="landing-page" class="absolute flex items-center justify-center h-full w-full top-0 left-0">
+  <div class="bg-white/90 backdrop-blur-sm shadow-xl rounded-lg p-8 w-full max-w-sm text-center space-y-6 border border-slate-300">
+    <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight">Solvilla</h1>
+    <p class="text-lg text-gray-700">Wprowadź nazwę użytkownika, aby rozpocząć</p>
+    <input
+      type="text"
+      placeholder="Nazwa użytkownika"
+      id="username"
+      class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
+    />
+    <div class="space-y-4 pt-4">
+      <button
+        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-md shadow-md transition"
+        onclick="startGame()"
       >
-        <img id="tadek-face" src="" alt="Tadeusz Kościuszko" class="max-h-[calc(100vh-310px)] h-auto w-auto object-contain select-none" />
-
-        <div
-          class="bg-white/90 rounded-lg border border-gray-300 shadow-md p-4 text-sm text-gray-800 min-w-[280px] max-w-sm pointer-events-auto transform -translate-y-2.5 relative flex items-center justify-around"
-        >
-          <span class="font-semibold text-base">Tadek:&nbsp;</span>
-          <span id="tadek-text" class="fade-text mt-0"></span>
-          <button id="tadek-next-btn" class="text-gray-600 hover:text-black text-4xl px-2 leading-none">
-            <span style="font-size: 30px">&rsaquo;</span>
-          </button>
-        </div>
-      </div>
-
-      <div class="absolute top-0 right-0 bg-green-400/90 shadow-md p-2 z-10 w-48" id="weather-panel">
-        <div class="space-y-2 text-sm">
-          <div class="text-gray-800 font-medium">
-            <button id="startTurnButton" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-3 rounded transition-all duration-200 hover:scale-105">Rozpocznij dzień</button>
-          </div>
-          <div class="text-gray-800 font-medium">
-            <button id="open-weather" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-3 rounded transition-all duration-200 hover:scale-105">
-              Sprawdź prognozę pogody
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="absolute bottom-0 left-0 right-0 bg-green-400/90 shadow-md p-4 z-10">
-        <div class="flex items-center mb-4">
-          <div class="flex space-x-4 py-2" id="building-menu-building-images"></div>
-        </div>
-
-        <div class="fixed bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 z-20" id="buildingInfo" style="display: none">
-          <h3 class="text-xl font-bold mb-4">Informacje o budynku</h3>
-          <div id="building-name" class="text-gray-800"></div>
-          <div id="building-energy" class="text-gray-800"></div>
-          <div id="building-upgrades" class="text-gray-800"></div>
-          <button id="building-upgrade" class="text-gray-800 bg-gray-600 hover:bg-gray-700 font-semibold py-2 px-3 rounded transition-all duration-200 hover:scale-105" style="display:none;">Kup panel solarny *cena*</button>
-        </div>
-      </div>
-
-      <canvas id="gameCanvas" class="absolute inset-0 w-full h-full"></canvas>
-      <img id="texture" src="./assets/grass.jpg" style="display: none" />
+        Start
+      </button>
+      <button
+        class="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 rounded-md shadow-md transition"
+        onclick="showTutorial()"
+      >
+        Samouczek
+      </button>
     </div>
-
-    <div id="start"></div>
-<div id="weather-forecast" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/30">
-  <div class="relative bg-white shadow-2xl rounded-xl p-6 max-w-[1400px] max-h-[80vh] w-full max-w-screen-lg flex flex-col space-y-6 text-black">
-
-    <button id="close-weather" 
-      class="absolute top-4 right-4 text-black text-2xl hover:text-red-600 font-bold transition-colors duration-200 focus:outline-none"
-      aria-label="Zamknij prognozę pogody">
-      ✕
-    </button>
-
-    <h2 class="text-3xl font-extrabold text-center">
-      Prognoza pogody (7 dni)
-    </h2>
-
-    <div id="forecast-list" class="flex flex-row gap-6 overflow-x-auto pb-4 px-4 no-scrollbar">
-      <!-- tutaj elementy prognozy -->
-    </div>
-
   </div>
 </div>
 
 
-</div>
 
-    <script type="module" src="imageManager.js"></script>
-    <script type="module" src="game.js"></script>
-    <script type="module" src="date-weather.js" defer></script>
-    <script src="landing.js" defer></script>
-    <script src="tutorial.js"></script>
-  </body>
-</html>
+  <div class="relative w-full h-screen overflow-hidden">
+    <!-- Lewy górny róg -->
+    <div class="absolute top-4 left-4 bg-slate-800/80 backdrop-blur-md text-white shadow-xl p-4 z-10 w-64 rounded-lg space-y-1 text-sm">
+      <div id="day-info">Dzień: 1 8:00</div>
+      <div id="weather-info">Pogoda: Słonecznie</div>
+      <div id="sunlight-info">Nasłonecznienie: 100%</div>
+      <div id="wind-info">Wiatr: 5 km/h</div>
+      <div id="available-energy">Dostępna energia: 0 kWh</div>
+      <div id="total-production">Produkcja: 0 kWh</div>
+      <div id="total-consumption">Zużycie: 0 kWh</div>
+      <div id="money">Pieniądze: 0 PLN</div>
+    </div>
+
+    <!-- Dialog z Tadkiem -->
+    <div id="tadek-dialog" class="absolute left-4 z-20 flex flex-col sm:flex-row items-center sm:items-end space-y-2 sm:space-y-0 sm:space-x-4 pointer-events-none" style="top: 120px; bottom: 160px; display: none">
+      <img id="tadek-face" src="" alt="Tadeusz Kosciuszko" class="max-h-[calc(100vh-310px)] h-auto w-auto object-contain select-none" />
+      <div class="bg-white/90 rounded-xl border border-slate-300 shadow-xl p-4 text-sm text-slate-800 min-w-[280px] max-w-sm pointer-events-auto transform -translate-y-2.5 flex items-center justify-between gap-4">
+        <span class="font-semibold text-base">Tadek:</span>
+        <span id="tadek-text" class="fade-text"></span>
+        <button id="tadek-next-btn" class="text-slate-500 hover:text-slate-800 text-3xl font-bold transition-colors">&rsaquo;</button>
+      </div>
+    </div>
+
+    <!-- Prawy górny róg -->
+    <div class="absolute top-4 right-4 bg-slate-800/80 backdrop-blur-md text-white shadow-xl p-4 z-10 w-60 rounded-lg space-y-3 text-sm" id="weather-panel">
+      <button id="startTurnButton" class="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold py-2 px-3 rounded-md transition-all duration-200">Rozpocznij dzień</button>
+      <button id="open-weather" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2 px-3 rounded-md transition-all duration-200">Sprawdź prognozę pogody</button>
+    </div>
+
+    <!-- Dolny pasek -->
+    <div class="absolute bottom-0 left-0 right-0 bg-slate-900/90 text-white shadow-inner p-4 z-10">
+      <div class="flex items-center mb-4">
+        <div class="flex space-x-4 py-2" id="building-menu-building-images"></div>
+      </div>
+      <div class="fixed bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 z-20 text-black" id="buildingInfo" style="display: none">
+        <h3 class="text-xl font-bold mb-4">Informacje o budynku</h3>
+        <div id="building-name"></div>
+        <div id="building-energy"></div>
+        <div id="building-upgrades"></div>
+        <button id="building-upgrade" class="mt-2 text-white bg-slate-700 hover:bg-slate-800 font-semibold py-2 px-3 rounded transition-all duration-200" style="display:none;">Kup panel solarny *cena*</button>
+      </div>
+    </div>
+
+    <canvas id="gameCanvas" class="absolute inset-0 w-full h-full"></canvas>
+    <img id="texture" src="./assets/grass.jpg" style="display: none" />
+  </div>
+
+  <div id="start"></div>
+
+  <!-- Pogoda -->
+  <div id="weather-forecast" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/30">
+    <div class="relative bg-white shadow-2xl rounded-xl p-6 max-w-[1400px] max-h-[80vh] w-full max-w-screen-lg flex flex-col space-y-6 text-black">
+      <button id="close-weather" class="absolute top-4 right-4 text-black text-2xl hover:text-red-600 font-bold transition-colors duration-200 focus:outline-none" aria-label="Zamknij prognozę pogody">✕</button>
+      <h2 class="text-3xl font-extrabold text-center">Prognoza pogody (7 dni)</h2>
+      <div id="forecast-list" class="flex flex-row gap-6 overflow-x-auto pb-4 px-4 no-scrollbar">
+        <!-- tutaj elementy prognozy -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Skrypty -->
+  <script type="module" src="imageManager.js"></script>
+  <script type="module" src="game.js"></script>
+  <script type="module" src="date-weather.js" defer></script>
+  <script src="landing.js" defer></script>
+  <script src="tutorial.js"></script>
+</body>
+

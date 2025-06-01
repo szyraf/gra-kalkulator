@@ -431,7 +431,8 @@ class Game {
     }
 
     if (outcome < 0) capacity = outcome;
-    capacity = Math.floor(capacity * 100) / 100;
+    capacity = capacity;
+
     this.updateEnergyUI(produced, consumed, capacity);
   }
 
