@@ -10,6 +10,8 @@ export class TurnManager {
   constructor(game) {
     this.#hour = 8;
     this.#game = game;
+    game.updateEnergy(this.#hour);
+    game.updateWeatherInfo();
     document.getElementById("startTurnButton").addEventListener("click", () => {
       this.playTurn(this);
     });
