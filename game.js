@@ -2,6 +2,7 @@ import { Building, BuildingType } from "./Building.js";
 import { imageManager } from "./imageManager.js";
 import { Grid } from "./grid.js";
 import { startingDate } from "./date-weather.js";
+import { TurnManager } from "./TurnManager.js";
 
 class Game {
     constructor(buildingsData) {
@@ -435,6 +436,8 @@ window.addEventListener("load", async () => {
 
         const game = new Game(buildingsData.buildings);
         imageManager.setGame(game);
+
+        const turnManager = new TurnManager(game);
 
         // Add initial buildings
         game.addBuilding(buildingsData.buildings[0], 2, 2, true);

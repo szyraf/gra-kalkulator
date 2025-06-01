@@ -1,5 +1,3 @@
-import { nextDay } from "./date-weather";
-
 const hourDuration = 2000;
 
 export class TurnManager {
@@ -9,6 +7,7 @@ export class TurnManager {
     #hour = 8;
 
     constructor(game) {
+        this.#hour = 8;
         this.#game = game;
         document.getElementById("startTurnButton").addEventListener("click", () => {
             this.playTurn();
@@ -33,7 +32,7 @@ export class TurnManager {
     }
 
     #endTurn() {
-        nextDay();
+        //nextDay();
         this.#playing = false;
     }
 }
