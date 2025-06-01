@@ -1,6 +1,8 @@
 import { Building, BuildingType } from "./Building.js";
 import { imageManager } from "./imageManager.js";
 import { Grid } from "./grid.js";
+import { startingDate } from "./date-weather.js";
+import { TurnManager } from "./TurnManager.js";
 
 class Game {
   constructor(buildingsData) {
@@ -78,6 +80,16 @@ class Game {
       if (e.key === "Escape") {
         this.hideBuildingInfo();
         this.selectedBlueprint = null;
+        this.day = 1;
+        this.energy = this.createInitialEnergyState();
+        this.camera = this.createInitialCameraState();
+        this.dailyBudget = 1000;
+        this.mouseMovementCount = 0;
+        this.hoverPosition = null;
+        this.buildingAtPosition = null;
+        this.money = 600;
+        startingDate();
+        this.updateWeatherInfo();
       }
     });
   }
@@ -252,15 +264,7 @@ class Game {
       imageManager.updateCosts();
     }
     this.buildings.push(building);
-    //this.updateEnergyStats();
   }
-
-  // updateEnergyStats() {
-  //     this.calculateEnergyProduction();
-  //     this.calculateEnergyConsumption();
-  //     this.calculateAvailableEnergy();
-  //     this.updateEnergyUI();
-  // }
 
   calculateEnergyProduction() {
     this.energy.production = this.buildings
@@ -280,7 +284,8 @@ class Game {
     this.energy.available = this.energy.production - this.energy.consumption;
   }
 
-  updateEnergy(weather) {
+  updateEnergy() {
+    let weather = JSON.parse(localStorage.getItem("weather"))[0];
     let produced = 0;
     let consumed = 0;
     for (let building of this.buildings) {
@@ -322,19 +327,29 @@ class Game {
       }
     }
 
-    this.updateEnergyUI(produced, consumed, capacity);
+    this.updateEnergyUI(produced, consumed, this.energy.available);
   }
 
-  updateEnergyUI() {
+  updateEnergyUI(produced, consumed, capacity) {
     document.getElementById(
       "available-energy"
-    ).textContent = `Dostępna energia: ${this.energy.available} kWh`;
+    ).textContent = `Dostępna energia: ${capacity} kWh`;
     document.getElementById(
       "total-production"
-    ).textContent = `Produkcja: ${this.energy.production} kWh`;
+    ).textContent = `Produkcja: ${produced} kWh`;
     document.getElementById(
       "total-consumption"
-    ).textContent = `Zużycie: ${this.energy.consumption} kWh`;
+    ).textContent = `Zużycie: ${consumed} kWh`;
+  }
+
+  updateWeatherInfo() {
+    let weather = JSON.parse(localStorage.getItem("weather"))[0];
+    document.getElementById(
+      "sunlight-info"
+    ).textContent = `Zachmurzenie: ${weather.cloudCoverage}%`;
+    document.getElementById(
+      "wind-info"
+    ).textContent = `Pręskość wiatru: ${weather.windSpeed} km/h`;
   }
 
   draw() {
@@ -496,7 +511,6 @@ class Game {
   }
 }
 
-// Wait for both DOM and images to be loaded before starting the game
 window.addEventListener("load", async () => {
   try {
     const response = await fetch("./buildings.json");
@@ -506,7 +520,6 @@ window.addEventListener("load", async () => {
     const game = new Game(buildingsData.buildings);
     imageManager.setGame(game);
 
-    // Add initial buildings
     game.addBuilding(buildingsData.buildings[0], 2, 2, true);
     game.addBuilding(buildingsData.buildings[1], 4, 2, true);
     game.addBuilding(buildingsData.buildings[3], 2, 4, true);
