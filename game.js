@@ -269,7 +269,7 @@ class Game {
           let energy = building.currentEnergy;
           if (outcome + energy >= 0) {
             building.currentEnergy += outcome;
-            outcome += energy;
+            outcome = 0;
             break;
           } else {
             building.currentEnergy = 0;
@@ -293,7 +293,17 @@ class Game {
       }
     }
 
-    this.updateEnergyUI(produced, consumed, this.energy.available);
+    let capacity = 0;
+
+    for (let building of this.buildings) {
+      if (building.type == BuildingType.bank) {
+        capacity += building.currentEnergy;
+      }
+    }
+
+    if (outcome < 0) capacity = outcome;
+
+    this.updateEnergyUI(produced, consumed, capacity);
   }
 
   updateEnergyUI(produced, consumed, capacity) {
