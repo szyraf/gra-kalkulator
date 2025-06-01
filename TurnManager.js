@@ -5,14 +5,19 @@ const hourDuration = 2000;
 export class TurnManager {
     #updateInterval;
     #game;
-    #weather;
+    #playing = false;
     #hour = 8;
 
     constructor(game) {
         this.#game = game;
+        document.getElementById("startTurnButton").addEventListener("click", () => {
+            this.playTurn();
+        });
     }
 
     playTurn() {
+        if (this.#playing) return;
+        this.#playing = true;
         this.#hour = 8;
         this.#updateInterval = window.setInterval(this.#update, hourDuration);
     }
@@ -29,5 +34,6 @@ export class TurnManager {
 
     #endTurn() {
         nextDay();
+        this.#playing = false;
     }
 }
