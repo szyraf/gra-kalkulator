@@ -258,7 +258,7 @@ class Game {
     if (building.type == BuildingType.bank) energy = building.currentEnergy;
     else if (building.type == BuildingType.consumer) energy = building.energyPerHour - building.getProducedEnergy(this.hour);
     else energy = building.getProducedEnergy(this.hour);
-    return energyInfoPrefix + energy;
+    return energyInfoPrefix + energy.toFixed(2);
   }
 
   getEnergyInfoPrefix(building) {
@@ -370,14 +370,15 @@ class Game {
     }
 
     if (outcome < 0) capacity = outcome;
-    capacity = Math.floor(capacity * 100) / 100;
+    capacity = capacity;
+
     this.updateEnergyUI(produced, consumed, capacity);
   }
 
   updateEnergyUI(produced, consumed, capacity) {
-    document.getElementById("available-energy").textContent = `Dostępna energia: ${capacity} kWh`;
-    document.getElementById("total-production").textContent = `Produkcja: ${produced} kWh`;
-    document.getElementById("total-consumption").textContent = `Zużycie: ${consumed} kWh`;
+    document.getElementById("available-energy").textContent = `Dostępna energia: ${capacity.toFixed(2)} kWh`;
+    document.getElementById("total-production").textContent = `Produkcja: ${produced.toFixed(2)} kWh`;
+    document.getElementById("total-consumption").textContent = `Zużycie: ${consumed.toFixed(2)} kWh`;
     if (this.selectedBuilding != null) this.showBuildingInfo(this.selectedBuilding);
   }
 
