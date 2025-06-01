@@ -1,20 +1,5 @@
-function login(username) {
-    if (!username) {
-        console.error("Brak nazwy uzytkownika.");
-        return;
-    }
-
-    if (!localStorage.getItem("username")) {
-        localStorage.setItem("username", username);
-        startingDate();
-        console.log(`Zalogowano jako: ${username}`);
-    } else {
-        console.log(`Uzytkownik '${localStorage.getItem("username")}' juz jest zalogowany.`);
-    }
-}
-
 export function startingDate() {
-    //if (!localStorage.getItem("startDate")) {
+    if (!localStorage.getItem("startDate")) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const formattedDate = today.toISOString().split("T")[0];
