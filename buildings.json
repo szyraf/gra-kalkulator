@@ -5,28 +5,64 @@
       "description": "Dom jednorodzinny",
       "cost": 100,
       "type": "consumer",
-      "energyPerHour": 100
+      "energyPerHour": 100,
+      "placable": false
     },
     {
       "name": "Apartament",
       "description": "Blok mieszkalny",
       "cost": 200,
       "type": "consumer",
-      "energyPerHour": 1000
+      "energyPerHour": 1000,
+      "placable": false
     },
     {
       "name": "Tower",
       "description": "Wieżowiec",
       "cost": 300,
       "type": "consumer",
-      "energyPerHour": 2000
+      "energyPerHour": 2000,
+      "placable": false
     },
     {
       "name": "Solar",
       "description": "Elektrownia Słoneczna",
       "cost": 400,
       "type": "producent",
-      "energyPerHour": 100
+      "energyPerHour": 100,
+      "placable": true
+    },
+    {
+      "name": "Turbine",
+      "description": "Turbina wiatrowa",
+      "cost": 500,
+      "type": "producent",
+      "energyPerHour": 200,
+      "placable": true
+    },
+    {
+      "name": "Turbine",
+      "description": "Turbina wiatrowa",
+      "cost": 500,
+      "type": "producent",
+      "energyPerHour": 200,
+      "placable": true
+    },
+    {
+      "name": "Storage_Small_0",
+      "description": "Mały magazyn",
+      "cost": 600,
+      "type": "producent",
+      "energyPerHour": 200,
+      "placable": true
+    },
+    {
+      "name": "Storage_Big_0",
+      "description": "Duży magazyn",
+      "cost": 700,
+      "type": "producent",
+      "energyPerHour": 200,
+      "placable": true
     }
   ]
 } 

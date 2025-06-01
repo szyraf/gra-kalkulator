@@ -2,7 +2,6 @@ class ImageManager {
   constructor() {
     this.images = new Map();
     this.buildingMenuImages = [];
-    this.imagesPerPage = 4;
     this.isInitialized = false;
     this.game = null;
     this.imageData = [];
@@ -54,7 +53,7 @@ class ImageManager {
       const data = await response.json();
       this.imageData = data.buildings;
       await this.loadImages();
-      this.setupBuildingMenu();
+      // this.setupBuildingMenu();
       this.isInitialized = true;
       console.log("ImageManager initialized successfully");
     } catch (error) {
@@ -97,23 +96,19 @@ class ImageManager {
     const updateBuildingMenu = () => {
       buildingImagesContainer.innerHTML = "";
       this.buildingElements.clear();
-      const startIndex = Math.max(
-        0,
-        Math.min(0, this.imageData.length - this.imagesPerPage)
-      );
 
-      for (
-        let i = startIndex;
-        i < startIndex + this.imagesPerPage && i < this.imageData.length;
-        i++
-      ) {
-        const data = this.imageData[i];
+      this.imageData.forEach((data) => {
         const img = this.images.get(data.id);
 
         if (!img) {
           console.error(`Image not found for id: ${data.id}`);
-          continue;
+          return;
         }
+
+        const buildingData = this.game.buildingsData.find(
+          (b) => b.name === data.id
+        );
+        if (!buildingData?.placable) return;
 
         const imgElement = img.cloneNode();
         imgElement.className =
@@ -136,9 +131,9 @@ class ImageManager {
           "cost-text text-center mt-1 text-sm font-medium";
 
         if (this.game && this.game.buildingsData) {
-          const buildingData = this.game.buildingsData.find(
-            (b) => b.name === data.id
-          );
+          // const buildingData = this.game.buildingsData.find(
+          // (b) => b.name === data.id
+          // );
           if (buildingData) {
             const canAfford = this.game.money >= buildingData.cost;
             costElement.textContent = `${buildingData.cost} zł`;
@@ -150,7 +145,7 @@ class ImageManager {
         wrapper.appendChild(costElement);
         buildingImagesContainer.appendChild(wrapper);
         this.buildingElements.set(data.id, wrapper);
-      }
+      });
     };
 
     updateBuildingMenu();

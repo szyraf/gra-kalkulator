@@ -27,7 +27,7 @@ class Game {
     this.mouseMovementCount = 0;
     this.hoverPosition = null;
     this.buildingAtPosition = null;
-    this.money = 600;
+    this.money = 1000;
   }
 
   createInitialWeather() {
@@ -511,6 +511,8 @@ window.addEventListener("load", async () => {
     game.addBuilding(buildingsData.buildings[1], 4, 2, true);
     game.addBuilding(buildingsData.buildings[3], 2, 4, true);
     game.addBuilding(buildingsData.buildings[2], 4, 4, true);
+
+    imageManager.setupBuildingMenu();
   } catch (error) {
     console.error("Failed to start game:", error);
   }
