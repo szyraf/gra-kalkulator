@@ -48,5 +48,6 @@ export class TurnManager {
   #endTurn() {
     this.#playing = false;
     this.#playButton.style.display = "";
+    this.#game.startDay();
   }
 }

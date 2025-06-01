@@ -4,6 +4,8 @@ import { Grid } from "./grid.js";
 import { startingDate } from "./date-weather.js";
 import { TurnManager } from "./TurnManager.js";
 
+const startBudget = 4050000;
+
 class Game {
   constructor(buildingsData) {
     this.buildingsData = buildingsData;
@@ -11,6 +13,10 @@ class Game {
     this.initializeCanvas();
     this.setupEventListeners();
     this.startGameLoop();
+  }
+
+  startDay() {
+    this.money = this.dailyBudget;
   }
 
   initializeGameState() {
@@ -38,11 +44,11 @@ class Game {
     this.weather = this.createInitialWeather();
     this.energy = this.createInitialEnergyState();
     this.camera = this.createInitialCameraState();
-    this.dailyBudget = 1000;
+    this.dailyBudget = startBudget;
     this.mouseMovementCount = 0;
     this.hoverPosition = null;
     this.buildingAtPosition = null;
-    this.money = 3000000;
+    this.money = this.dailyBudget;
   }
 
   createInitialWeather() {
@@ -101,27 +107,15 @@ class Game {
     e.preventDefault();
     const zoomFactor = 1.1;
     const mousePosition = this.getMousePosition(e);
-    const worldPositionBeforeZoom = this.screenToWorldCoordinates(
-      mousePosition.x,
-      mousePosition.y
-    );
+    const worldPositionBeforeZoom = this.screenToWorldCoordinates(mousePosition.x, mousePosition.y);
 
     if (e.deltaY < 0) {
-      this.camera.zoom = Math.min(
-        this.camera.zoom * zoomFactor,
-        this.camera.maxZoom
-      );
+      this.camera.zoom = Math.min(this.camera.zoom * zoomFactor, this.camera.maxZoom);
     } else {
-      this.camera.zoom = Math.max(
-        this.camera.zoom / zoomFactor,
-        this.camera.minZoom
-      );
+      this.camera.zoom = Math.max(this.camera.zoom / zoomFactor, this.camera.minZoom);
     }
 
-    const worldPositionAfterZoom = this.screenToWorldCoordinates(
-      mousePosition.x,
-      mousePosition.y
-    );
+    const worldPositionAfterZoom = this.screenToWorldCoordinates(mousePosition.x, mousePosition.y);
     this.adjustCameraPosition(worldPositionBeforeZoom, worldPositionAfterZoom);
   }
 
@@ -179,34 +173,17 @@ class Game {
 
     const clickPosition = this.getClickPosition(e);
     clickPosition.x = clickPosition.x - this.gridSize / 2;
-    const gridPosition = this.grid.worldToGridCoordinates(
-      clickPosition.x,
-      clickPosition.y
-    );
-    const clickedBuilding = this.findBuildingAtPosition(
-      gridPosition.x,
-      gridPosition.y
-    );
+    const gridPosition = this.grid.worldToGridCoordinates(clickPosition.x, clickPosition.y);
+    const clickedBuilding = this.findBuildingAtPosition(gridPosition.x, gridPosition.y);
 
     if (clickedBuilding) {
       this.showBuildingInfo(clickedBuilding);
     } else {
       if (this.selectedBlueprint != null) {
-        if (
-          this.canPlaceBuildingAtPosition(
-            gridPosition.x,
-            gridPosition.y,
-            this.selectedBlueprint.sizeX,
-            this.selectedBlueprint.sizeY
-          )
-        ) {
+        if (this.canPlaceBuildingAtPosition(gridPosition.x, gridPosition.y, this.selectedBlueprint.sizeX, this.selectedBlueprint.sizeY)) {
           this.hideBuildingInfo();
           document.getElementById("building-upgrade").style.display = "none";
-          this.addBuilding(
-            this.selectedBlueprint,
-            gridPosition.x,
-            gridPosition.y
-          );
+          this.addBuilding(this.selectedBlueprint, gridPosition.x, gridPosition.y);
         }
       }
     }
@@ -221,12 +198,7 @@ class Game {
 
   findBuildingAtPosition(gridX, gridY) {
     return this.buildings.find((b) => {
-      return (
-        gridX <= b.gridX &&
-        gridX >= b.gridX - (b.sizeX - 1) &&
-        gridY <= b.gridY &&
-        gridY >= b.gridY - (b.sizeY - 1)
-      );
+      return gridX <= b.gridX && gridX >= b.gridX - (b.sizeX - 1) && gridY <= b.gridY && gridY >= b.gridY - (b.sizeY - 1);
     });
   }
 
@@ -234,12 +206,7 @@ class Game {
     for (let building of this.buildings) {
       for (let i = 0; i < buildingSizeX; i++) {
         for (let j = 0; j < buildingSizeY; j++) {
-          if (
-            gridX - i <= building.gridX &&
-            gridX - i >= building.gridX - (building.sizeX - 1) &&
-            gridY - j <= building.gridY &&
-            gridY - j >= building.gridY - (building.sizeY - 1)
-          ) {
+          if (gridX - i <= building.gridX && gridX - i >= building.gridX - (building.sizeX - 1) && gridY - j <= building.gridY && gridY - j >= building.gridY - (building.sizeY - 1)) {
             return false;
           }
         }
@@ -254,10 +221,7 @@ class Game {
     this.updateBuildingInfoPanel(building, infoPanel);
 
     const buildingPosition = this.calculateBuildingPosition(building);
-    const screenPosition = this.worldToScreenCoordinates(
-      buildingPosition.x,
-      buildingPosition.y
-    );
+    const screenPosition = this.worldToScreenCoordinates(buildingPosition.x, buildingPosition.y);
 
     infoPanel.style.display = "block";
   }
@@ -272,21 +236,13 @@ class Game {
   updateBuildingInfoPanel(building, infoPanel) {
     document.getElementById("building-name").textContent = building.description;
     const energyInfoPrefix = this.getEnergyInfoPrefix(building);
-    document.getElementById("building-energy").textContent =
-      this.getEnergyInfoText(building);
-    document.getElementById("building-upgrades").textContent = `Ulepszenia: ${
-      building.upgrades.join(", ") || "Brak"
-    }`;
+    document.getElementById("building-energy").textContent = this.getEnergyInfoText(building);
+    document.getElementById("building-upgrades").textContent = `Ulepszenia: ${building.upgrades.join(", ") || "Brak"}`;
 
     //Tutaj jest cena zakupu panelu w budynku vvvvvvvvv
-    document.getElementById(
-      "building-upgrade"
-    ).textContent = `Kup panel solarny: ${building.upgradePrice} `;
+    document.getElementById("building-upgrade").textContent = `Kup panel solarny: ${building.upgradePrice} `;
 
-    if (
-      building.type === BuildingType.consumer &&
-      building.energyType !== EnergyType.solarSmall
-    ) {
+    if (building.type === BuildingType.consumer && building.energyType !== EnergyType.solarSmall) {
       document.getElementById("building-upgrade").style.display = "block";
 
       document.getElementById("building-upgrade").onclick = () => {
@@ -311,8 +267,7 @@ class Game {
     const energyInfoPrefix = this.getEnergyInfoPrefix(building);
     let energy = 0;
     if (building.type == BuildingType.bank) energy = building.currentEnergy;
-    else if (building.type == BuildingType.consumer)
-      energy = building.energyPerHour - building.getProducedEnergy(this.hour);
+    else if (building.type == BuildingType.consumer) energy = building.energyPerHour - building.getProducedEnergy(this.hour);
     else energy = building.getProducedEnergy(this.hour);
     let energyUnit = "kWh";
     if (energy >= 1000) {
@@ -344,17 +299,11 @@ class Game {
   }
 
   calculateEnergyProduction() {
-    this.energy.production = this.buildings
-      .filter((b) => b.type === BuildingType.producent)
-      .reduce((sum, b) => sum + b.energyPerHour, 0);
+    this.energy.production = this.buildings.filter((b) => b.type === BuildingType.producent).reduce((sum, b) => sum + b.energyPerHour, 0);
   }
 
   calculateEnergyConsumption() {
-    this.energy.consumption = Math.abs(
-      this.buildings
-        .filter((b) => b.type === BuildingType.consumer)
-        .reduce((sum, b) => sum - b.energyPerHour, 0)
-    );
+    this.energy.consumption = Math.abs(this.buildings.filter((b) => b.type === BuildingType.consumer).reduce((sum, b) => sum - b.energyPerHour, 0));
   }
 
   calculateAvailableEnergy() {
@@ -461,34 +410,21 @@ class Game {
       consumed = consumed / 1000;
     }
 
-    document.getElementById(
-      "available-energy"
-    ).textContent = `Dostępna energia: ${capacity.toFixed(2)} ${capacityUnit}`;
-    document.getElementById(
-      "total-production"
-    ).textContent = `Produkcja: ${produced.toFixed(2)} ${producedUnit}`;
-    document.getElementById(
-      "total-consumption"
-    ).textContent = `Zużycie: ${consumed.toFixed(2)} ${consumedUnit}`;
-    if (this.selectedBuilding != null)
-      this.showBuildingInfo(this.selectedBuilding);
+    document.getElementById("available-energy").textContent = `Dostępna energia: ${capacity.toFixed(2)} ${capacityUnit}`;
+    document.getElementById("total-production").textContent = `Produkcja: ${produced.toFixed(2)} ${producedUnit}`;
+    document.getElementById("total-consumption").textContent = `Zużycie: ${consumed.toFixed(2)} ${consumedUnit}`;
+    if (this.selectedBuilding != null) this.showBuildingInfo(this.selectedBuilding);
   }
 
   updateWeatherInfo() {
     let weather = JSON.parse(localStorage.getItem("weather"))[0];
-    document.getElementById(
-      "sunlight-info"
-    ).textContent = `Zachmurzenie: ${weather.cloudCoverage}%`;
-    document.getElementById(
-      "wind-info"
-    ).textContent = `Pręskość wiatru: ${weather.windSpeed} km/h`;
+    document.getElementById("sunlight-info").textContent = `Zachmurzenie: ${weather.cloudCoverage}%`;
+    document.getElementById("wind-info").textContent = `Pręskość wiatru: ${weather.windSpeed} km/h`;
   }
 
   updateTimeInfo(hour) {
     this.hour = hour;
-    this.day = `${
-      parseInt(localStorage.getItem("dayOffset")) + 1
-    } - Godzina: ${hour}:00`;
+    this.day = `${parseInt(localStorage.getItem("dayOffset")) + 1} - Godzina: ${hour}:00`;
   }
 
   draw() {
@@ -545,9 +481,7 @@ class Game {
 
   updateHtml() {
     document.getElementById("day-info").textContent = `Dzień: ${this.day}`;
-    document.getElementById(
-      "money"
-    ).textContent = `Pieniądze: ${this.money} PLN`;
+    document.getElementById("money").textContent = `Pieniądze: ${this.money} PLN`;
   }
 
   drawBuildings() {
@@ -593,13 +527,7 @@ class Game {
     const width = (this.gridSize - 4) * building.sizeX * building.scale;
     const height = (this.gridSize - 4) * building.sizeY * building.scale;
 
-    this.ctx.drawImage(
-      img,
-      position.x + 2 - offsetX,
-      position.y + 2 - offsetY * 2,
-      width,
-      height
-    );
+    this.ctx.drawImage(img, position.x + 2 - offsetX, position.y + 2 - offsetY * 2, width, height);
     this.ctx.globalAlpha = 1.0;
   }
 
@@ -613,33 +541,17 @@ class Game {
   drawHoverPreview() {
     if (!this.hoverPosition || !this.selectedBlueprint) return;
 
-    const position = this.grid.gridToWorldCoordinates(
-      this.hoverPosition.x,
-      this.hoverPosition.y
-    );
+    const position = this.grid.gridToWorldCoordinates(this.hoverPosition.x, this.hoverPosition.y);
 
     const img = imageManager.getImage(this.selectedBlueprint.name);
     if (img) {
       this.ctx.globalAlpha = 0.5;
 
-      if (
-        this.money < this.selectedBlueprint.cost ||
-        !this.canPlaceBuildingAtPosition(
-          this.hoverPosition.x,
-          this.hoverPosition.y,
-          this.selectedBlueprint.sizeX,
-          this.selectedBlueprint.sizeY
-        )
-      ) {
+      if (this.money < this.selectedBlueprint.cost || !this.canPlaceBuildingAtPosition(this.hoverPosition.x, this.hoverPosition.y, this.selectedBlueprint.sizeX, this.selectedBlueprint.sizeY)) {
         this.ctx.filter = "sepia(1) saturate(5) hue-rotate(-50deg)";
       }
 
-      this.drawBuildingImageAtPosition(
-        img,
-        this.selectedBlueprint,
-        position,
-        0.5
-      );
+      this.drawBuildingImageAtPosition(img, this.selectedBlueprint, position, 0.5);
 
       this.ctx.globalCompositeOperation = "source-over";
       this.ctx.globalAlpha = 1.0;
@@ -652,14 +564,8 @@ class Game {
 
     const clickPosition = this.getClickPosition(e);
     clickPosition.x = clickPosition.x - this.gridSize / 2;
-    const gridPosition = this.grid.worldToGridCoordinates(
-      clickPosition.x,
-      clickPosition.y
-    );
-    const buildingAtPosition = this.findBuildingAtPosition(
-      gridPosition.x,
-      gridPosition.y
-    );
+    const gridPosition = this.grid.worldToGridCoordinates(clickPosition.x, clickPosition.y);
+    const buildingAtPosition = this.findBuildingAtPosition(gridPosition.x, gridPosition.y);
 
     if (!buildingAtPosition) {
       this.buildingAtPosition = null;
@@ -688,19 +594,10 @@ window.addEventListener("load", async () => {
     const game = new Game(buildingsData.buildings);
     imageManager.setGame(game);
 
-    const initial_buildings = await (
-      await fetch("./initial_buildings.json")
-    ).json();
+    const initial_buildings = await (await fetch("./initial_buildings.json")).json();
     initial_buildings.buildings.forEach((initial_building) => {
-      const building_json = buildingsData.buildings.find(
-        (b) => b.name === initial_building.name
-      );
-      game.addBuilding(
-        building_json,
-        initial_building.x,
-        initial_building.y,
-        true
-      );
+      const building_json = buildingsData.buildings.find((b) => b.name === initial_building.name);
+      game.addBuilding(building_json, initial_building.x, initial_building.y, true);
     });
 
     let turnManager = new TurnManager(game);
