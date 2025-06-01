@@ -94,7 +94,7 @@ export function nextDay() {
 function openWeather() {
   const container = document.getElementById("weather-forecast");
   const list = document.getElementById("forecast-list");
-
+  const offset = parseInt(localStorage.getItem("dayOffset"));
   const weather = JSON.parse(localStorage.getItem("weather"));
   list.innerHTML = "";
 
@@ -109,7 +109,7 @@ function openWeather() {
   }
 
   weather.forEach((day, index) => {
-    const date = getDateFromStart(index);
+    const date = getDateFromStart(index + offset);
 
     const tile = document.createElement("div");
     tile.className = `
