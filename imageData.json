@@ -28,6 +28,18 @@
       "id": "TowerS",
       "src": "./assets/img/tower/tower_solar.png"
     },
+     {
+      "id": "HouseSP",
+      "src": "./assets/img/house/house_solar_picked.png"
+    },
+    {
+      "id": "ApartamentSP",
+      "src": "./assets/img/apartment/apartment_solar_picked.png"
+    },
+    {
+      "id": "TowerSP",
+      "src": "./assets/img/tower/tower_solar_picked.png"
+    },
     {
       "id": "Turbine",
       "src": "./assets/img/turbine/turbine.png"
@@ -43,6 +55,10 @@
     {
       "id": "Coal",
       "src": "./assets/img/coal/coal.png"
+    },
+     {
+      "id": "CoalP",
+      "src": "./assets/img/coal/coal_picked.png"
     },
     {
       "id": "HouseP",
