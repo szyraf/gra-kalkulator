@@ -27,6 +27,34 @@
     {
       "id": "Storage_Big_0",
       "src": "./assets/img/storage_big/0.png"
+    },
+     {
+      "id": "HouseP",
+      "src": "./assets/img/house/house_picked.png"
+    },
+    {
+      "id": "SolarP",
+      "src": "./assets/img/solar/solar_picked.png"
+    },
+    {
+      "id": "ApartamentP",
+      "src": "./assets/img/apartment/apartment_picked.png"
+    },
+    {
+      "id": "TowerP",
+      "src": "./assets/img/tower/tower_picked.png"
+    },
+    {
+      "id": "TurbineP",
+      "src": "./assets/img/turbine/turbine_picked.png"
+    },
+    {
+      "id": "Storage_Small_0P",
+      "src": "./assets/img/storage_small/0_picked.png"
+    },
+    {
+      "id": "Storage_Big_0P",
+      "src": "./assets/img/storage_big/0_picked.png"
     }
   ]
 }
