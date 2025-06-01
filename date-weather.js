@@ -56,7 +56,7 @@ function generateWeather(dayNumber, month) {
   const range = weatherRanges[month];
 
   return {
-    day: `Dzien ${dayNumber}`,
+    day: `Dzień ${dayNumber}`,
     temperature: getRandomInt(range.temp[0], range.temp[1]),
     windSpeed: getRandomInt(5, 40),
     cloudCoverage: getRandomInt(range.cloud[0], range.cloud[1]),
@@ -79,7 +79,7 @@ export function nextDay() {
   weather.shift();
 
   for (let i = 0; i < weather.length; i++) {
-    weather[i].day = `Dzien ${i + 1}`;
+    weather[i].day = `Dzień ${i + 1}`;
   }
 
   const startDate = new Date(localStorage.getItem("startDate"));
@@ -98,32 +98,43 @@ function openWeather() {
   const list = document.getElementById("forecast-list");
 
   const weather = JSON.parse(localStorage.getItem("weather"));
+  list.innerHTML = "";
+
   if (!weather || weather.length !== 7) {
-    list.innerHTML = "<p>Brak danych pogodowych.</p>";
+    list.innerHTML = `
+      <div class="text-center text-gray-500 w-full py-8">
+        Brak danych pogodowych.
+      </div>
+    `;
     container.style.display = "flex";
     return;
   }
 
-  list.innerHTML = "";
-
   weather.forEach((day, index) => {
     const date = getDateFromStart(index);
+
     const tile = document.createElement("div");
-    tile.className = "min-w-[160px] p-4 bg-blue-50 border border-blue-200 rounded-lg shadow-sm flex-shrink-0 text-sm text-gray-800";
-  
+    tile.className = `
+      min-w-[140px] p-4 bg-gradient-to-b from-blue-100 to-blue-50
+      border border-blue-200 rounded-xl shadow-md
+      flex flex-col items-center space-y-2 flex-shrink-0
+      text-gray-800 text-sm
+    `.trim();
+
     tile.innerHTML = `
-      <div class="font-semibold text-center mb-2">Dzień ${index + 1}</div>
-      <div class="text-center text-xs text-gray-600 mb-2">${date.day}.${date.month}.${date.year}</div>
-      <div class="text-center">🌡️ <strong>${day.temperature}°C</strong></div>
-      <div class="text-center">💨 ${day.windSpeed} km/h</div>
-      <div class="text-center">☁️ ${day.cloudCoverage}%</div>
+      <div class="font-bold text-base text-center">${day.day}</div>
+      <div class="text-xs text-gray-600">${date.day}.${date.month}.${date.year}</div>
+      <div class="text-lg font-semibold mt-2">🌡️ ${day.temperature}°C</div>
+      <div class="text-sm">💨 ${day.windSpeed} km/h</div>
+      <div class="text-sm">☁️ ${day.cloudCoverage}%</div>
     `;
-  
+
     list.appendChild(tile);
   });
 
   container.style.display = "flex";
 }
+
 
 function closeWeather() {
   document.getElementById("weather-forecast").style.display = "none";
