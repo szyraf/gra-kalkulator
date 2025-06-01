@@ -474,7 +474,7 @@ class Game {
   }
 
   drawGameElements() {
-    this.grid.drawGrid(this.ctx, 1000, 1000);
+    //this.grid.drawGrid(this.ctx, 1000, 1000);
     this.drawBuildings();
     this.drawHoverPreview();
   }
