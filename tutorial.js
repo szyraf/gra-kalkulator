@@ -1,7 +1,7 @@
 const faces = ["./assets/img/tadek/happy.png",
          "./assets/img/tadek/sad.png",
          "./assets/img/tadek/mad.png",
-         "./assets/img/tadek/dissapointed.png"];
+         "./assets/img/tadek/disappointed.png"];
 const lines = [
     {
         "text": "Do dzieła! Pozbądźmy się tej elektrowni!",
@@ -21,6 +21,36 @@ const lines = [
     {
         "text": "Musimy przerzucić się na energie odnawialne zanim będzie za późno i zniszczyć elektrownię węglową!",
         "face": faces[2],
+        "next": 4
+    },
+    {
+        "text": "Ulepszaj budynki montując na nich panele fotowoltaiczne i buduj elektrownie wiatrowe, oraz słoneczne!",
+        "face": faces[0],
+        "next": 5
+    },
+    {
+        "text": "Pamiętaj, że nadwyżki prądu wypada przechowywać w bankach!",
+        "face": faces[0],
+        "next": 6
+    },
+    {
+        "text": "Uważaj, żeby nie zbankrutować, ani nie dopuścić do problemów z energią.",
+        "face": faces[3],
+        "next": 7
+    },
+    {
+        "text": "A finalnie, gdy infrastruktura będzie gotowa, zniszcz elektrownię węglową! Nie będzie już potrzebna!",
+        "face": faces[2],
+        "next": 0
+    },
+    {
+        "text": "Jeeeeej! Miasto wreszcie jest czyste i zielone! Dziękuję Ci za pomoc!",
+        "face": faces[0],
+        "next": -1
+    },
+    {
+        "text": "O nie, problemy z prądem doprowadziły do zamieszek w mieście... Nasza misja zawiodła...",
+        "face": faces[3],
         "next": -1
     },
     
