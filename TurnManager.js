@@ -10,7 +10,7 @@ export class TurnManager {
         this.#hour = 8;
         this.#game = game;
         document.getElementById("startTurnButton").addEventListener("click", () => {
-            this.playTurn();
+            this.playTurn(this);
         });
     }
 
@@ -18,7 +18,9 @@ export class TurnManager {
         if (this.#playing) return;
         this.#playing = true;
         this.#hour = 8;
-        this.#updateInterval = window.setInterval(this.#update, hourDuration);
+        this.#updateInterval = window.setInterval(() => {
+            this.#update();
+        }, hourDuration);
     }
 
     #update() {

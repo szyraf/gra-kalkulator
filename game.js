@@ -285,6 +285,14 @@ class Game {
             }
         }
 
+        let capacity = 0;
+
+        for (let building of this.buildings) {
+            if (building.type == BuildingType.bank) {
+                capacity += building.currentEnergy;
+            }
+        }
+
         this.updateEnergyUI(produced, consumed, capacity);
     }
 
