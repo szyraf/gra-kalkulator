@@ -38,3 +38,10 @@ export const BuildingType = {
   producent: 2,
   bank: 3,
 };
+
+export const EnergyType = {
+  solar: 1,
+  solarSmall: 2,
+  wind: 3,
+  none: 4,
+};

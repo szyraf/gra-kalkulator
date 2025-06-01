@@ -1,6 +1,6 @@
-if (localStorage.getItem("username")) {
-    document.getElementById("landing-page").style.display = "none";
-}
+// if (localStorage.getItem("username")) {
+//     document.getElementById("landing-page").style.display = "none";
+// }
 
 function startGame(){
   
