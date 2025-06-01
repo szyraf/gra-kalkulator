@@ -1,3 +1,9 @@
+const openWeatherBtn = document.getElementById("open-weather");
+const closeWeatherBtn = document.getElementById("close-weather");
+openWeatherBtn.addEventListener("click", openWeather);
+closeWeatherBtn.addEventListener("click", closeWeather);
+
+
 export function startingDate() {
   //if (!localStorage.getItem("startDate")) {
   const today = new Date();
@@ -84,4 +90,39 @@ export function nextDay() {
   weather.push(newWeather);
 
   localStorage.setItem("weather", JSON.stringify(weather));
+}
+
+
+function openWeather() {
+  const container = document.getElementById("weather-forecast");
+  const list = document.getElementById("forecast-list");
+
+  const weather = JSON.parse(localStorage.getItem("weather"));
+  if (!weather || weather.length !== 7) {
+    list.innerHTML = "<p>Brak danych pogodowych.</p>";
+    container.style.display = "flex";
+    return;
+  }
+
+  list.innerHTML = "";
+
+  weather.forEach((day, index) => {
+    const date = getDateFromStart(index);
+    const item = document.createElement("div");
+    item.className = "p-3 bg-gray-100 rounded-md shadow-sm";
+
+    item.innerHTML = `
+      <div class="font-semibold">Day ${index + 1} (${date.day}.${date.month}.${date.year})</div>
+      <div>🌡️ Temp: ${day.temperature}°C</div>
+      <div>💨 Wind: ${day.windSpeed} km/h</div>
+      <div>☁️ Clouds: ${day.cloudCoverage}%</div>
+    `;
+    list.appendChild(item);
+  });
+
+  container.style.display = "flex";
+}
+
+function closeWeather() {
+  document.getElementById("weather-forecast").style.display = "none";
 }
