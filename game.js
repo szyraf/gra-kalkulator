@@ -42,7 +42,7 @@ class Game {
     this.mouseMovementCount = 0;
     this.hoverPosition = null;
     this.buildingAtPosition = null;
-    this.money = 3000000;
+    this.money = 5000000;
   }
 
   createInitialWeather() {
@@ -187,6 +187,8 @@ class Game {
       gridPosition.x,
       gridPosition.y
     );
+
+    console.log(gridPosition.x, gridPosition.y);
 
     if (clickedBuilding) {
       this.showBuildingInfo(clickedBuilding);
