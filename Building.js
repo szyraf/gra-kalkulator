@@ -52,7 +52,6 @@ export class Building {
     } else {
       outcome = 0;
     }
-    console.log(outcome);
     return parseFloat(outcome.toFixed(2));
   }
 }

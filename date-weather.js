@@ -3,12 +3,11 @@ const closeWeatherBtn = document.getElementById("close-weather");
 openWeatherBtn.addEventListener("click", openWeather);
 closeWeatherBtn.addEventListener("click", closeWeather);
 
-
 export function startingDate() {
   //if (!localStorage.getItem("startDate")) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const formattedDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+  const formattedDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 
   localStorage.setItem("dayOffset", 0);
   localStorage.setItem("startDate", formattedDate);
@@ -92,7 +91,6 @@ export function nextDay() {
   localStorage.setItem("weather", JSON.stringify(weather));
 }
 
-
 function openWeather() {
   const container = document.getElementById("weather-forecast");
   const list = document.getElementById("forecast-list");
@@ -134,7 +132,6 @@ function openWeather() {
 
   container.style.display = "flex";
 }
-
 
 function closeWeather() {
   document.getElementById("weather-forecast").style.display = "none";
