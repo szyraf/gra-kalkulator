@@ -293,6 +293,30 @@ class Game {
     this.energy.available = this.energy.production - this.energy.consumption;
   }
 
+  checkEnergy(building){
+         let percentage = (building.currentEnergy / building.energyPerHour) * 100;
+          let name=""
+          console.log(building.name);
+          if (building.description == "Mały magazyn") name ="Storage_Small_";
+          else name = "Storage_Big_";
+          
+          if (percentage < 25) {
+            building.name = name+="0";
+             
+          }else if (percentage < 50) {
+            building.name = name+="25";
+          }else if (percentage < 75) {  
+            building.name = name+="50";
+          }
+          else if (percentage < 100) {  
+            building.name = name+="75";
+          }
+          else {
+            building.name = name+="100";
+          }
+           this.drawBuilding(building);
+  }
+
   updateEnergy(hour) {
     let produced = 0;
     let consumed = 0;
@@ -301,12 +325,16 @@ class Game {
         consumed += building.energyPerHour;
       }
       produced += building.getProducedEnergy(hour);
+      if (building.type == BuildingType.bank) {
+        this.checkEnergy(building)
+      }
     }
 
     let outcome = produced - consumed;
     if (outcome < 0) {
       for (let building of this.buildings) {
         if (building.type == BuildingType.bank) {
+          console.log(building.name, building.currentEnergy, outcome);
           let energy = building.currentEnergy;
           if (outcome + energy >= 0) {
             building.currentEnergy += outcome;
@@ -316,7 +344,9 @@ class Game {
             building.currentEnergy = 0;
             outcome += energy;
           }
+          this.checkEnergy(building);
         }
+        
       }
     } else if (outcome > 0) {
       for (let building of this.buildings) {
