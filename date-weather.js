@@ -16,7 +16,7 @@ export function startingDate() {
         weather.push(generateWeather(i + 1, month));
     }
     localStorage.setItem("weather", JSON.stringify(weather));
-    //}
+    }
 }
 
 function getDateFromStart(n) {
