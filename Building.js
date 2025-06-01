@@ -25,6 +25,7 @@ export class Building {
     this.sizeX = jsonObject["sizeX"];
     this.sizeY = jsonObject["sizeY"];
     this.scale = jsonObject["scale"];
+    this.upgradePrice = jsonObject["upgradePrice"];
     this.energyType = EnergyType[jsonObject["energyType"]];
     this.currentEnergy = 0;
   }
@@ -38,15 +39,16 @@ export class Building {
     let outcome = 0;
     if (this.energyType == EnergyType.wind) {
       let speed = (weather.windSpeed * 1000) / 3600;
-      outcome = ((0.5 * 1.225 * 3.14 * 5026.5 * speed * speed * speed * 0.45) / 1000) * 15; //70m - promień
+      //outcome = ((0.5 * 1.225 * 3.14 * 5026.5 * speed * speed * speed * 0.45) / 1000) * 15; //70m - promień
+      outcome = 2000 * (speed / 11.11);
     } else if (this.energyType == EnergyType.solarSmall) {
       if (hour > weather.sunset || hour < weather.sunrise) return 0;
       let sunPercent = 1 - weather.cloudCoverage / 100;
-      outcome = 27 * 1 * sunPercent * 0.85; //27kw - średnia moc
+      let power = (outcome = 8 * 1 * sunPercent * 0.85); //27kw - średnia moc
     } else if (this.energyType == EnergyType.solar) {
       if (hour > weather.sunset || hour < weather.sunrise) return 0;
       let sunPercent = 1 - weather.cloudCoverage / 100;
-      outcome = 86820 * 1 * sunPercent * 0.85; //86820kw - średnia moc
+      outcome = 20 * 1 * sunPercent * 0.85; //20kw - średnia moc
     } else if (this.energyType == EnergyType.coal) {
       outcome = this.energyPerHour;
     } else {
