@@ -294,28 +294,25 @@ class Game {
     this.energy.available = this.energy.production - this.energy.consumption;
   }
 
-  checkEnergy(building){
-         let percentage = (building.currentEnergy / building.energyPerHour) * 100;
-          let name=""
-          console.log(building.name);
-          if (building.description == "Mały magazyn") name ="Storage_Small_";
-          else name = "Storage_Big_";
-          
-          if (percentage < 25) {
-            building.name = name+="0";
-             
-          }else if (percentage < 50) {
-            building.name = name+="25";
-          }else if (percentage < 75) {  
-            building.name = name+="50";
-          }
-          else if (percentage < 100) {  
-            building.name = name+="75";
-          }
-          else {
-            building.name = name+="100";
-          }
-           this.drawBuilding(building);
+  checkEnergy(building) {
+    let percentage = (building.currentEnergy / building.energyPerHour) * 100;
+    let name = "";
+    console.log(building.name);
+    if (building.description == "Mały magazyn") name = "Storage_Small_";
+    else name = "Storage_Big_";
+
+    if (percentage < 25) {
+      building.name = name += "0";
+    } else if (percentage < 50) {
+      building.name = name += "25";
+    } else if (percentage < 75) {
+      building.name = name += "50";
+    } else if (percentage < 100) {
+      building.name = name += "75";
+    } else {
+      building.name = name += "100";
+    }
+    this.drawBuilding(building);
   }
 
   updateEnergy(hour) {
@@ -327,7 +324,7 @@ class Game {
       }
       produced += building.getProducedEnergy(hour);
       if (building.type == BuildingType.bank) {
-        this.checkEnergy(building)
+        this.checkEnergy(building);
       }
     }
 
@@ -347,7 +344,6 @@ class Game {
           }
           this.checkEnergy(building);
         }
-        
       }
     } else if (outcome > 0) {
       for (let building of this.buildings) {
@@ -374,7 +370,7 @@ class Game {
     }
 
     if (outcome < 0) capacity = outcome;
-
+    capacity = Math.floor(capacity * 100) / 100;
     this.updateEnergyUI(produced, consumed, capacity);
   }
 
