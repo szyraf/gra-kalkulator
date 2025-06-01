@@ -7,7 +7,9 @@ export function startingDate() {
   //if (!localStorage.getItem("startDate")) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const formattedDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+  const formattedDate = `${today.getFullYear()}-${String(
+    today.getMonth() + 1
+  ).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 
   localStorage.setItem("dayOffset", 0);
   localStorage.setItem("startDate", formattedDate);
@@ -57,7 +59,7 @@ function generateWeather(dayNumber, month) {
   return {
     day: `Dzień ${dayNumber}`,
     temperature: getRandomInt(range.temp[0], range.temp[1]),
-    windSpeed: getRandomInt(5, 40),
+    windSpeed: getWeightedRandomWindSpeed(),
     cloudCoverage: getRandomInt(range.cloud[0], range.cloud[1]),
     sunrise: range.sunrise,
     sunset: range.sunset,
@@ -66,6 +68,29 @@ function generateWeather(dayNumber, month) {
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getWeightedRandomWindSpeed() {
+  const weights = [
+    { value: 5, weight: 1 },
+    { value: 10, weight: 3 },
+    { value: 20, weight: 4 },
+    { value: 30, weight: 2 },
+    { value: 35, weight: 1 },
+    { value: 40, weight: 1 },
+  ];
+
+  const totalWeight = weights.reduce((sum, item) => sum + item.weight, 0);
+  let random = Math.random() * totalWeight;
+
+  for (const item of weights) {
+    random -= item.weight;
+    if (random <= 0) {
+      return item.value;
+    }
+  }
+
+  return weights[weights.length - 1].value;
 }
 
 export function nextDay() {
