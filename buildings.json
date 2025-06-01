@@ -59,8 +59,8 @@
       "energyType": "wind",
       "energyPerHour": [2000],
       "placable": true,
-      "sizeX": 1,
-      "sizeY": 1,
+      "sizeX": 2,
+      "sizeY": 2,
       "scale": 3
     },
     {
@@ -95,8 +95,8 @@
       "energyType": "none",
       "energyPerHour": [0],
       "placable": false,
-      "sizeX": 3,
-      "sizeY": 3,
+      "sizeX": 4,
+      "sizeY": 4,
       "scale": 1
     }
   ]

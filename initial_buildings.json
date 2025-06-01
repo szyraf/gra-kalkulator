@@ -1,29 +1,59 @@
 {
-  "buildings": [
-    {
-      "name": "House",
-      "x": 2,
-      "y": 2
-    },
-    {
-      "name": "Apartament",
-      "x": 4,
-      "y": 2
-    },
-    {
-      "name": "Tower",
-      "x": 2,
-      "y": 4
-    },
-    {
-      "name": "Solar",
-      "x": 4,
-      "y": 4
-    },
-    {
-      "name": "Turbine",
-      "x": 6,
-      "y": 4
-    }
-  ]
-}
+    "buildings": [
+      {
+        "name": "Coal",
+        "x": 6,
+        "y": 6
+      },
+      {
+        "name": "House",
+        "x": 9,
+        "y": -2
+      },
+      {
+        "name": "House",
+        "x": 9,
+        "y": -4
+      },
+      {
+        "name": "House",
+        "x": 9,
+        "y": -6
+      },
+      {
+        "name": "House",
+        "x": 7,
+        "y": -6
+      },
+      {
+        "name": "House",
+        "x": 5,
+        "y": -6
+      },
+      {
+        "name": "Apartament",
+        "x": -4,
+        "y": 7
+      },
+      {
+        "name": "Apartament",
+        "x": -3,
+        "y": 7
+      },
+      {
+        "name": "Apartament",
+        "x": -2,
+        "y": 7
+      },
+      {
+        "name": "Tower",
+        "x": -2,
+        "y": -2
+      },
+      {
+        "name": "Tower",
+        "x": 0,
+        "y": -4
+      }
+    ]
+  }
