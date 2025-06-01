@@ -277,8 +277,17 @@ class Game {
     document.getElementById("building-upgrades").textContent = `Ulepszenia: ${
       building.upgrades.join(", ") || "Brak"
     }`
-    document.getElementById("building-upgrade").textContent = `Kup panel solarny: ${building.cost} `
-    ;
+
+
+    
+    //Tutaj jest cena zakupu panelu w budynku vvvvvvvvv
+    document.getElementById("building-upgrade").textContent = `Kup panel solarny: ${building.energyPerHour[0]} `;
+
+
+
+
+
+    
     if (
       building.type === BuildingType.consumer &&
       building.energyType !== EnergyType.solarSmall
