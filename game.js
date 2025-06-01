@@ -33,7 +33,7 @@ class Game {
     this.buildings = [];
     this.selectedBuilding = null;
     this.selectedBlueprint = null;
-    this.day = "1 8:00";
+    this.day = "1 - Godzina: 8:00";
     this.hour = 8;
     this.weather = this.createInitialWeather();
     this.energy = this.createInitialEnergyState();
@@ -480,7 +480,9 @@ class Game {
 
   updateTimeInfo(hour) {
     this.hour = hour;
-    this.day = `${parseInt(localStorage.getItem("dayOffset")) + 1} ${hour}:00`;
+    this.day = `${
+      parseInt(localStorage.getItem("dayOffset")) + 1
+    } - Godzina: ${hour}:00`;
   }
 
   draw() {
