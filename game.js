@@ -276,7 +276,9 @@ class Game {
       this.getEnergyInfoText(building);
     document.getElementById("building-upgrades").textContent = `Ulepszenia: ${
       building.upgrades.join(", ") || "Brak"
-    }`;
+    }`
+    document.getElementById("building-upgrade").textContent = `Kup panel solarny: ${building.cost} `
+    ;
     if (
       building.type === BuildingType.consumer &&
       building.energyType !== EnergyType.solarSmall
