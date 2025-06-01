@@ -240,6 +240,7 @@ class Game {
           building.energyType = EnergyType.solarSmall;
           imageManager.updateCosts();
           building.name = building.name + "S";
+          building.upgrades.push("Panele słoneczne");
           this.drawBuilding(building);
           this.updateBuildingInfoPanel(building, infoPanel);
         } else {
