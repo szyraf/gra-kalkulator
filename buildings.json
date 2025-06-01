@@ -32,7 +32,7 @@
       "cost": 300,
       "type": "consumer",
       "energyType": "none",
-      "energyPerHour": [10000, 2],
+      "energyPerHour": [250, 500],
       "upgradePrice": 40000,
       "placable": false,
       "sizeX": 2,
@@ -78,7 +78,7 @@
     {
       "name": "Storage_Big_0",
       "description": "Duży magazyn",
-      "cost": 200000,
+      "cost": 2000000,
       "type": "bank",
       "energyType": "none",
       "energyPerHour": [1000],
