@@ -108,16 +108,18 @@ function openWeather() {
 
   weather.forEach((day, index) => {
     const date = getDateFromStart(index);
-    const item = document.createElement("div");
-    item.className = "p-3 bg-gray-100 rounded-md shadow-sm";
-
-    item.innerHTML = `
-      <div class="font-semibold">Day ${index + 1} (${date.day}.${date.month}.${date.year})</div>
-      <div>🌡️ Temp: ${day.temperature}°C</div>
-      <div>💨 Wind: ${day.windSpeed} km/h</div>
-      <div>☁️ Clouds: ${day.cloudCoverage}%</div>
+    const tile = document.createElement("div");
+    tile.className = "min-w-[160px] p-4 bg-blue-50 border border-blue-200 rounded-lg shadow-sm flex-shrink-0 text-sm text-gray-800";
+  
+    tile.innerHTML = `
+      <div class="font-semibold text-center mb-2">Dzień ${index + 1}</div>
+      <div class="text-center text-xs text-gray-600 mb-2">${date.day}.${date.month}.${date.year}</div>
+      <div class="text-center">🌡️ <strong>${day.temperature}°C</strong></div>
+      <div class="text-center">💨 ${day.windSpeed} km/h</div>
+      <div class="text-center">☁️ ${day.cloudCoverage}%</div>
     `;
-    list.appendChild(item);
+  
+    list.appendChild(tile);
   });
 
   container.style.display = "flex";

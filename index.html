@@ -120,17 +120,23 @@
     </div>
 
     <div id="start"></div>
-    <div id="weather-forecast" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/30">
-      <div class="bg-white shadow-2xl rounded-xl p-4 w-full max-w-5xl max-h-[90vh] overflow-x-auto flex flex-col space-y-4 text-gray-800">
-        <div class="flex justify-between items-center">
-          <h2 class="text-xl font-bold">Prognoza pogody (7 dni)</h2>
-          <button id="close-weather" class="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md">
-            X
-          </button>
-        </div>
-        <div id="forecast-list" class="flex gap-4 overflow-x-auto pb-2"></div>
-      </div>
-    </div>
+<div id="weather-forecast" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/30">
+  <div class="relative bg-white shadow-2xl rounded-xl p-6 max-w-[1400px] max-h-[80vh] overflow-x-auto flex flex-col space-y-4 text-black">
+
+
+    <button id="close-weather"
+      class="absolute top-2 right-3 text-black text-xl hover:text-red-600 font-bold z-10">
+      ✕
+    </button>
+
+    <h2 class="text-2xl font-bold text-center">Prognoza pogody (7 dni)</h2>
+
+    <div id="forecast-list" class="flex flex-row justify-around items-center gap-4 pb-2 px-6 flex-nowrap overflow-x-auto"></div>
+
+  </div>
+</div>
+
+</div>
 
     <script type="module" src="imageManager.js"></script>
     <script type="module" src="game.js"></script>
