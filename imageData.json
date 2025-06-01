@@ -16,6 +16,18 @@
       "id": "Tower",
       "src": "./assets/img/tower/tower.png"
     },
+     {
+      "id": "HouseS",
+      "src": "./assets/img/house/house_solar.png"
+    },
+    {
+      "id": "ApartamentS",
+      "src": "./assets/img/apartment/apartment_solar.png"
+    },
+    {
+      "id": "TowerS",
+      "src": "./assets/img/tower/tower_solar.png"
+    },
     {
       "id": "Turbine",
       "src": "./assets/img/turbine/turbine.png"
