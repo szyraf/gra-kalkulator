@@ -40,7 +40,11 @@
       "id": "Storage_Big_0",
       "src": "./assets/img/storage_big/0.png"
     },
-     {
+    {
+      "id": "Coal",
+      "src": "./assets/img/coal/coal.png"
+    },
+    {
       "id": "HouseP",
       "src": "./assets/img/house/house_picked.png"
     },
