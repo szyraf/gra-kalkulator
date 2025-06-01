@@ -27,6 +27,10 @@
     {
       "id": "Storage_Big_0",
       "src": "./assets/img/storage_big/0.png"
+    },
+    {
+      "id": "Coal",
+      "src": "./assets/img/coal/coal.png"
     }
   ]
 }

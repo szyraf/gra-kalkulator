@@ -80,16 +80,6 @@ class Game {
       if (e.key === "Escape") {
         this.hideBuildingInfo();
         this.selectedBlueprint = null;
-        this.day = 1;
-        this.energy = this.createInitialEnergyState();
-        this.camera = this.createInitialCameraState();
-        this.dailyBudget = 1000;
-        this.mouseMovementCount = 0;
-        this.hoverPosition = null;
-        this.buildingAtPosition = null;
-        this.money = 600;
-        startingDate();
-        this.updateWeatherInfo();
       }
     });
   }
@@ -188,13 +178,22 @@ class Game {
     if (clickedBuilding) {
       this.showBuildingInfo(clickedBuilding);
     } else {
-      this.hideBuildingInfo();
       if (this.selectedBlueprint != null) {
-        this.addBuilding(
-          this.selectedBlueprint,
-          gridPosition.x,
-          gridPosition.y
-        );
+        if (
+          this.canPlaceBuildingAtPosition(
+            gridPosition.x,
+            gridPosition.y,
+            this.selectedBlueprint.sizeX,
+            this.selectedBlueprint.sizeY
+          )
+        ) {
+          this.hideBuildingInfo();
+          this.addBuilding(
+            this.selectedBlueprint,
+            gridPosition.x,
+            gridPosition.y
+          );
+        }
       }
     }
   }
@@ -207,7 +206,32 @@ class Game {
   }
 
   findBuildingAtPosition(gridX, gridY) {
-    return this.buildings.find((b) => b.gridX === gridX && b.gridY === gridY);
+    return this.buildings.find((b) => {
+      return (
+        gridX <= b.gridX &&
+        gridX >= b.gridX - (b.sizeX - 1) &&
+        gridY <= b.gridY &&
+        gridY >= b.gridY - (b.sizeY - 1)
+      );
+    });
+  }
+
+  canPlaceBuildingAtPosition(gridX, gridY, buildingSizeX, buildingSizeY) {
+    for (let building of this.buildings) {
+      for (let i = 0; i < buildingSizeX; i++) {
+        for (let j = 0; j < buildingSizeY; j++) {
+          if (
+            gridX - i <= building.gridX &&
+            gridX - i >= building.gridX - (building.sizeX - 1) &&
+            gridY - j <= building.gridY &&
+            gridY - j >= building.gridY - (building.sizeY - 1)
+          ) {
+            return false;
+          }
+        }
+      }
+    }
+    return true;
   }
 
   showBuildingInfo(building) {
@@ -399,7 +423,13 @@ class Game {
   }
 
   drawBuildings() {
-    this.buildings.forEach((building) => this.drawBuilding(building));
+    const sortedBuildings = [...this.buildings].sort((a, b) => {
+      if (a.gridX !== b.gridX) {
+        return a.gridX - b.gridX;
+      }
+      return a.gridY - b.gridY;
+    });
+    sortedBuildings.forEach((building) => this.drawBuilding(building));
   }
 
   drawBuilding(building) {
@@ -421,28 +451,31 @@ class Game {
   drawBuildingImage(building, position, alpha = 1.0) {
     const img = imageManager.getImage(building.name);
     if (img) {
-      this.ctx.globalAlpha = alpha;
-      this.ctx.drawImage(
-        img,
-        position.x + 2,
-        position.y + 2,
-        this.gridSize - 4,
-        this.gridSize - 4
-      );
-      this.ctx.globalAlpha = 1.0;
+      this.drawBuildingImageAtPosition(img, building, position, alpha);
     }
+  }
+
+  drawBuildingImageAtPosition(img, building, position, alpha = 1.0) {
+    this.ctx.globalAlpha = alpha;
+    const offsetX = ((building.sizeX * building.scale - 1) * this.gridSize) / 2;
+    const offsetY = ((building.sizeY * building.scale - 1) * this.gridSize) / 2;
+    const width = (this.gridSize - 4) * building.sizeX * building.scale;
+    const height = (this.gridSize - 4) * building.sizeY * building.scale;
+
+    this.ctx.drawImage(
+      img,
+      position.x + 2 - offsetX,
+      position.y + 2 - offsetY * 2,
+      width,
+      height
+    );
+    this.ctx.globalAlpha = 1.0;
   }
 
   drawSelectedBuildingOverlay(building, position) {
     const selectedImg = imageManager.getImage(building.name + "Selected");
     if (selectedImg) {
-      this.ctx.drawImage(
-        selectedImg,
-        position.x + 2,
-        position.y + 2,
-        this.gridSize - 4,
-        this.gridSize - 4
-      );
+      this.drawBuildingImageAtPosition(selectedImg, building, position);
     }
   }
 
@@ -460,17 +493,21 @@ class Game {
 
       if (
         this.money < this.selectedBlueprint.cost ||
-        this.findBuildingAtPosition(this.hoverPosition.x, this.hoverPosition.y)
+        !this.canPlaceBuildingAtPosition(
+          this.hoverPosition.x,
+          this.hoverPosition.y,
+          this.selectedBlueprint.sizeX,
+          this.selectedBlueprint.sizeY
+        )
       ) {
         this.ctx.filter = "sepia(1) saturate(5) hue-rotate(-50deg)";
       }
 
-      this.ctx.drawImage(
+      this.drawBuildingImageAtPosition(
         img,
-        position.x + 2,
-        position.y + 2,
-        this.gridSize - 4,
-        this.gridSize - 4
+        this.selectedBlueprint,
+        position,
+        0.5
       );
 
       this.ctx.globalCompositeOperation = "source-over";
