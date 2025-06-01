@@ -386,7 +386,6 @@ class Game {
     }
 
     if (outcome < 0) capacity = outcome;
-    capacity = capacity;
 
     this.updateEnergyUI(produced, consumed, capacity);
   }
@@ -410,6 +409,8 @@ class Game {
       consumed = consumed / 1000;
     }
 
+    if (capacity < 0) document.getElementById("available-energy").style.color = "red";
+    else document.getElementById("available-energy").style.color = "white";
     document.getElementById("available-energy").textContent = `Dostępna energia: ${capacity.toFixed(2)} ${capacityUnit}`;
     document.getElementById("total-production").textContent = `Produkcja: ${produced.toFixed(2)} ${producedUnit}`;
     document.getElementById("total-consumption").textContent = `Zużycie: ${consumed.toFixed(2)} ${consumedUnit}`;

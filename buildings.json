@@ -42,7 +42,7 @@
     {
       "name": "Solar",
       "description": "Elektrownia Słoneczna",
-      "cost": 10000,
+      "cost": 100000,
       "type": "producent",
       "energyType": "solar",
       "energyPerHour": [2],
