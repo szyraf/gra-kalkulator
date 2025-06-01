@@ -18,7 +18,7 @@ export class Building {
     this.description = jsonObject["description"];
     this.cost = jsonObject["cost"];
     this.energyPerHour = jsonObject["energyPerHour"];
-    this.type = jsonObject["type"];
+    this.type = BuildingType[jsonObject["type"]];
     this.gridX = gridX;
     this.gridY = gridY;
     this.sizeX = jsonObject["sizeX"];
@@ -41,6 +41,8 @@ export class Building {
       if (hour > weather.sunset || hour < weather.sunrise) return 0;
       let sunPercent = 1 - weather.cloudCoverage / 100;
       return this.#round(86820 * 1 * sunPercent * 0.85); //86820kw - średnia moc
+    } else if (this.energyType == EnergyType.coal) {
+      return this.energyPerHour;
     } else {
       return 0;
     }
@@ -61,5 +63,6 @@ export const EnergyType = {
   solar: 1,
   solarSmall: 2,
   wind: 3,
-  none: 4,
+  coal: 4,
+  none: 5,
 };

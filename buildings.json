@@ -5,6 +5,7 @@
       "description": "Dom jednorodzinny",
       "cost": 100,
       "type": "consumer",
+      "energyType": "none",
       "energyPerHour": 100,
       "placable": false,
       "sizeX": 1,
@@ -16,6 +17,7 @@
       "description": "Blok mieszkalny",
       "cost": 200,
       "type": "consumer",
+      "energyType": "none",
       "energyPerHour": 1000,
       "placable": false,
       "sizeX": 1,
@@ -27,6 +29,7 @@
       "description": "Wieżowiec",
       "cost": 300,
       "type": "consumer",
+      "energyType": "none",
       "energyPerHour": 2000,
       "placable": false,
       "sizeX": 1,
@@ -38,6 +41,7 @@
       "description": "Elektrownia Słoneczna",
       "cost": 400,
       "type": "producent",
+      "energyType": "solar",
       "energyPerHour": 100,
       "placable": true,
       "sizeX": 2,
@@ -49,6 +53,7 @@
       "description": "Turbina wiatrowa",
       "cost": 50,
       "type": "producent",
+      "energyType": "wind",
       "energyPerHour": 200,
       "placable": true,
       "sizeX": 1,
@@ -60,6 +65,7 @@
       "description": "Mały magazyn",
       "cost": 60,
       "type": "producent",
+      "energyType": "none",
       "energyPerHour": 200,
       "placable": true,
       "sizeX": 1,
@@ -71,6 +77,7 @@
       "description": "Duży magazyn",
       "cost": 70,
       "type": "producent",
+      "energyType": "none",
       "energyPerHour": 200,
       "placable": true,
       "sizeX": 2,
@@ -82,6 +89,7 @@
       "description": "Elektrownia Węglowa",
       "cost": 80,
       "type": "producent",
+      "energyType": "none",
       "energyPerHour": 200,
       "placable": true,
       "sizeX": 1,
@@ -89,4 +97,4 @@
       "scale": 1
     }
   ]
-} 
+}

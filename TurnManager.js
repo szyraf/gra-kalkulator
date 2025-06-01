@@ -27,7 +27,7 @@ export class TurnManager {
 
   #update() {
     if (this.#hour == 25) {
-      //nextDay();
+      nextDay();
     } else if (this.#hour >= 32) {
       window.clearInterval(this.#updateInterval);
       this.#endTurn();

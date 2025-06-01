@@ -6,11 +6,7 @@
     <title>Solvilla: Buduj Przyszłość</title>
     <link rel="stylesheet" href="./styles/main.css" />
     <link rel="stylesheet" href="./styles/building-menu.css" />
-    <link
-      rel="icon"
-      href="./assets/icon.jpg"
-      type="image/x-icon"
-    />
+    <link rel="icon" href="./assets/icon.jpg" type="image/x-icon" />
     <style>
       .fade-text {
         opacity: 1;
@@ -22,12 +18,24 @@
       }
 
       @keyframes slideIn {
-        from { transform: translateX(-100%); opacity: 0; }
-        to   { transform: translateX(0); opacity: 1; }
+        from {
+          transform: translateX(-100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
       }
       @keyframes slideOut {
-        from { transform: translateX(0); opacity: 1; }
-        to   { transform: translateX(-100%); opacity: 0; }
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(-100%);
+          opacity: 0;
+        }
       }
 
       .animate-slide-in {
@@ -36,16 +44,15 @@
       .animate-slide-out {
         animation: slideOut 0.4s ease-in forwards;
       }
-</style>
+    </style>
   </head>
 
   <body class="bg-gray-100 min-h-screen">
-   
     <div id="landing-page">
       <div class="container">
         <h1>Solvilla</h1>
         <p>Wprowadź nazwę użytkownika, aby rozpocząć</p>
-        <input type="text" placeholder="Nazwa użytkownika" id="username">
+        <input type="text" placeholder="Nazwa użytkownika" id="username" />
         <button class="btn-start" onclick="startGame()">Start</button>
         <button class="btn-tutorial" onclick="showTutorial()">Samouczek</button>
       </div>
@@ -53,7 +60,7 @@
     <div class="relative w-full h-screen overflow-hidden">
       <div class="absolute top-0 left-0 bg-green-400/90 shadow-md p-2 z-10 w-48">
         <div class="space-y-1 text-sm">
-          <div id="day-info" class="text-gray-800 font-medium">Dzień: 1</div>
+          <div id="day-info" class="text-gray-800 font-medium">Dzień: 1 8:00</div>
           <div id="weather-info" class="text-gray-800 font-medium">Pogoda: Słonecznie</div>
           <div id="sunlight-info" class="text-gray-800 font-medium">Nasłonecznienie: 100%</div>
           <div id="wind-info" class="text-gray-800 font-medium">Wiatr: 5 km/h</div>
@@ -63,49 +70,40 @@
           <div id="money" class="text-gray-800 font-medium">Pieniądze: 0 PLN</div>
         </div>
       </div>
-<div id="tadek-dialog"
-     class="absolute left-4 z-20 flex flex-col sm:flex-row items-center sm:items-end space-y-2 sm:space-y-0 sm:space-x-4 pointer-events-none"
-     style="top: 120px; bottom: 160px; display:none;">
+      <div
+        id="tadek-dialog"
+        class="absolute left-4 z-20 flex flex-col sm:flex-row items-center sm:items-end space-y-2 sm:space-y-0 sm:space-x-4 pointer-events-none"
+        style="top: 120px; bottom: 160px; display: none"
+      >
+        <img id="tadek-face" src="" alt="Tadeusz Kościuszko" class="max-h-[calc(100vh-310px)] h-auto w-auto object-contain select-none" />
 
-  <img id="tadek-face" src="" alt="Tadeusz Kościuszko"
-      class="max-h-[calc(100vh-310px)] h-auto w-auto object-contain select-none" />
-
-  <div class="bg-white/90 rounded-lg border border-gray-300 shadow-md p-4 text-sm text-gray-800 min-w-[280px] max-w-sm pointer-events-auto transform -translate-y-2.5 relative flex items-center justify-around">
-    <span class="font-semibold text-base">Tadek:&nbsp;</span>
-    <span id="tadek-text" class="fade-text mt-0"></span>
-    <button id="tadek-next-btn"
-      class="text-gray-600 hover:text-black text-4xl px-2 leading-none">
-      <span style="font-size:30px;">&rsaquo;</span>
-    </button>
-  </div>
-</div>
-
-
-
-
-
-      <div class="absolute top-0 right-0 bg-green-400/90 shadow-md p-2 z-10 w-48" id="weather-panel">
-      <div class="space-y-2 text-sm">
-        <div class="text-gray-800 font-medium">
-          <button id="startTurnButton" onclick="nextDay()"
-                  class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-3 rounded transition-all duration-200 hover:scale-105">
-            Rozpocznij dzień
-          </button>
-        </div>
-        <div class="text-gray-800 font-medium">
-          <button onclick="checkWeather()"
-                  class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-3 rounded transition-all duration-200 hover:scale-105">
-            Sprawdź prognozę pogody
+        <div
+          class="bg-white/90 rounded-lg border border-gray-300 shadow-md p-4 text-sm text-gray-800 min-w-[280px] max-w-sm pointer-events-auto transform -translate-y-2.5 relative flex items-center justify-around"
+        >
+          <span class="font-semibold text-base">Tadek:&nbsp;</span>
+          <span id="tadek-text" class="fade-text mt-0"></span>
+          <button id="tadek-next-btn" class="text-gray-600 hover:text-black text-4xl px-2 leading-none">
+            <span style="font-size: 30px">&rsaquo;</span>
           </button>
         </div>
       </div>
-    </div>
 
+      <div class="absolute top-0 right-0 bg-green-400/90 shadow-md p-2 z-10 w-48" id="weather-panel">
+        <div class="space-y-2 text-sm">
+          <div class="text-gray-800 font-medium">
+            <button id="startTurnButton" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-3 rounded transition-all duration-200 hover:scale-105">Rozpocznij dzień</button>
+          </div>
+          <div class="text-gray-800 font-medium">
+            <button onclick="checkWeather()" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-3 rounded transition-all duration-200 hover:scale-105">
+              Sprawdź prognozę pogody
+            </button>
+          </div>
+        </div>
+      </div>
 
       <div class="absolute bottom-0 left-0 right-0 bg-green-400/90 shadow-md p-4 z-10">
         <div class="flex items-center mb-4">
-          <div class="flex space-x-4 py-2" id="building-menu-building-images">
-          </div>
+          <div class="flex space-x-4 py-2" id="building-menu-building-images"></div>
         </div>
 
         <div class="fixed bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 z-20" id="buildingInfo" style="display: none">
@@ -117,7 +115,7 @@
       </div>
 
       <canvas id="gameCanvas" class="absolute inset-0 w-full h-full"></canvas>
-       <img id="texture" src="./assets/grass.jpg" style="display: none;" />
+      <img id="texture" src="./assets/grass.jpg" style="display: none" />
     </div>
 
     <div id="start"></div>
@@ -125,6 +123,6 @@
     <script type="module" src="game.js"></script>
     <script type="module" src="date-weather.js" defer></script>
     <script src="landing.js" defer></script>
-    <script src="tutorial.js" ></script>
+    <script src="tutorial.js"></script>
   </body>
 </html>
