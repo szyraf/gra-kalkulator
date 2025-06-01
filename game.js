@@ -17,16 +17,16 @@ class Game {
     this.canvas = document.getElementById("gameCanvas");
     this.ctx = this.canvas.getContext("2d");
     this.gridSize = 250;
-     this.texture = document.getElementById("texture");
-        this.backgroundPattern = null;
+    this.texture = document.getElementById("texture");
+    this.backgroundPattern = null;
 
-        if (this.texture.complete) {
-        this.backgroundPattern = this.createScaledPattern(this.texture, 0.38); // 0.5 = 2x częściej
-        } else {
-        this.texture.onload = () => {
-            this.backgroundPattern = this.createScaledPattern(this.texture,0.38);
-        };
-        }
+    if (this.texture.complete) {
+      this.backgroundPattern = this.createScaledPattern(this.texture, 0.38); // 0.5 = 2x częściej
+    } else {
+      this.texture.onload = () => {
+        this.backgroundPattern = this.createScaledPattern(this.texture, 0.38);
+      };
+    }
     this.grid = new Grid(this.gridSize);
     this.buildings = [];
     this.selectedBuilding = null;
@@ -41,7 +41,6 @@ class Game {
     this.buildingAtPosition = null;
     this.money = 1000;
   }
-  
 
   createInitialWeather() {
     return {
@@ -91,16 +90,6 @@ class Game {
       if (e.key === "Escape") {
         this.hideBuildingInfo();
         this.selectedBlueprint = null;
-        this.day = 1;
-        this.energy = this.createInitialEnergyState();
-        this.camera = this.createInitialCameraState();
-        this.dailyBudget = 1000;
-        this.mouseMovementCount = 0;
-        this.hoverPosition = null;
-        this.buildingAtPosition = null;
-        this.money = 600;
-        startingDate();
-        this.updateWeatherInfo();
       }
     });
   }
@@ -109,15 +98,27 @@ class Game {
     e.preventDefault();
     const zoomFactor = 1.1;
     const mousePosition = this.getMousePosition(e);
-    const worldPositionBeforeZoom = this.screenToWorldCoordinates(mousePosition.x, mousePosition.y);
+    const worldPositionBeforeZoom = this.screenToWorldCoordinates(
+      mousePosition.x,
+      mousePosition.y
+    );
 
     if (e.deltaY < 0) {
-      this.camera.zoom = Math.min(this.camera.zoom * zoomFactor, this.camera.maxZoom);
+      this.camera.zoom = Math.min(
+        this.camera.zoom * zoomFactor,
+        this.camera.maxZoom
+      );
     } else {
-      this.camera.zoom = Math.max(this.camera.zoom / zoomFactor, this.camera.minZoom);
+      this.camera.zoom = Math.max(
+        this.camera.zoom / zoomFactor,
+        this.camera.minZoom
+      );
     }
 
-    const worldPositionAfterZoom = this.screenToWorldCoordinates(mousePosition.x, mousePosition.y);
+    const worldPositionAfterZoom = this.screenToWorldCoordinates(
+      mousePosition.x,
+      mousePosition.y
+    );
     this.adjustCameraPosition(worldPositionBeforeZoom, worldPositionAfterZoom);
   }
 
@@ -175,15 +176,34 @@ class Game {
 
     const clickPosition = this.getClickPosition(e);
     clickPosition.x = clickPosition.x - this.gridSize / 2;
-    const gridPosition = this.grid.worldToGridCoordinates(clickPosition.x, clickPosition.y);
-    const clickedBuilding = this.findBuildingAtPosition(gridPosition.x, gridPosition.y);
+    const gridPosition = this.grid.worldToGridCoordinates(
+      clickPosition.x,
+      clickPosition.y
+    );
+    const clickedBuilding = this.findBuildingAtPosition(
+      gridPosition.x,
+      gridPosition.y
+    );
 
     if (clickedBuilding) {
       this.showBuildingInfo(clickedBuilding);
     } else {
-      this.hideBuildingInfo();
       if (this.selectedBlueprint != null) {
-        this.addBuilding(this.selectedBlueprint, gridPosition.x, gridPosition.y);
+        if (
+          this.canPlaceBuildingAtPosition(
+            gridPosition.x,
+            gridPosition.y,
+            this.selectedBlueprint.sizeX,
+            this.selectedBlueprint.sizeY
+          )
+        ) {
+          this.hideBuildingInfo();
+          this.addBuilding(
+            this.selectedBlueprint,
+            gridPosition.x,
+            gridPosition.y
+          );
+        }
       }
     }
   }
@@ -196,7 +216,32 @@ class Game {
   }
 
   findBuildingAtPosition(gridX, gridY) {
-    return this.buildings.find((b) => b.gridX === gridX && b.gridY === gridY);
+    return this.buildings.find((b) => {
+      return (
+        gridX <= b.gridX &&
+        gridX >= b.gridX - (b.sizeX - 1) &&
+        gridY <= b.gridY &&
+        gridY >= b.gridY - (b.sizeY - 1)
+      );
+    });
+  }
+
+  canPlaceBuildingAtPosition(gridX, gridY, buildingSizeX, buildingSizeY) {
+    for (let building of this.buildings) {
+      for (let i = 0; i < buildingSizeX; i++) {
+        for (let j = 0; j < buildingSizeY; j++) {
+          if (
+            gridX - i <= building.gridX &&
+            gridX - i >= building.gridX - (building.sizeX - 1) &&
+            gridY - j <= building.gridY &&
+            gridY - j >= building.gridY - (building.sizeY - 1)
+          ) {
+            return false;
+          }
+        }
+      }
+    }
+    return true;
   }
 
   showBuildingInfo(building) {
@@ -205,7 +250,10 @@ class Game {
     this.updateBuildingInfoPanel(building, infoPanel);
 
     const buildingPosition = this.calculateBuildingPosition(building);
-    const screenPosition = this.worldToScreenCoordinates(buildingPosition.x, buildingPosition.y);
+    const screenPosition = this.worldToScreenCoordinates(
+      buildingPosition.x,
+      buildingPosition.y
+    );
 
     infoPanel.style.display = "block";
   }
@@ -219,8 +267,11 @@ class Game {
 
   updateBuildingInfoPanel(building, infoPanel) {
     document.getElementById("building-name").textContent = building.name;
-    document.getElementById("building-energy").textContent = this.getEnergyInfoText(building);
-    document.getElementById("building-upgrades").textContent = `Ulepszenia: ${building.upgrades.join(", ") || "Brak"}`;
+    document.getElementById("building-energy").textContent =
+      this.getEnergyInfoText(building);
+    document.getElementById("building-upgrades").textContent = `Ulepszenia: ${
+      building.upgrades.join(", ") || "Brak"
+    }`;
   }
 
   getEnergyInfoText(building) {
@@ -250,11 +301,17 @@ class Game {
   }
 
   calculateEnergyProduction() {
-    this.energy.production = this.buildings.filter((b) => b.type === BuildingType.producent).reduce((sum, b) => sum + b.energyPerHour, 0);
+    this.energy.production = this.buildings
+      .filter((b) => b.type === BuildingType.producent)
+      .reduce((sum, b) => sum + b.energyPerHour, 0);
   }
 
   calculateEnergyConsumption() {
-    this.energy.consumption = Math.abs(this.buildings.filter((b) => b.type === BuildingType.consumer).reduce((sum, b) => sum - b.energyPerHour, 0));
+    this.energy.consumption = Math.abs(
+      this.buildings
+        .filter((b) => b.type === BuildingType.consumer)
+        .reduce((sum, b) => sum - b.energyPerHour, 0)
+    );
   }
 
   calculateAvailableEnergy() {
@@ -318,15 +375,25 @@ class Game {
   }
 
   updateEnergyUI(produced, consumed, capacity) {
-    document.getElementById("available-energy").textContent = `Dostępna energia: ${capacity} kWh`;
-    document.getElementById("total-production").textContent = `Produkcja: ${produced} kWh`;
-    document.getElementById("total-consumption").textContent = `Zużycie: ${consumed} kWh`;
+    document.getElementById(
+      "available-energy"
+    ).textContent = `Dostępna energia: ${capacity} kWh`;
+    document.getElementById(
+      "total-production"
+    ).textContent = `Produkcja: ${produced} kWh`;
+    document.getElementById(
+      "total-consumption"
+    ).textContent = `Zużycie: ${consumed} kWh`;
   }
 
   updateWeatherInfo() {
     let weather = JSON.parse(localStorage.getItem("weather"))[0];
-    document.getElementById("sunlight-info").textContent = `Zachmurzenie: ${weather.cloudCoverage}%`;
-    document.getElementById("wind-info").textContent = `Pręskość wiatru: ${weather.windSpeed} km/h`;
+    document.getElementById(
+      "sunlight-info"
+    ).textContent = `Zachmurzenie: ${weather.cloudCoverage}%`;
+    document.getElementById(
+      "wind-info"
+    ).textContent = `Pręskość wiatru: ${weather.windSpeed} km/h`;
   }
 
   draw() {
@@ -348,16 +415,16 @@ class Game {
     this.ctx.scale(this.camera.zoom, this.camera.zoom);
   }
 
- createScaledPattern(img, scale = 0.5) {
-        const tempCanvas = document.createElement("canvas");
-        tempCanvas.width = img.width * scale;
-        tempCanvas.height = img.height * scale;
+  createScaledPattern(img, scale = 0.5) {
+    const tempCanvas = document.createElement("canvas");
+    tempCanvas.width = img.width * scale;
+    tempCanvas.height = img.height * scale;
 
-        const tempCtx = tempCanvas.getContext("2d");
-        tempCtx.drawImage(img, 0, 0, tempCanvas.width, tempCanvas.height);
+    const tempCtx = tempCanvas.getContext("2d");
+    tempCtx.drawImage(img, 0, 0, tempCanvas.width, tempCanvas.height);
 
-        return this.ctx.createPattern(tempCanvas, "repeat");
-        }
+    return this.ctx.createPattern(tempCanvas, "repeat");
+  }
 
   drawBackground() {
     const viewportWidth = this.canvas.width / this.camera.zoom;
@@ -366,9 +433,9 @@ class Game {
     const startY = -this.camera.y / this.camera.zoom;
 
     if (this.backgroundPattern) {
-        this.ctx.fillStyle = this.backgroundPattern;
-        this.ctx.fillRect(startX, startY, viewportWidth, viewportHeight);
-  }
+      this.ctx.fillStyle = this.backgroundPattern;
+      this.ctx.fillRect(startX, startY, viewportWidth, viewportHeight);
+    }
   }
 
   drawGameElements() {
@@ -383,11 +450,19 @@ class Game {
 
   updateHtml() {
     document.getElementById("day-info").textContent = `Dzień: ${this.day}`;
-    document.getElementById("money").textContent = `Pieniądze: ${this.money} PLN`;
+    document.getElementById(
+      "money"
+    ).textContent = `Pieniądze: ${this.money} PLN`;
   }
 
   drawBuildings() {
-    this.buildings.forEach((building) => this.drawBuilding(building));
+    const sortedBuildings = [...this.buildings].sort((a, b) => {
+      if (a.gridX !== b.gridX) {
+        return a.gridX - b.gridX;
+      }
+      return a.gridY - b.gridY;
+    });
+    sortedBuildings.forEach((building) => this.drawBuilding(building));
   }
 
   drawBuilding(building) {
@@ -409,33 +484,64 @@ class Game {
   drawBuildingImage(building, position, alpha = 1.0) {
     const img = imageManager.getImage(building.name);
     if (img) {
-      this.ctx.globalAlpha = alpha;
-      this.ctx.drawImage(img, position.x + 2, position.y + 2, this.gridSize - 4, this.gridSize - 4);
-      this.ctx.globalAlpha = 1.0;
+      this.drawBuildingImageAtPosition(img, building, position, alpha);
     }
+  }
+
+  drawBuildingImageAtPosition(img, building, position, alpha = 1.0) {
+    this.ctx.globalAlpha = alpha;
+    const offsetX = ((building.sizeX * building.scale - 1) * this.gridSize) / 2;
+    const offsetY = ((building.sizeY * building.scale - 1) * this.gridSize) / 2;
+    const width = (this.gridSize - 4) * building.sizeX * building.scale;
+    const height = (this.gridSize - 4) * building.sizeY * building.scale;
+
+    this.ctx.drawImage(
+      img,
+      position.x + 2 - offsetX,
+      position.y + 2 - offsetY * 2,
+      width,
+      height
+    );
+    this.ctx.globalAlpha = 1.0;
   }
 
   drawSelectedBuildingOverlay(building, position) {
     const selectedImg = imageManager.getImage(building.name + "Selected");
     if (selectedImg) {
-      this.ctx.drawImage(selectedImg, position.x + 2, position.y + 2, this.gridSize - 4, this.gridSize - 4);
+      this.drawBuildingImageAtPosition(selectedImg, building, position);
     }
   }
 
   drawHoverPreview() {
     if (!this.hoverPosition || !this.selectedBlueprint) return;
 
-    const position = this.grid.gridToWorldCoordinates(this.hoverPosition.x, this.hoverPosition.y);
+    const position = this.grid.gridToWorldCoordinates(
+      this.hoverPosition.x,
+      this.hoverPosition.y
+    );
 
     const img = imageManager.getImage(this.selectedBlueprint.name);
     if (img) {
       this.ctx.globalAlpha = 0.5;
 
-      if (this.money < this.selectedBlueprint.cost || this.findBuildingAtPosition(this.hoverPosition.x, this.hoverPosition.y)) {
+      if (
+        this.money < this.selectedBlueprint.cost ||
+        !this.canPlaceBuildingAtPosition(
+          this.hoverPosition.x,
+          this.hoverPosition.y,
+          this.selectedBlueprint.sizeX,
+          this.selectedBlueprint.sizeY
+        )
+      ) {
         this.ctx.filter = "sepia(1) saturate(5) hue-rotate(-50deg)";
       }
 
-      this.ctx.drawImage(img, position.x + 2, position.y + 2, this.gridSize - 4, this.gridSize - 4);
+      this.drawBuildingImageAtPosition(
+        img,
+        this.selectedBlueprint,
+        position,
+        0.5
+      );
 
       this.ctx.globalCompositeOperation = "source-over";
       this.ctx.globalAlpha = 1.0;
@@ -448,8 +554,14 @@ class Game {
 
     const clickPosition = this.getClickPosition(e);
     clickPosition.x = clickPosition.x - this.gridSize / 2;
-    const gridPosition = this.grid.worldToGridCoordinates(clickPosition.x, clickPosition.y);
-    const buildingAtPosition = this.findBuildingAtPosition(gridPosition.x, gridPosition.y);
+    const gridPosition = this.grid.worldToGridCoordinates(
+      clickPosition.x,
+      clickPosition.y
+    );
+    const buildingAtPosition = this.findBuildingAtPosition(
+      gridPosition.x,
+      gridPosition.y
+    );
 
     if (!buildingAtPosition) {
       this.buildingAtPosition = null;

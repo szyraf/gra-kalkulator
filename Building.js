@@ -5,10 +5,12 @@ export class Building {
   energyPerHour;
   currentEnergy;
   type;
-  energyType;
   art;
   gridX;
   gridY;
+  sizeX;
+  sizeY;
+  scale;
   upgrades = [];
 
   constructor(jsonObject, gridX, gridY) {
@@ -16,9 +18,12 @@ export class Building {
     this.description = jsonObject["description"];
     this.cost = jsonObject["cost"];
     this.energyPerHour = jsonObject["energyPerHour"];
-    this.type = BuildingType[jsonObject["type"]];
+    this.type = jsonObject["type"];
     this.gridX = gridX;
     this.gridY = gridY;
+    this.sizeX = jsonObject["sizeX"];
+    this.sizeY = jsonObject["sizeY"];
+    this.scale = jsonObject["scale"];
     this.energyType = EnergyType[jsonObject["energyType"]];
     this.currentEnergy = 0;
   }

@@ -6,7 +6,10 @@
       "cost": 100,
       "type": "consumer",
       "energyPerHour": 100,
-      "placable": false
+      "placable": false,
+      "sizeX": 1,
+      "sizeY": 1,
+      "scale": 1
     },
     {
       "name": "Apartament",
@@ -14,7 +17,10 @@
       "cost": 200,
       "type": "consumer",
       "energyPerHour": 1000,
-      "placable": false
+      "placable": false,
+      "sizeX": 1,
+      "sizeY": 1,
+      "scale": 2
     },
     {
       "name": "Tower",
@@ -22,7 +28,10 @@
       "cost": 300,
       "type": "consumer",
       "energyPerHour": 2000,
-      "placable": false
+      "placable": false,
+      "sizeX": 1,
+      "sizeY": 1,
+      "scale": 2
     },
     {
       "name": "Solar",
@@ -30,39 +39,54 @@
       "cost": 400,
       "type": "producent",
       "energyPerHour": 100,
-      "placable": true
+      "placable": true,
+      "sizeX": 2,
+      "sizeY": 2,
+      "scale": 1
     },
     {
       "name": "Turbine",
       "description": "Turbina wiatrowa",
-      "cost": 500,
+      "cost": 50,
       "type": "producent",
       "energyPerHour": 200,
-      "placable": true
-    },
-    {
-      "name": "Turbine",
-      "description": "Turbina wiatrowa",
-      "cost": 500,
-      "type": "producent",
-      "energyPerHour": 200,
-      "placable": true
+      "placable": true,
+      "sizeX": 1,
+      "sizeY": 1,
+      "scale": 3
     },
     {
       "name": "Storage_Small_0",
       "description": "Mały magazyn",
-      "cost": 600,
+      "cost": 60,
       "type": "producent",
       "energyPerHour": 200,
-      "placable": true
+      "placable": true,
+      "sizeX": 1,
+      "sizeY": 1,
+      "scale": 1
     },
     {
       "name": "Storage_Big_0",
       "description": "Duży magazyn",
-      "cost": 700,
+      "cost": 70,
       "type": "producent",
       "energyPerHour": 200,
-      "placable": true
+      "placable": true,
+      "sizeX": 2,
+      "sizeY": 2,
+      "scale": 1
+    },
+    {
+      "name": "Coal",
+      "description": "Elektrownia Węglowa",
+      "cost": 80,
+      "type": "producent",
+      "energyPerHour": 200,
+      "placable": true,
+      "sizeX": 1,
+      "sizeY": 1,
+      "scale": 1
     }
   ]
 } 
