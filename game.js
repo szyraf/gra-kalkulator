@@ -1,4 +1,4 @@
-import { Building, BuildingType } from "./Building.js";
+import { Building, BuildingType, EnergyType } from "./Building.js";
 import { imageManager } from "./imageManager.js";
 import { Grid } from "./grid.js";
 import { startingDate } from "./date-weather.js";
@@ -175,6 +175,7 @@ class Game {
       if (this.selectedBlueprint != null) {
         if (this.canPlaceBuildingAtPosition(gridPosition.x, gridPosition.y, this.selectedBlueprint.sizeX, this.selectedBlueprint.sizeY)) {
           this.hideBuildingInfo();
+          document.getElementById("building-upgrade").style.display = "none";
           this.addBuilding(this.selectedBlueprint, gridPosition.x, gridPosition.y);
         }
       }
@@ -229,6 +230,20 @@ class Game {
     document.getElementById("building-name").textContent = building.name;
     document.getElementById("building-energy").textContent = this.getEnergyInfoText(building);
     document.getElementById("building-upgrades").textContent = `Ulepszenia: ${building.upgrades.join(", ") || "Brak"}`;
+    if(building.type === BuildingType.consumer && building.energyType !== EnergyType.solarSmall){ 
+      document.getElementById("building-upgrade").style.display = "block";
+       document.getElementById("building-upgrade").onclick = () => {
+        if (this.money >= 5) {
+          this.money -= 5;
+          building.energyType = EnergyType.solarSmall;
+          imageManager.updateCosts();
+          this.updateBuildingInfoPanel(building, infoPanel);
+        } else {
+          alert("Nie masz wystarczająco pieniędzy na ulepszenie tego budynku.");
+        }}
+    }else{
+      document.getElementById("building-upgrade").style.display = "none";
+    }
   }
 
   getEnergyInfoText(building) {
