@@ -457,13 +457,13 @@ class Game {
 
     document.getElementById(
       "available-energy"
-    ).textContent = `Dostępna energia: ${capacity} ${capacityUnit}`;
+    ).textContent = `Dostępna energia: ${capacity.toFixed(2)} ${capacityUnit}`;
     document.getElementById(
       "total-production"
-    ).textContent = `Produkcja: ${produced} ${producedUnit}`;
+    ).textContent = `Produkcja: ${produced.toFixed(2)} ${producedUnit}`;
     document.getElementById(
       "total-consumption"
-    ).textContent = `Zużycie: ${consumed} ${consumedUnit}`;
+    ).textContent = `Zużycie: ${consumed.toFixed(2)} ${consumedUnit}`;
     if (this.selectedBuilding != null)
       this.showBuildingInfo(this.selectedBuilding);
   }
