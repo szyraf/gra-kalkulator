@@ -48,18 +48,18 @@ function getDateFromStart(n) {
 function generateWeather(dayNumber, month) {
     // Zakresy pogodowe zalezne od miesiaca (0 = styczen, 11 = grudzien)
     const weatherRanges = [
-        { temp: [-5, 3], cloud: [60, 100] }, // styczen
-        { temp: [-3, 6], cloud: [50, 100] }, // luty
-        { temp: [2, 12], cloud: [40, 90] }, // marzec
-        { temp: [5, 17], cloud: [30, 80] }, // kwiecien
-        { temp: [10, 21], cloud: [20, 70] }, // maj
-        { temp: [15, 26], cloud: [10, 60] }, // czerwiec
-        { temp: [18, 30], cloud: [10, 50] }, // lipiec
-        { temp: [17, 29], cloud: [15, 60] }, // sierpien
-        { temp: [12, 22], cloud: [20, 70] }, // wrzesien
-        { temp: [7, 16], cloud: [30, 80] }, // pazdziernik
-        { temp: [2, 10], cloud: [40, 90] }, // listopad
-        { temp: [-2, 5], cloud: [60, 100] }, // grudzien
+        { temp: [-5, 3], cloud: [60, 100], sunrise: 7, sunset: 16 }, // styczen
+        { temp: [-3, 6], cloud: [50, 100], sunrise: 6, sunset: 17 }, // luty
+        { temp: [2, 12], cloud: [40, 90], sunrise: 6, sunset: 19 }, // marzec
+        { temp: [5, 17], cloud: [30, 80], sunrise: 5, sunset: 20 }, // kwiecien
+        { temp: [10, 21], cloud: [20, 70], sunrise: 5, sunset: 20 }, // maj
+        { temp: [15, 26], cloud: [10, 60], sunrise: 4, sunset: 21 }, // czerwiec
+        { temp: [18, 30], cloud: [10, 50], sunrise: 5, sunset: 21 }, // lipiec
+        { temp: [17, 29], cloud: [15, 60], sunrise: 6, sunset: 20 }, // sierpien
+        { temp: [12, 22], cloud: [20, 70], sunrise: 6, sunset: 19 }, // wrzesien
+        { temp: [7, 16], cloud: [30, 80], sunrise: 7, sunset: 18 }, // pazdziernik
+        { temp: [2, 10], cloud: [40, 90], sunrise: 7, sunset: 16 }, // listopad
+        { temp: [-2, 5], cloud: [60, 100], sunrise: 7, sunset: 16 }, // grudzien
     ];
 
     const range = weatherRanges[month];
@@ -69,6 +69,8 @@ function generateWeather(dayNumber, month) {
         temperature: getRandomInt(range.temp[0], range.temp[1]),
         windSpeed: getRandomInt(5, 40),
         cloudCoverage: getRandomInt(range.cloud[0], range.cloud[1]),
+        sunrise: range.sunrise,
+        sunset: range.sunset,
     };
 }
 
