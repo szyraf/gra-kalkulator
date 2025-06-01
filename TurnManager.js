@@ -1,4 +1,4 @@
-import { BuildingType } from "./Building";
+import { nextDay } from "./date-weather";
 
 const hourDuration = 2000;
 
@@ -6,7 +6,6 @@ export class TurnManager {
     #updateInterval;
     #game;
     #weather;
-    #weatherIndex = 0;
     #hour = 8;
 
     constructor(game) {
@@ -25,15 +24,10 @@ export class TurnManager {
             return;
         }
         this.#hour += 1;
-        this.#game.updateEnergy(this.#weather[this.#weatherIndex]);
+        this.#game.updateEnergy();
     }
 
     #endTurn() {
-        this.#weatherIndex += 1;
-        if (this.#weatherIndex >= 7) this.#getNewWeather();
-    }
-
-    #getNewWeather() {
-        this.#weatherIndex = 0;
+        nextDay();
     }
 }
