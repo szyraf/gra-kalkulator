@@ -4,6 +4,8 @@ import { Grid } from "./grid.js";
 import { startingDate } from "./date-weather.js";
 import { TurnManager } from "./TurnManager.js";
 
+const startBudget = 4050000;
+
 class Game {
   constructor(buildingsData) {
     this.buildingsData = buildingsData;
@@ -11,6 +13,10 @@ class Game {
     this.initializeCanvas();
     this.setupEventListeners();
     this.startGameLoop();
+  }
+
+  startDay() {
+    this.money = this.dailyBudget;
   }
 
   initializeGameState() {
@@ -38,7 +44,7 @@ class Game {
     this.weather = this.createInitialWeather();
     this.energy = this.createInitialEnergyState();
     this.camera = this.createInitialCameraState();
-    this.dailyBudget = 1000;
+    this.dailyBudget = startBudget;
     this.mouseMovementCount = 0;
     this.hoverPosition = null;
     this.buildingAtPosition = null;
@@ -63,9 +69,9 @@ class Game {
 
   createInitialCameraState() {
     return {
-      x: 0,
+      x: 600,
       y: 0,
-      zoom: 1,
+      zoom: 0.25,
       minZoom: 0.1,
       maxZoom: 100,
     };
@@ -439,7 +445,6 @@ class Game {
     }
 
     if (outcome < 0) capacity = outcome;
-    capacity = capacity;
 
     this.updateEnergyUI(produced, consumed, capacity);
   }
@@ -463,6 +468,9 @@ class Game {
       consumed = consumed / 1000;
     }
 
+    if (capacity < 0)
+      document.getElementById("available-energy").style.color = "red";
+    else document.getElementById("available-energy").style.color = "white";
     document.getElementById(
       "available-energy"
     ).textContent = `Dostępna energia: ${capacity.toFixed(2)} ${capacityUnit}`;
