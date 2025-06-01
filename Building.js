@@ -21,6 +21,10 @@ export class Building {
 
         this.currentEnergy = 0;
     }
+
+    getProducedEnergy() {
+        return this.energyPerHour;
+    }
 }
 
 export const BuildingType = {
