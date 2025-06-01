@@ -16,7 +16,17 @@ class Game {
   initializeGameState() {
     this.canvas = document.getElementById("gameCanvas");
     this.ctx = this.canvas.getContext("2d");
-    this.gridSize = 25;
+    this.gridSize = 250;
+     this.texture = document.getElementById("texture");
+        this.backgroundPattern = null;
+
+        if (this.texture.complete) {
+        this.backgroundPattern = this.createScaledPattern(this.texture, 0.38); // 0.5 = 2x częściej
+        } else {
+        this.texture.onload = () => {
+            this.backgroundPattern = this.createScaledPattern(this.texture,0.38);
+        };
+        }
     this.grid = new Grid(this.gridSize);
     this.buildings = [];
     this.selectedBuilding = null;
@@ -31,6 +41,7 @@ class Game {
     this.buildingAtPosition = null;
     this.money = 1000;
   }
+  
 
   createInitialWeather() {
     return {
@@ -337,14 +348,27 @@ class Game {
     this.ctx.scale(this.camera.zoom, this.camera.zoom);
   }
 
+ createScaledPattern(img, scale = 0.5) {
+        const tempCanvas = document.createElement("canvas");
+        tempCanvas.width = img.width * scale;
+        tempCanvas.height = img.height * scale;
+
+        const tempCtx = tempCanvas.getContext("2d");
+        tempCtx.drawImage(img, 0, 0, tempCanvas.width, tempCanvas.height);
+
+        return this.ctx.createPattern(tempCanvas, "repeat");
+        }
+
   drawBackground() {
     const viewportWidth = this.canvas.width / this.camera.zoom;
     const viewportHeight = this.canvas.height / this.camera.zoom;
     const startX = -this.camera.x / this.camera.zoom;
     const startY = -this.camera.y / this.camera.zoom;
 
-    this.ctx.fillStyle = "#00ff00";
-    this.ctx.fillRect(startX, startY, viewportWidth, viewportHeight);
+    if (this.backgroundPattern) {
+        this.ctx.fillStyle = this.backgroundPattern;
+        this.ctx.fillRect(startX, startY, viewportWidth, viewportHeight);
+  }
   }
 
   drawGameElements() {
