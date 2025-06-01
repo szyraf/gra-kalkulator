@@ -69,9 +69,9 @@ class Game {
 
   createInitialCameraState() {
     return {
-      x: 0,
+      x: 600,
       y: 0,
-      zoom: 1,
+      zoom: 0.25,
       minZoom: 0.1,
       maxZoom: 100,
     };
