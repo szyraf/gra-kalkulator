@@ -44,7 +44,7 @@ export class Building {
     } else if (this.energyType == EnergyType.solarSmall) {
       if (hour > weather.sunset || hour < weather.sunrise) return 0;
       let sunPercent = 1 - weather.cloudCoverage / 100;
-      let power = this.name == "House" ? 4 : 8;
+      let power = this.name == "House" ? 8 : 24;
       outcome = power * 1 * sunPercent * 0.85; //4-8kw - średnia moc
     } else if (this.energyType == EnergyType.solar) {
       if (hour > weather.sunset || hour < weather.sunrise) return 0;
