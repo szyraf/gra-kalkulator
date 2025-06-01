@@ -680,10 +680,20 @@ window.addEventListener("load", async () => {
     const game = new Game(buildingsData.buildings);
     imageManager.setGame(game);
 
-    game.addBuilding(buildingsData.buildings[0], 2, 2, true);
-    game.addBuilding(buildingsData.buildings[1], 4, 2, true);
-    game.addBuilding(buildingsData.buildings[3], 2, 4, true);
-    game.addBuilding(buildingsData.buildings[2], 4, 4, true);
+    const initial_buildings = await (
+      await fetch("./initial_buildings.json")
+    ).json();
+    initial_buildings.buildings.forEach((initial_building) => {
+      const building_json = buildingsData.buildings.find(
+        (b) => b.name === initial_building.name
+      );
+      game.addBuilding(
+        building_json,
+        initial_building.x,
+        initial_building.y,
+        true
+      );
+    });
 
     let turnManager = new TurnManager(game);
 

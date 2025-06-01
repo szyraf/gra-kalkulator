@@ -1,0 +1,29 @@
+{
+    "buildings": [
+      {
+        "name": "House",
+        "x": 2,
+        "y": 2
+      },
+      {
+        "name": "Apartament",
+        "x": 4,
+        "y": 2
+      },
+      {
+        "name": "Tower",
+        "x": 2,
+        "y": 4
+      },
+      {
+        "name": "Solar",
+        "x": 4,
+        "y": 4
+      },
+      {
+        "name": "Turbine",
+        "x": 6,
+        "y": 4
+      }
+    ]
+  }
